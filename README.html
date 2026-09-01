@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CamRobot — README</title>
+<style>
+  :root{
+    --bg:#0B0F14; --panel:#121822; --panel-2:#0E141C; --border:#1F2B38;
+    --cyan:#4CE0D2; --amber:#FFB454; --danger:#FF5C5C;
+    --text:#E7F1F2; --muted:#7C93A0;
+    --mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);
+    line-height:1.6;padding:0 0 60px;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px;}
+  header{padding:36px 0 20px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+  header h1{margin:0 0 10px;font-size:24px;letter-spacing:.04em;}
+  header h1 span{color:var(--amber);}
+  .tagline{color:var(--muted);font-size:13.5px;max-width:620px;}
+  .tutorial-link{display:inline-block;margin-top:14px;font-size:13px;color:var(--cyan);
+    text-decoration:none;border-bottom:1px dotted var(--cyan);padding-bottom:1px;}
+  .tutorial-link:hover{color:var(--amber);border-bottom-color:var(--amber);}
+  .hero{width:100%;max-width:360px;border-radius:8px;border:1px solid var(--border);
+    display:block;margin:20px 0 0;}
+  h2{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    margin:40px 0 14px;display:flex;align-items:center;gap:8px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--border);}
+  h3{font-size:14px;color:var(--cyan);margin:24px 0 8px;}
+  p{font-size:13.5px;margin:0 0 12px;}
+  a{color:var(--cyan);}
+  code{font-family:var(--mono);color:var(--amber);background:var(--panel-2);
+    padding:1px 5px;border-radius:4px;font-size:.92em;}
+  pre{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;
+    padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.55;}
+  pre code{background:none;padding:0;color:var(--text);}
+  ul{margin:8px 0 12px;padding-left:20px;font-size:13.5px;}
+  li{margin:6px 0;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0 4px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+  th{color:var(--muted);font-weight:400;letter-spacing:.06em;text-transform:uppercase;font-size:10.5px;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:16px 20px;margin-bottom:16px;}
+  .note{border-left:3px solid var(--amber);padding:10px 14px;background:var(--panel);
+    border-radius:0 8px 8px 0;font-size:13px;margin:14px 0;}
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--border);
+    font-size:11.5px;color:var(--muted);}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);
+    box-shadow:0 0 6px var(--cyan);margin-right:6px;}
+  #lang-switch{display:flex;gap:4px;margin-top:16px;}
+  .lang-btn{background:var(--panel);border:1px solid var(--border);
+    display:flex;align-items:center;padding:3px;border-radius:5px;cursor:pointer;
+    opacity:.55;line-height:0;}
+  .lang-btn.active{border-color:var(--amber);opacity:1;box-shadow:0 0 0 1px var(--amber);}
+  .lang-btn svg{display:block;border-radius:2px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>&#129302; CAM<span>ROBOT</span></h1>
+    <div id="lang-switch">
+      <button class="lang-btn active" data-lang="en" title="English" aria-label="English" onclick="setLang('en')"><svg width="22" height="15" viewBox="0 0 60 40"><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="6.5"/><path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="3.5"/><path d="M30 0V40M0 20H60" stroke="#fff" stroke-width="11"/><path d="M30 0V40M0 20H60" stroke="#C8102E" stroke-width="6.5"/></svg></button>
+      <button class="lang-btn" data-lang="fr" title="Français" aria-label="Français" onclick="setLang('fr')"><svg width="22" height="15" viewBox="0 0 60 40"><rect width="20" height="40" fill="#002395"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#ED2939"/></svg></button>
+      <button class="lang-btn" data-lang="ar" title="العربية" aria-label="العربية" onclick="setLang('ar')"><svg width="22" height="15" viewBox="0 0 900 600"><defs><clipPath id="glVC2"><rect width="450" height="600"/></clipPath></defs><rect width="450" height="600" fill="#006233"/><rect x="450" width="450" height="600" fill="#FFF"/><g fill="#D21034" transform="translate(450,300)"><circle r="125"/><circle cx="25" r="100" fill="#FFF"/><g clip-path="url(#glVC2)" transform="translate(-450,-300)"><circle cx="475" cy="300" r="100" fill="#006233"/></g><path d="M85-12l22 67h71l-57 42 22 67-58-42-57 42 21-67-57-42h71z"/></g></svg></button>
+    </div>
+    <p class="tagline" data-i18n="tagline">Firmware and web control page for the WDIY
+    ESP32-CAM plugin robot &mdash; an AI-Thinker ESP32-CAM module plugged into the
+    <code>esp32_cam_plugin_robot</code> carrier board (WORKSHOP-DIY ID_04). Ported from
+    VideoCar, which does the same job on the keyestudio KS5017 chassis: the whole web app
+    comes across, and everything that touches a pin had to change.</p>
+    <p><a href="https://github.com/abourdim/wdiy_esp32_cam_robot" target="_blank" rel="noopener" style="color:var(--amber);">github.com/abourdim/wdiy_esp32_cam_robot</a></p>
+    <pre><code>git clone https://github.com/abourdim/wdiy_esp32_cam_robot.git
+cd wdiy_esp32_cam_robot</code></pre>
+    <a class="tutorial-link" href="report.html">
+      &#128214; Port report &mdash; what the hardware forced, and what was verified
+    </a><br>
+    <img class="hero" src="preview_full.png" alt="Control page screenshot">
+  </header>
+
+  <h2><span class="dot"></span><span data-i18n="h_quickstart">Quick start</span></h2>
+  <div class="panel">
+    <p data-i18n="qs_p1"><strong>Arduino IDE</strong> (known-good baseline): open
+    <code>Codes/4_CamRobot/4_CamRobot.ino</code>, select the AI-Thinker ESP32-CAM board,
+    set <code>Tools &gt; Partition Scheme</code> to <strong>Minimal SPIFFS (1.9MB APP with
+    OTA)</strong>, enable <code>Tools &gt; PSRAM: Enabled</code>, and install
+    <strong>Adafruit NeoPixel</strong>, <strong>Adafruit SSD1306</strong> and
+    <strong>Adafruit GFX</strong> from <code>Tools &gt; Manage Libraries</code>.</p>
+
+    <div class="note">
+      <p data-i18n="qs_flashnote"><strong>&#9888; Flashing this board is a two-handed
+      job.</strong> J3 is a bare 4-pin FTDI header &mdash; 5V, RX, TX, GND &mdash; with no
+      auto-reset circuit, and GPIO0 is not broken out to a button either. Jumper GPIO0 to
+      GND on the module, tap reset, start the upload, then remove the jumper and reset
+      again. Do this once, then use <a href="#ota">OTA</a> from then on.</p>
+    </div>
+    <p data-i18n="qs_p2"><strong>PlatformIO</strong>:</p>
+    <pre><code>./launch.sh</code></pre>
+    <p data-i18n="qs_p3">Walks you through checking/installing PlatformIO, building, flashing, and opening
+    a serial monitor. See <a href="#build-systems">Build systems</a> below for what each
+    menu option does.</p>
+    <p data-i18n="qs_p4">Once flashed, connect to the <code>wdiy1</code> WiFi network (password
+    <code>88888888</code>) and open <code>http://192.168.4.1</code> in a browser.</p>
+
+    <div class="note">
+      <p data-i18n="qs_note1"><strong>&#128218; New to this, or want to drive the car from your own scripts?</strong>
+      <a href="ports.html">ports.html</a> is a step-by-step guide to both servers &mdash; what
+      port 80 and port 81 each do, why there are two of them, every endpoint with its value
+      ranges, and the 500ms failsafe that catches everyone out the first time they try to
+      drive the car with <code>curl</code>.</p>
+    </div>
+
+    <div class="note">
+      <p data-i18n="qs_note2_t"><strong>&#9888; The Vision features need internet &mdash; the default AP mode
+      has none.</strong></p>
+      <p data-i18n="qs_note2_p1">Out of the box (<code>ap = 1</code>) the car hosts its own isolated
+      <code>wdiy1</code> network, which isn't connected to anything. <strong>Pose, Hand
+      tracking, Facial expression, Plates, AI Vision, and the jsQR fallback all download
+      their models from a CDN the first time you enable them, so on the car's own AP they
+      will fail to start.</strong> Driving, the video stream, snapshots, and recording all
+      work fine there &mdash; it's only the model-backed overlays that don't.</p>
+      <p data-i18n="qs_note2_p2">To use them, set <code>ap = 0</code> near the top of
+      <code>4_CamRobot.ino</code> along with your router's <code>ssid</code>/<code>password</code>,
+      reflash, and read the car's IP off the serial monitor. Your phone or laptop then has
+      the car and the internet at the same time.</p>
+      <p data-i18n="qs_note2_p3">The one exception is <strong>QR / Barcode</strong> on Chrome, Edge, or Android
+      Chrome, which uses the browser's built-in <code>BarcodeDetector</code> and needs no
+      network at all &mdash; that one works on the car's own AP.</p>
+    </div>
+  </div>
+
+  <h2 id="board"><span class="dot"></span><span data-i18n="h_board">The board</span></h2>
+  <div class="panel">
+    <div class="note">
+      <p data-i18n="board_norev_t"><strong>&#9888; This robot has no reverse.</strong></p>
+      <p data-i18n="board_norev_p1">Each motor is switched by a single low-side MOSFET
+      (Q1/Q2, 2N7002) with its gate on a GPIO. That is one degree of freedom per motor
+      &mdash; how hard it is driven &mdash; and no H-bridge, so there is no way to run a
+      wheel backwards.</p>
+      <p data-i18n="board_norev_p2">Everything downstream inherits it. <strong>Forward</strong>
+      and <strong>Stop</strong> work as they always did. <strong>Left</strong> and
+      <strong>Right</strong> are a forward pivot around the undriven wheel rather than a spin
+      on the spot, so the robot swings through a much wider arc and needs the room in front
+      of it. The <strong>Back</strong> button is gone from the D-pad, replaced by
+      <strong>Stop</strong>. The joystick's reverse half is clamped to zero. Follow-me and
+      Colour chase can no longer back away from a target that comes too close &mdash; they
+      stop and wait. None of that is a bug to be fixed in software; it is one missing
+      H-bridge.</p>
+    </div>
+
+    <p data-i18n="board_p1">Everything below was read out of
+    <code>esp32_cam_plugin_robot.kicad_sch</code> and <code>.kicad_pcb</code>, not assumed
+    from the module.</p>
+
+    <table>
+      <tr><th data-i18n="th_gpio">GPIO</th><th data-i18n="th_goesto">Goes to</th><th data-i18n="th_notes2">Notes</th></tr>
+      <tr><td><code>13</code></td><td data-i18n="pin13_to">J1 screw terminal, gate of Q1</td>
+          <td data-i18n="pin13_note">Motor <strong>M1 = right wheel</strong>. PWM, forward only.
+          R1 10k pulldown, D1 1N4007 flyback.</td></tr>
+      <tr><td><code>12</code></td><td data-i18n="pin12_to">J2 screw terminal, gate of Q2</td>
+          <td data-i18n="pin12_note">Motor <strong>M2 = left wheel</strong>. Same again.
+          <strong>Also MTDI</strong>, the flash-voltage strapping pin &mdash; R2's pulldown is
+          the only reason this pin is usable as an output at all.</td></tr>
+      <tr><td><code>4</code></td><td data-i18n="pin4_to">D3, TX1812DB RGB pixel</td>
+          <td data-i18n="pin4_note">The Lights slider. One pixel, DOUT unconnected. Also the
+          gate of the module's onboard flash LED.</td></tr>
+      <tr><td><code>16</code></td><td data-i18n="pin16_to">U2 / J6 motion sensor, via Q3</td>
+          <td data-i18n="pin16_note"><strong>Inverted</strong> (motion reads LOW) and
+          <strong>no board pull-up</strong> (needs <code>INPUT_PULLUP</code>). Also the PSRAM
+          chip-select &mdash; see below.</td></tr>
+      <tr><td><code>1 / 3</code></td><td data-i18n="pin13a_to">J3 FTDI header</td>
+          <td data-i18n="pin13a_note">U0TXD / U0RXD. No auto-reset.</td></tr>
+      <tr><td><code>14, 15, 2</code></td><td data-i18n="pinfree_to">nothing</td>
+          <td data-i18n="pinfree_note">Routed from the module to named nets and no further.
+          14 and 15 are where an optional OLED goes.</td></tr>
+      <tr><td><code>0</code></td><td data-i18n="pin0_to">nothing</td>
+          <td data-i18n="pin0_note">Not broken out, so flash mode is a hand-placed jumper.</td></tr>
+    </table>
+
+    <p style="margin-top:16px;" data-i18n="board_power"><strong>Power.</strong> J7 is a USB-C
+    receptacle wired for power only &mdash; CC1/CC2 are unpopulated, so it takes 5V from an
+    A-to-C cable or a dumb supply, not from a charger expecting to negotiate.
+    <code>+5V</code> runs the module, the pixel and the sensor. <code>VCC</code> is the
+    separate motor rail: J5 is the battery input, and J4 is a 2-pin header that bridges
+    <code>VCC</code> to <code>+5V</code> if you want to run everything off one supply. A
+    robot on USB alone boots, streams video, and cannot move.</p>
+
+    <p data-i18n="board_sd"><strong>The microSD card is not usable.</strong> GPIO 2, 4, 12,
+    13, 14 and 15 are the module's SD-card pins, and this board spends 12, 13 and 4 on the
+    motors and the pixel. There is nothing to fix here; the slot has no pins left.</p>
+
+    <h3 data-i18n="board_h_psram">The one choice you have to make: PSRAM or motion sensor</h3>
+    <p data-i18n="board_psram1">GPIO16 is the PSRAM chip-select on an AI-Thinker module, and
+    the carrier routes GPIO16 to the motion sensor. They cannot both have it, so it is decided
+    at build time.</p>
+    <table>
+      <tr><th></th><th data-i18n="th_camera">Camera</th><th data-i18n="th_sensor">Motion sensor</th></tr>
+      <tr><td><code>env:esp32cam</code></td>
+          <td data-i18n="psram_a1">PSRAM, two QVGA buffers</td>
+          <td data-i18n="psram_a2">not compiled in; <code>/status</code> reports <code>"pir":-1</code></td></tr>
+      <tr><td><code>env:esp32cam-pir</code></td>
+          <td data-i18n="psram_b1">one DRAM buffer, QVGA is a hard ceiling</td>
+          <td data-i18n="psram_b2">works; <code>/status</code> reports 0 or 1</td></tr>
+    </table>
+    <p style="margin-top:14px;" data-i18n="board_psram2">Video is what this robot is for, so
+    PSRAM wins the default. Both environments build, so neither path rots:</p>
+    <pre><code>cd firmware/4_camrobot &amp;&amp; pio run -e esp32cam-pir</code></pre>
+    <div class="note" data-i18n="board_psram3"><strong>Deleting
+    <code>-DBOARD_HAS_PSRAM</code> from <code>build_flags</code> is not enough.</strong>
+    PlatformIO's <code>esp32cam</code> board definition defines it too, in its own
+    <code>extra_flags</code>, and <code>build_flags</code> cannot remove what
+    <code>extra_flags</code> added &mdash; it has to be undefined with
+    <code>-UBOARD_HAS_PSRAM</code>. <code>src/pir.h</code> has an <code>#error</code> that
+    fires if you get this half-right, because a build that quietly kept PSRAM while reading
+    GPIO16 would report motion every time the cache missed.</div>
+  </div>
+
+  <h2><span class="dot"></span><span data-i18n="h_features">What this firmware does</span></h2>
+  <div class="panel">
+    <ul>
+      <li data-i18n="feat_joystick"><strong>Joystick control</strong> &mdash; draggable on-screen joystick
+        (<code>/joystick?x=&amp;y=</code>), arcade-mixed to per-wheel PWM, alongside the
+        original D-pad/keyboard controls.</li>
+      <li data-i18n="feat_failsafe"><strong>Connection-loss failsafe</strong> &mdash; the robot auto-stops if no
+        command is received for 500ms (WiFi drop, phone locked, tab closed, etc.),
+        instead of driving on unattended. WiFi auto-reconnect in station mode, MJPEG
+        stream auto-recovery, and a live connection indicator.</li>
+      <li data-i18n="feat_settings"><strong>Settings persistence</strong> &mdash; Speed, Trim, Lights, Quality,
+        Resolution, Flip, and Mirror are all remembered two ways: on the car itself
+        (NVS flash, survives reboots/reflashes, same for any device that connects) and
+        in the browser's <code>localStorage</code> (instant restore on reload). On page
+        load the device's own values always win if they differ from the local cache.</li>
+      <li data-i18n="feat_flip"><strong>Live flip/mirror toggles</strong> &mdash; Flip and Mirror buttons in the
+        Systems panel call the sensor's <code>set_vflip</code>/<code>set_hmirror</code>
+        live, so you can fix the camera's orientation for your chassis without
+        reflashing.</li>
+      <li data-i18n="feat_pose"><strong>Pose detection</strong> &mdash; MoveNet skeleton tracking (light blue),
+        dots + limb lines over up to a few people at once.</li>
+      <li data-i18n="feat_hands"><strong>Hand tracking</strong> &mdash; MediaPipe Hands via TF.js's
+        <code>tfjs</code> runtime (avoids a separate MediaPipe script/wasm bundle from
+        yet another host), 21 keypoints per hand plus left/right handedness (orange).</li>
+      <li data-i18n="feat_expr"><strong>Facial expression</strong> &mdash; happy/sad/angry/surprised/etc. via
+        <code>@vladmandic/face-api</code> (an actively-maintained fork of the long-dormant
+        face-api.js), whose model weights are published in the same npm package as the
+        script &mdash; unlike most of Vision, this only depends on a single host
+        (jsdelivr) rather than two.</li>
+      <li data-i18n="feat_codes"><strong>QR / Barcode</strong> &mdash; uses the browser's built-in
+        <code>BarcodeDetector</code> when available (Chrome/Edge/Android Chrome) &mdash;
+        no network needed at all, works even on the car's own isolated AP. Falls back to
+        the jsQR library (QR codes only, needs internet once) on browsers without native
+        support (Safari/iOS).</li>
+      <li data-i18n="feat_plates"><strong>Plates</strong> &mdash; an experimental license-plate reader. There's no
+        ready-made plate-detector model like there is for objects/faces, so this reuses
+        COCO-SSD's car/truck/bus boxes, crops the likely plate region, and runs real OCR
+        (Tesseract.js) on it. Heuristic, not a trained detector, and limited by the
+        camera's 320&times;240 resolution &mdash; works best close, square-on, and
+        well-lit. Runs on its own slower ~2.5s cadence since OCR is much heavier than
+        object/face detection.</li>
+      <li data-i18n="feat_vision"><strong>AI Vision</strong> &mdash; a toggleable live overlay detecting both
+        objects (COCO-SSD) and faces (BlazeFace) right over the viewfinder, running
+        entirely in the browser since the ESP32 can't run a neural net alongside
+        everything else. Needs internet access on the network the device is using to
+        load the models the first time.</li>
+      <li data-i18n="feat_buildstamp"><strong>Build stamp</strong> &mdash; the control page footer, <code>/status</code>
+        and the serial console at boot all report the firmware version, the compiler's
+        build timestamp, and the git revision it came from (with a <code>-dirty</code>
+        suffix, shown in amber, when the tree had uncommitted changes). Previously there
+        was no way to tell what was actually running on a car short of reflashing it. The
+        revision is stamped by a PlatformIO pre-build hook; Arduino IDE has no equivalent,
+        so builds from there report <code>nogit</code> rather than a possibly-stale hash.
+        The page is also served <code>Cache-Control: no-store</code>, so a browser can't
+        pair a cached page with newer firmware.</li>
+      <li data-i18n="feat_classiccv"><strong>Classic CV (no models, no internet)</strong> &mdash; three features
+        that work on the car's own AP with nothing downloaded, because they're plain pixel
+        maths rather than a neural net. They also run at full frame rate instead of the
+        0.4&ndash;2.5Hz a model manages on a phone, which is what makes the driving ones
+        viable.
+        <ul>
+          <li><strong>Motion</strong> &mdash; frame differencing, boxes whatever moved.
+            Subtracts the global brightness shift first, since the OV2640's constant
+            auto-exposure hunting would otherwise read as full-frame motion indoors.</li>
+          <li><strong>Line</strong> &mdash; follows a dark line on a light floor, or a
+            light one on a dark floor. The threshold adapts to whatever contrast the line
+            actually has rather than assuming, and refuses to lock on to a blank floor
+            instead of chasing sensor noise. Tuned deliberately slow: the full loop
+            (camera, JPEG, WiFi, browser, HTTP back, I2C) has enough delay in it that a
+            faster or higher-gain loop goes unstable rather than going quicker.
+            <code>LINE_SPEED</code> is the knob to raise once it tracks reliably. Leave
+            the Speed slider high &mdash; the autonomous modes cap themselves well below
+            it, and the two multiply.</li>
+          <li><strong>Colour chase</strong> &mdash; drives at the nearest blob of a chosen
+            colour. Matching is done in rg-chromaticity, so a shadow falling across the
+            target doesn't lose it. &ldquo;Sample centre&rdquo; picks the colour off
+            whatever the car is pointed at.</li>
+        </ul>
+        Line and Colour chase drive the car, and share Follow-me's arbiter and safety
+        rules: manual input always wins, only one autonomous mode runs at a time, and a
+        lost target stops the car and then disarms. Motion is passive, so it keeps running
+        alongside whatever else is steering.</li>
+      <li data-i18n="feat_offline"><strong>Offline model cache</strong> &mdash; the Vision features load scripts
+        from a CDN and model weights from Google's model hosting, neither of which the
+        car's own AP can reach. Fetches to those hosts are now cached in IndexedDB and
+        read back transparently, so turning a feature on once somewhere with internet
+        makes it work from then on over the car's own WiFi. There's no download button to
+        press: it caches as it goes. The Offline panel shows what's stored and can clear
+        it. (Service workers and the Cache API would be the obvious tools here and are
+        both unavailable &mdash; they require a secure context, and this page is plain
+        HTTP. Tesseract.js, used by Plates, loads from inside a Web Worker and isn't
+        covered.)</li>
+      <li data-i18n="feat_followme"><strong>Follow-me (autonomous)</strong> &mdash; the one feature here that
+        actually drives the car. It takes COCO-SSD's bounding box for a chosen target
+        (person, ball, dog, cat, bottle, chair) and runs a proportional controller on it:
+        horizontal offset from frame centre becomes steering, box height becomes throttle,
+        and both go out over the same <code>/joystick</code> endpoint manual driving uses
+        &mdash; so the firmware needed no new handler and the 500ms failsafe covers this
+        mode too. Frames come off the live MJPEG stream rather than a second
+        <code>/capture</code> poll, which is what makes a real control loop possible.
+        Disarmed by default; touching an arrow key, the D-pad or the joystick takes over
+        instantly. Output is capped well below full speed, and losing the target stops the
+        robot and then disarms rather than sending it hunting. Needs internet once to load
+        the model. On this chassis it cannot back away from a target that comes too close
+        &mdash; there is no reverse, so it stops and waits for the gap to open.
+        <strong>Give the robot clear floor space before arming it.</strong></li>
+      <li data-i18n="feat_oled"><strong>OLED screen (optional)</strong> &mdash; a 128&times;64 SSD1306 at
+        <code>0x3C</code> on GPIO 14/15, which on this board is a bus of its own rather than
+        one shared with the motors. It boots into a self-test &mdash; did the camera come up,
+        is the motion sensor seeing anything, which network the robot ended on, and
+        <strong>the address to type</strong>, which in station mode is handed out by DHCP and
+        until now existed nowhere but the serial console. Once a browser connects it becomes an
+        animated face: it blinks, winks, looks the way it is driving, worries when the failsafe
+        cuts the motors, and falls asleep after twenty seconds. Neither pin is broken out on
+        the carrier, so almost nobody fits one &mdash; the module is probed at boot and
+        everything no-ops if it is not there. See <a href="#oled">OLED screen</a> below.</li>
+      <li data-i18n="feat_capture"><strong>Snapshot &amp; video recording</strong> &mdash; a Capture panel
+        downloads a still JPEG, or records a <code>.webm</code>/<code>.mp4</code> client-side
+        (Canvas + MediaRecorder pulling frames from <code>/capture</code>) since the ESP32
+        itself can't encode video or write to an SD card in this sketch. Both carry the
+        Workshop-DIY mark, stamped into the pixels bottom-right rather than overlaid on the
+        page, so the file still says where it came from once it has left the car. The logo is
+        embedded as a <code>data:</code> URI &mdash; the car's own AP can't reach anywhere to
+        fetch it from, and a watermark that only appears when the workshop has internet is not
+        a watermark.</li>
+      <li data-i18n="feat_redesign"><strong>Redesigned control page</strong> &mdash; dark mission-control /
+        camera-viewfinder HUD theme, grouped panels, live slider value readouts,
+        responsive layout.</li>
+      <li data-i18n="feat_camresilience"><strong>Camera init resilience</strong> &mdash; retries at a lower XCLK before
+        giving up, flashes the RGB pixel red in a distinct triple-blink instead of silently
+        failing, and enables the brownout-detector workaround that shipped commented out in
+        the original sketch.</li>
+      <li data-i18n="feat_lights"><strong>RGB headlight</strong> &mdash; the Lights slider
+        drives D3, the single TX1812DB pixel on GPIO4, over the same 0&ndash;255 range and
+        the same saved setting the car's plain white LED used. It only writes when the level
+        actually changes, because GPIO4 is also the gate of the module's very bright onboard
+        flash LED and a continuous refresh would leave that glowing.</li>
+      <li data-i18n="feat_pir"><strong>Motion sensor (optional, off by default)</strong>
+        &mdash; an HC-SR501 at U2 or J6, reported by <code>/status</code> as
+        <code>"pir"</code>. Off by default because it wants GPIO16, which is also the PSRAM
+        chip-select &mdash; see <a href="#board">The board</a>.</li>
+    </ul>
+    <p data-i18n="feat_more"><span>Full change-by-change writeup:</span> <a href="report.html">report.html</a>.</p>
+  </div>
+
+  <h2><span class="dot"></span><span data-i18n="h_repolayout">Repository layout</span></h2>
+  <div class="panel">
+    <pre><code>firmware/                PlatformIO projects, one per sketch
+  1_blink/                Blink the RGB pixel
+  2_breathing_light/      Fade it up and down
+  3_motor/                Motor test sequence (drives on boot -- give it room!)
+  4_camrobot/             The main project
+    src/
+      4_CamRobot.ino       setup()/loop(), camera + WiFi bring-up, failsafe
+      SetMotor.h           The two MOSFETs, and why there is no reverse
+      lights.h             The RGB pixel that replaced the car's white LED
+      pir.h                The motion sensor, and the GPIO16 argument
+      oled.h               Optional 0x3C screen: self-test, status, face
+      app_server.h         HTTP handlers + the whole control page
+    platformio.ini         Board, libraries, and the PSRAM/PIR choice
+    git_rev.py             Stamps the git revision into the binary
+    ota_flash.sh           Push firmware over WiFi
+Codes/                   Arduino-IDE-style sketch layout (all 4 sketches)
+  4_CamRobot/             Flash this one from the Arduino IDE
+launch.sh                Interactive PlatformIO menu -- pick an app to build/flash/monitor
+README.html               This file
+ports.html                Beginner's step-by-step guide to the port 80 / port 81 servers
+report.html               Port report -- what the hardware forced, and what was verified</code></pre>
+    <p data-i18n="repo_sync"><code>Codes/4_CamRobot</code> and
+    <code>firmware/4_camrobot/src</code> are kept in sync &mdash; same source, two build
+    systems. Edit under <code>firmware/</code>, then copy across. The other three sketches are
+    simple demos included for a complete workshop package, but unlike on the car they are not
+    unmodified: both things they demonstrate moved pins, so <code>1_blink</code> and
+    <code>2_breathing_light</code> drive the RGB pixel and <code>3_motor</code> drives two
+    MOSFETs instead of an I&sup2;C controller.</p>
+  </div>
+
+  <h2 id="oled"><span class="dot"></span><span data-i18n="h_oled">OLED screen (optional)</span></h2>
+  <div class="panel">
+    <p><img src="assets/oled-bus.svg" alt="On this board the screen does not share anything &mdash; the motors are two plain PWM outputs on GPIO 12 and 13, and the screen has GPIO 14 and 15 to itself as an I2C bus"></p>
+
+    <p data-i18n="oled_p1">A 128&times;64 SSD1306 module at <code>0x3C</code> goes on
+    <strong>GPIO 14 (SDA) and GPIO 15 (SCL)</strong>, which on this board belong to nothing
+    else. That is the whole difference from the car this was ported from, where the screen had
+    to share the motor controller's bus and pay for it with a mutex, dropped frames, and a
+    rule against drawing while driving.</p>
+
+    <p data-i18n="oled_p1b">Here the motors are two MOSFET gates driven by
+    <code>ledcWrite()</code> and never touch I&sup2;C at all, so the screen owns the bus. No
+    lock, no contention, and &mdash; unlike the shared-bus robots in this family &mdash; an
+    unplugged screen cannot stall the wires the drive commands go out on. The worst a missing
+    screen does is leave the glass dark.</p>
+
+    <div class="note" data-i18n="oled_note_notrouted"><strong>Neither pin is broken out on the
+    carrier.</strong> The schematic routes GPIO 14 and GPIO 15 from the module to named nets
+    and then to nothing at all, so a screen has to be soldered to the ESP32-CAM's own header.
+    That is why most builds of this robot have no screen, and why the firmware probes at boot
+    and carries on silently when nothing answers.</div>
+
+    <h3 data-i18n="oled_h_wire">Which wire goes where</h3>
+
+    <p><img src="assets/oled-wiring.svg" alt="All four OLED wires go to the ESP32-CAM module itself: SDA to IO14, SCL to IO15, GND to any ground pin, and VCC to the module's 3V3 pin or to 5V from the sensor header"></p>
+
+    <pre><code>OLED pin   Goes to    Where
+VCC        3.3V       ESP32-CAM 3V3 pin -- but read the warning below
+GND        GND        any GND pin on the module, or J3 / J5
+SDA        GPIO 14    ESP32-CAM pin marked IO14
+SCL        GPIO 15    ESP32-CAM pin marked IO15</code></pre>
+
+    <div class="note" data-i18n="oled_p2"><strong>The module's own 3V3 pin is the only 3.3V on
+    this robot.</strong> The carrier leaves that pin unrouted &mdash; there is no expansion
+    block, no regulator of its own, nothing. So unlike on the keyestudio car, where the advice
+    was to take 3.3V from anywhere <em>except</em> the module, here there is nowhere else. That
+    rail is already carrying the camera and the radio, which is why the sketch disables the
+    brownout detector, and another 20mA hung off it is asking for the resets described under
+    Troubleshooting. If your screen module has its own regulator &mdash; many SSD1306 boards
+    accept 3.3&ndash;5V &mdash; feed it 5V from J6 or J3 instead and leave that rail
+    alone.</div>
+
+    <p data-i18n="oled_w8">Some modules print the four pins in a different order, and a few
+    answer at <code>0x3D</code> instead. Read the labels on <strong>your</strong> board, not
+    the picture.</p>
+
+    <p data-i18n="oled_w9">GPIO 14 and GPIO 15 are also two of the six pins the module wires to
+    its microSD slot. That card is unusable here regardless &mdash; GPIO 12, 13 and 4 are
+    already spoken for by the motors and the pixel &mdash; so spending these two on a screen
+    costs nothing that was not already gone.</p>
+
+    <p data-i18n="oled_p3"><strong>Nothing else is required.</strong> The screen is probed at
+    boot; if nothing answers at <code>0x3C</code> the robot prints one line to serial and runs
+    exactly as it would have anyway. <code>/status</code> reports <code>"oled": 0</code> or
+    <code>1</code>.</p>
+
+    <h3 data-i18n="oled_h_shows">What it shows</h3>
+    <ol>
+      <li data-i18n="oled_s1"><strong>Splash</strong> &mdash; the Workshop-DIY logo across the
+        full panel, then <code>CamRobot</code> and the version. Two frames rather than one: at
+        120&times;64 the logo only just stays legible, and cropping it to share the glass with
+        a version string looked like neither.</li>
+      <li data-i18n="oled_s2"><strong>Self-test</strong>, held four seconds: the camera and
+        whether PSRAM was found, whether the motion sensor is fitted and seeing anything, the
+        network it ended on, and the address to type &mdash; the line that used to need a
+        serial cable.</li>
+      <li data-i18n="oled_s2b">The car's version of that screen had a fourth line reporting
+        whether the motor controller answered at <code>0x30</code>. There is no controller left
+        to ask: a MOSFET gate either gets a PWM signal or it does not, and nothing on this side
+        of it can tell whether a motor is even plugged into the screw terminal. Rather than
+        print a reassuring <code>ok</code> that tests nothing, that line went to the
+        sensor.</li>
+      <li data-i18n="oled_s3"><strong>Status</strong>, while nobody is connected &mdash; the
+        address, the network and its link quality, Speed and Trim, uptime.</li>
+      <li data-i18n="oled_s4"><strong>The face</strong>, once a browser opens the control page
+        or the video stream.</li>
+      <li data-i18n="oled_s5"><strong>Idle</strong> &mdash; dims after 30s, drifts the address
+        around the glass after two minutes, and after twenty-five falls asleep: a drifting pair
+        of shut eyes and a rising <code>z</code>. <strong>The panel is never switched
+        off.</strong> A dark screen is indistinguishable from a flat battery, so every stage
+        still shows something &mdash; and everything it shows drifts, because burn-in comes
+        from pixels that never change, not from pixels that are lit.</li>
+    </ol>
+    <p data-i18n="oled_p4">A camera failure gets its own screen naming the error code and what
+    to check, instead of only the triple-flashing pixel.</p>
+
+    <h3 data-i18n="oled_h_bus">What the port removed</h3>
+    <p data-i18n="oled_p5">Worth knowing if you are porting this the other way, or comparing it
+    against the micro:bit robots that wear the same face. On the keyestudio car, motor writes
+    came from the HTTP server's task and the screen was drawn from <code>loop()</code>, both
+    over one bus. Two FreeRTOS tasks using <code>Wire</code> with no interlock interleave their
+    transactions &mdash; the screen receives motor bytes and the driver board receives pixel
+    data, only under load &mdash; so that code carried a mutex around every transaction, with
+    motors waiting indefinitely and the screen not waiting at all.</p>
+    <p data-i18n="oled_p5b">All of that is gone here, because the premise is gone. What was
+    kept is the rule that the face does not redraw while the wheels are turning &mdash; not
+    because a 90ms transfer might now land between a joystick command and the motors (it
+    cannot), but because nobody watches the eyes of a robot that is driving away from
+    them.</p>
+    <p data-i18n="oled_p6">The bus still runs at 100kHz rather than the 400kHz
+    <code>Adafruit_SSD1306</code> would normally switch to. With the bus private that would now
+    be safe, but on a hand-soldered screen it is the wrong place to spend the margin: these are
+    flying leads to module header pins with only the panel module's own pull-ups.
+    <code>OLED_I2C_HZ</code> in <code>oled.h</code> is the knob if your wiring is short.</p>
+  </div>
+
+  <h2 id="build-systems"><span class="dot"></span><span data-i18n="h_buildsystems">Build systems</span></h2>
+
+  <div class="panel">
+    <h3 data-i18n="h3_pio">PlatformIO (firmware/)</h3>
+    <p data-i18n="pio_p1">Each sketch is its own PlatformIO project under <code>firmware/&lt;name&gt;/</code>,
+    all targeting <code>env:esp32cam</code> (AI-Thinker pinout) since it's the same
+    physical board for all four:</p>
+    <table>
+      <tr><th data-i18n="th_app">App</th><th data-i18n="th_notes">Notes</th></tr>
+      <tr><td class="mono"><code>1_blink</code></td><td data-i18n="app_blink">Blinks the RGB pixel. Needs the NeoPixel library even though it is otherwise trivial &mdash; this board has no plain LED to toggle.</td></tr>
+      <tr><td class="mono"><code>2_breathing_light</code></td><td data-i18n="app_breathing">Fades the same pixel. An addressable LED has no analog input to write, so the fade scales the colour instead.</td></tr>
+      <tr><td class="mono"><code>3_motor</code></td><td data-i18n="app_motor">Runs its drive sequence immediately on boot/reset &mdash; <strong>give the robot room to move</strong> before flashing or resetting it. It only ever drives forward, so that means room in front of it.</td></tr>
+      <tr><td class="mono"><code>4_camrobot</code></td><td data-i18n="app_camrobot">The main project &mdash; see the table below for why its <code>platformio.ini</code> has extra settings the other three don't need.</td></tr>
+    </table>
+
+    <p style="margin-top:18px;"><code>firmware/4_camrobot/platformio.ini</code>:</p>
+    <table>
+      <tr><th data-i18n="th_setting">Setting</th><th data-i18n="th_value">Value</th><th data-i18n="th_why">Why</th></tr>
+      <tr>
+        <td><code>default_envs</code></td>
+        <td><code>esp32cam</code></td>
+        <td data-i18n="ini_defaultenvs">Three environments are defined &mdash; the normal build,
+        <code>esp32cam-ota</code> for network pushes, and <code>esp32cam-pir</code> for the
+        motion-sensor variant. Without this, a bare <code>pio run -t upload</code> would walk all
+        three and try to flash the robot over USB, then over the network with no address, then
+        again with the sensor build. The other two are reached with <code>-e</code>.</td>
+      </tr>
+      <tr>
+        <td><code>platform</code></td>
+        <td><code>espressif32@6.5.0</code></td>
+        <td data-i18n="ini_platform">Pinned, not left on "latest" &mdash; an unpinned platform can silently pull a
+        different <code>esp32-camera</code> driver version than what Arduino IDE has
+        installed, which changes camera sensor-probe behavior. <code>6.5.0</code>
+        (arduino-esp32 2.0.14) is the version this project is confirmed working against.
+        The other three apps are pinned to the same version too, for consistency, even
+        though they're too simple to be sensitive to it.</td>
+      </tr>
+      <tr>
+        <td><code>board_build.partitions</code></td>
+        <td><code>min_spiffs.csv</code></td>
+        <td data-i18n="ini_partitions">Needs two OTA app slots for firmware updates (see <a href="#ota">OTA &amp; WiFi setup</a> below),
+        which <code>huge_app.csv</code> doesn't have at all. <code>min_spiffs.csv</code> gives two
+        ~1.9MB slots instead of one 3MB slot &mdash; the firmware is currently about 1.2MB (62%),
+        comfortably under that, but it's a harder ceiling on future growth than before.</td>
+      </tr>
+      <tr>
+        <td><code>build_flags</code></td>
+        <td><code>-DBOARD_HAS_PSRAM</code>,<br><code>-mfix-esp32-psram-cache-issue</code></td>
+        <td data-i18n="ini_buildflags">Arduino IDE's <code>Tools &gt; PSRAM: Enabled</code> menu sets these behind
+        the scenes. Under PlatformIO the <code>esp32cam</code> board definition already carries
+        <strong>both</strong> in its own <code>extra_flags</code> &mdash; they are repeated here
+        only so they are visible where somebody will look for them. <strong>That is also why
+        turning PSRAM off needs <code>-UBOARD_HAS_PSRAM</code> rather than deleting a line</strong>
+        &mdash; see <a href="#board">The board</a>. Getting these wrong is the classic cause of
+        "works in Arduino IDE, camera fails in PlatformIO"
+        (<code>Camera init failed with error 0x106</code>).</td>
+      </tr>
+      <tr>
+        <td><code>upload_speed</code></td>
+        <td><code>460800</code></td>
+        <td data-i18n="ini_uploadspeed">Safer default than 921600 for a board flashed through a bare FTDI adapter
+        with no auto-reset circuit &mdash; which this one always is, since J3 carries only 5V, RX,
+        TX and GND.</td>
+      </tr>
+      <tr>
+        <td><code>lib_deps</code></td>
+        <td><code>tzapu/WiFiManager</code>,<br><code>adafruit/Adafruit NeoPixel</code>,<br><code>adafruit/Adafruit SSD1306</code>,<br><code>adafruit/Adafruit GFX Library</code></td>
+        <td data-i18n="ini_libdeps"><code>WiFiManager</code> backs the web-triggered WiFi setup captive portal
+        (see <a href="#ota">OTA &amp; WiFi setup</a> below). <code>Adafruit NeoPixel</code> drives the
+        RGB pixel and is not optional &mdash; it is the only light on the robot, and both the ready
+        flash and the camera-fault pattern use it. <code>Adafruit SSD1306</code> and
+        <code>Adafruit GFX</code> back the optional screen; the sketch runs with no screen attached
+        but does not build without the libraries. Arduino IDE users install all four via Library
+        Manager.</td>
+      </tr>
+    </table>
+
+    <p style="margin-top:18px;"><code>launch.sh</code> <span data-i18n="menu_label">menu</span>:</p>
+    <pre><code data-i18n="launch_menu">0) Select app               6) Serial monitor
+1) Check installation       7) List serial ports
+2) Install PlatformIO       8) Clean build
+3) Build firmware           9) Flash over WiFi (OTA)
+4) Flash firmware           e) Build a specific environment
+5) Build + Flash + Monitor</code></pre>
+    <p data-i18n="launch_p"><span>It prompts for which app to work with on startup (auto-discovers any</span>
+    <code>firmware/&lt;name&gt;/platformio.ini</code>), and option 0 switches apps at any
+    time without restarting the script. Option 4 (Flash) prints this board's flashing
+    procedure rather than the car's: there is no BOOT button to hold, so it is jumper GPIO0 to
+    GND, tap RESET, upload, then remove the jumper and reset again &mdash; plus an extra
+    warning for <code>3_motor</code> about giving the robot room to move. Options 9 and
+    <code>e</code> are new here: OTA is the way you will actually update a board with no
+    auto-reset, and <code>e</code> reaches the environments <code>default_envs</code>
+    deliberately hides.</p>
+    <div class="note" data-i18n="clean_note">If you change a <code>platformio.ini</code> (e.g. re-pinning the
+    platform version or switching the PSRAM flags), run option 8 (Clean) before rebuilding so a
+    stale <code>.pio/</code> cache doesn't mask the change.</div>
+
+    <h3 data-i18n="h3_arduino">Arduino IDE (Codes/4_CamRobot/)</h3>
+    <p data-i18n="arduino_p">Standard Arduino IDE flow. Make sure <code>Tools &gt; PSRAM</code> is set to
+    <code>Enabled</code>, <code>Tools &gt; Partition Scheme</code> is set to
+    <strong>"Minimal SPIFFS (1.9MB APP with OTA)"</strong> (needed for OTA updates &mdash; see
+    <a href="#ota">OTA &amp; WiFi setup</a> below), and that <strong>WiFiManager</strong> (tzapu),
+    <strong>Adafruit NeoPixel</strong>, <strong>Adafruit SSD1306</strong> and <strong>Adafruit
+    GFX</strong> are installed via <code>Tools &gt; Manage Libraries</code>. Builds from here always
+    report <code>nogit</code> in the build stamp &mdash; the Arduino IDE has no pre-build hook to
+    stamp a revision with.</p>
+  </div>
+
+  <h2 id="ota"><span class="dot"></span><span data-i18n="h_ota">OTA &amp; WiFi setup</span></h2>
+  <div class="panel">
+    <p data-i18n="ota_p1">Two independent ways to update firmware over WiFi, plus an opt-in way to join a
+    home network instead of the car's own AP &mdash; none of this changes the default
+    out-of-the-box experience (<code>wdiy1</code> AP, USB flashing) unless you use it.</p>
+
+    <h3 data-i18n="ota_h_browser">Browser upload</h3>
+    <p data-i18n="ota_p2">The control page's collapsible <strong>Firmware / Network</strong> panel has a file
+    picker: choose a <code>firmware.bin</code> built for this board and press
+    <strong>Upload &amp; flash</strong>. The car reboots automatically once the upload finishes.
+    Works whether the car is on its own AP or a joined router.</p>
+
+    <h3 data-i18n="ota_h_espota">PlatformIO / espota</h3>
+    <p data-i18n="ota_p3">For anyone with PlatformIO installed:</p>
+    <pre><code>firmware/4_camrobot/ota_flash.sh &lt;robot-ip&gt; [path/to/firmware.bin]</code></pre>
+    <p data-i18n="ota_p4">No image path given rebuilds from source and pushes it; a path given (e.g. a
+    previously built <code>.pio/build/esp32cam/firmware.bin</code>) uploads that exact binary with no
+    rebuild. Default IP on the car's own AP is <code>192.168.4.1</code>; on a router, read the IP
+    off the serial monitor.</p>
+
+    <h3 data-i18n="ota_h_wifisetup">WiFi setup portal</h3>
+    <p data-i18n="ota_p5">The same Firmware / Network panel has a <strong>WiFi setup&hellip;</strong> button. It reboots
+    the car into a WiFiManager captive portal on a separate <code>CamRobot-Setup</code> network
+    &mdash; join it within 3 minutes, pick your home WiFi from the list it shows, and enter its
+    password. On success the car saves it and reboots into that network; on failure or timeout
+    it reboots back into whatever mode it was using before, so the car never gets stuck
+    unreachable.</p>
+    <div class="note" data-i18n="ota_note">This is a genuinely disruptive flow: the car can't drive while the portal is open,
+    and you'll join two different WiFi networks in sequence (the car's, then
+    <code>CamRobot-Setup</code>, then your home network). Same caveat as the rest of this
+    control surface: the <code>/update</code> and <code>/wifi-setup</code> endpoints have no
+    authentication &mdash; see <a href="report.html">report.html</a>.</div>
+  </div>
+
+  <h2 id="troubleshooting"><span class="dot"></span><span data-i18n="h_troubleshooting">Troubleshooting</span></h2>
+  <div class="panel">
+    <p data-i18n="ts_intro"><span>Board-specific problems come first. Everything after them is
+    inherited from</span> <a href="https://github.com/abourdim/video-car">VideoCar</a>
+    <span>and behaves the same way here.</span></p>
+
+    <h3 data-i18n="ts_hA">The wheels do nothing</h3>
+    <p data-i18n="ts_pA">Check that <code>VCC</code> actually has a battery on it.
+    <code>+5V</code> from USB-C runs the ESP32, but the motor rail is separate &mdash; a robot
+    on USB alone boots, streams video, and cannot move. J4 bridges the two if that is what you
+    want. If the rail is live and the wheels still do nothing, the failsafe may simply be doing
+    its job: a single <code>curl</code> produces half a second of movement and no more.</p>
+
+    <h3 data-i18n="ts_hB">It turns the wrong way</h3>
+    <p data-i18n="ts_pB">M1 (J1) is the right wheel and M2 (J2) is the left. Nothing on the
+    silkscreen says so. Swap the two plugs rather than editing the firmware &mdash; the mixing
+    convention runs through <code>app_server.h</code> in several places and correcting it in
+    software means correcting it in all of them.</p>
+
+    <h3 data-i18n="ts_hC">It will not go straight</h3>
+    <p data-i18n="ts_pC">Two bare MOSFETs driving two unmatched motors off one rail is about as
+    open-loop as a robot gets. That is what the <strong>Trim</strong> slider is for, and it is
+    saved to NVS so you only dial it in once.</p>
+
+    <h3 data-i18n="ts_hD">It does not boot, or boots into flash mode</h3>
+    <p data-i18n="ts_pD">GPIO12 is MTDI, which the ESP32 samples at reset to choose its flash
+    voltage, and it must be low at that moment. R2's pulldown handles it &mdash; but anything
+    else attached to J2 that pulls the gate up will stop the module booting. This is also why
+    nothing should drive GPIO12 before <code>motor_init()</code> runs.</p>
+
+    <h3 data-i18n="ts_hE">Colours on the RGB pixel are wrong</h3>
+    <p data-i18n="ts_pE">Change <code>NEO_GRB</code> to <code>NEO_RGB</code> in
+    <code>src/lights.h</code>. Nothing else in the firmware cares, because everything else only
+    ever asks for white or for the fault red.</p>
+
+    <h3 data-i18n="ts_hF">The onboard flash LED flickers</h3>
+    <p data-i18n="ts_pF">Expected in short bursts: GPIO4 is both the pixel's data line and the
+    gate of that LED, so every pixel update puts about 30&nbsp;&micro;s of traffic on it. A
+    steady glow rather than a blink means something is refreshing the pixel continuously
+    &mdash; <code>lightsSet()</code> exists to prevent exactly that, so check nothing bypasses
+    its change guard.</p>
+
+    <h3 data-i18n="ts_hG">Motion is reported constantly</h3>
+    <p data-i18n="ts_pG">You have built with PSRAM and <code>USE_PIR</code> both enabled, and
+    GPIO16 is reporting cache traffic rather than a person. The <code>#error</code> in
+    <code>pir.h</code> is meant to make that impossible; if you got past it, see
+    <a href="#board">The board</a>. Also check <code>/status</code>: <code>"pir":-1</code>
+    means the sensor is not compiled in at all, which is the default.</p>
+
+    <h3 data-i18n="ts_h1">Camera init failed with error 0x106 (only under PlatformIO, works fine in Arduino IDE)</h3>
+    <p data-i18n="ts_p1">This is <code>ESP_ERR_NOT_SUPPORTED</code> from the camera sensor probe. If the
+    same board works in Arduino IDE, it's a toolchain/build-flag mismatch, not hardware
+    &mdash; see the PSRAM/platform-pinning notes above. This project's
+    <code>platformio.ini</code> is already configured to avoid it; if you still hit it,
+    run <code>./launch.sh</code> option 8 (Clean) to clear any stale build cache, and
+    confirm your Arduino IDE's installed <code>esp32</code> core version
+    (<code>Tools &gt; Board &gt; Boards Manager</code>) roughly matches the pinned
+    PlatformIO platform version &mdash; if it's wildly different, re-pin
+    <code>platform = espressif32@X.Y.Z</code> to match.</p>
+
+    <h3 data-i18n="ts_h2">Repeated resets right after a camera error</h3>
+    <p data-i18n="ts_p2">Usually a marginal power supply &mdash; camera + WiFi init draws a current spike
+    many FTDI adapters can't supply cleanly. Use a proper 5V/2A source. The sketch
+    already enables the brownout-detector workaround, which will surface this as a clean
+    retry/error message instead of a silent reboot loop, but it doesn't fix underlying
+    undervoltage.</p>
+
+    <h3 data-i18n="ts_h10">The OLED screen stays blank</h3>
+    <p data-i18n="ts_p10">First: most robots do not have one, and that is normal &mdash; the
+    two pins are not broken out on the carrier. If you did fit one, check <code>/status</code>.
+    <code>"oled": 0</code> means nothing answered at <code>0x3C</code> when the robot booted, so
+    it is a wiring or address problem, not a firmware one. Most of these modules are
+    <code>0x3C</code>; a few are <code>0x3D</code> (some have a solder jumper to pick). Swapped
+    SDA/SCL is the other usual cause: <strong>SDA is GPIO 14, SCL is GPIO 15</strong> &mdash;
+    note that this differs from the keyestudio car, where SCL was GPIO 13, which is a motor
+    here. <code>"oled": 1</code> with a genuinely blank panel is a wiring or power fault: check
+    the 3.3V feed first, and read the power warning in the OLED section before you take it from
+    the module's own rail.</p>
+
+    <h3 data-i18n="ts_h11">The screen works but nothing else does</h3>
+    <p data-i18n="ts_p11">On the keyestudio car this symptom meant the OLED library had
+    re-initialised the bus onto its own default pins and taken the motors with it. That cannot
+    happen here &mdash; the motors are not on a bus. What <code>periphBegin = false</code> in
+    <code>oledInit()</code> still protects is the screen itself: left true,
+    <code>begin()</code> calls <code>Wire.begin()</code> a second time on the default pins and
+    moves the bus off the two wires you soldered to.</p>
+
+    <h3 data-i18n="ts_h3">The robot doesn't stop when you close the browser tab / lose WiFi</h3>
+    <p data-i18n="ts_p3">Shouldn't happen &mdash; the firmware failsafe stops the motors after 500ms
+    without a command. If you're seeing otherwise, check the build stamp in the control page
+    footer. Note that zero PWM on this chassis is a coast rather than a brake: the MOSFET stops
+    conducting and the motor freewheels, so the robot always rolls a little past the point where
+    the command stopped.</p>
+
+    <h3 data-i18n="ts_h4">A Vision feature says it can't load, on the car's own WiFi</h3>
+    <p data-i18n="ts_p4">Expected the first time. The models come from a CDN and the car's AP has no
+    internet. Join a router, turn the feature on once so its files land in the offline
+    cache (the Offline panel shows the count and size), then go back to the car's AP
+    &mdash; it'll work from then on. Plates is the exception: Tesseract.js loads from
+    inside a Web Worker the cache can't intercept, so it stays internet-only.</p>
+
+    <h3 data-i18n="ts_h5">The video feed dies when a Vision or autonomy feature starts</h3>
+    <p data-i18n="ts_p5">The stream is fetched with <code>crossorigin="anonymous"</code> so the page can
+    read frames from it, which requires the CORS header the firmware sets on port 81. If
+    those ever disagree the browser refuses the image outright. The page detects this and
+    reconnects without CORS after two failures, falling back to <code>/capture</code>
+    polling, so it should self-heal within a couple of seconds &mdash; if it doesn't,
+    compare the commit in the footer's build stamp against <code>git log --oneline</code>
+    and reflash if they disagree.</p>
+
+    <h3 data-i18n="ts_h6">Line follower doesn't move at all</h3>
+    <p data-i18n="ts_p6">Put the Speed slider at maximum. It multiplies with the mode's own cap, and
+    <code>LINE_SPEED</code> is deliberately low (26), so a reduced slider can leave the
+    motors below their stiction floor. If it still won't move, raise
+    <code>LINE_SPEED</code> in <code>app_server.h</code>.</p>
+
+    <h3 data-i18n="ts_h7">Line follower weaves or loses the line</h3>
+    <p data-i18n="ts_p7">Lower <code>LINE_KP</code>, don't raise it. The loop is limited by round-trip
+    latency rather than by gain, and more gain makes a delay-dominated loop worse. If it
+    misses corners instead, raise <code>LINE_TURN_CUT</code> so it slows more while
+    steering. If it reports &ldquo;looking for a line&rdquo; over a real line, the
+    contrast is too low &mdash; use wider, darker tape before touching
+    <code>LINE_MIN_CONTRAST</code>.</p>
+    <p data-i18n="ts_p7b">All of these numbers were tuned on a chassis that could spin on the
+    spot. A forward pivot has a much larger turning radius, so expect to retune rather than to
+    trust them &mdash; and lay out a course with correspondingly gentler corners.</p>
+
+    <h3 data-i18n="ts_h8">An autonomous mode won't stay armed</h3>
+    <p data-i18n="ts_p8">Any manual input disarms it by design, as does hiding the browser tab, and losing
+    the target stops the car after 0.7s and disarms after 3s. All three are
+    intentional.</p>
+
+    <h3 data-i18n="ts_h9">No authentication on the control endpoints</h3>
+    <p data-i18n="ts_p9"><span>Known, unaddressed limitation carried over from the original sketch &mdash; see</span>
+    <a href="report.html">report.html</a> for details. Anyone on the <code>wdiy1</code>
+    WiFi network (default password <code>88888888</code>) can drive the robot and watch the
+    camera.</p>
+  </div>
+
+  <h2><span class="dot"></span><span data-i18n="h_githistory">Git history</span></h2>
+  <div class="panel">
+    <pre><code>git log --oneline</code></pre>
+    <p data-i18n="git_p">This repository's history starts at the port; it is not a
+    continuation of VideoCar's, so there is no single diff that shows what changed. That is what
+    <a href="report.html">report.html</a> is for.</p>
+  </div>
+
+  <footer>
+    <img src="assets/workshop-diy-logo.svg" alt="Workshop-DIY" width="132"
+         style="display:block;margin:0 0 14px;opacity:.75;">
+    <span data-i18n="footer_note">Rendered from <code>README.md</code> at the repo root &mdash; that file is the
+    source of truth; this is a formatted copy for easier reading in a browser. Hardware claims
+    on this page come from the KiCad netlist, not from the module's datasheet.</span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  var I18N = {
+    fr: {
+      qs_flashnote: "<strong>&#9888; Flasher cette carte demande deux mains.</strong> J3 est un simple connecteur FTDI 4 broches &mdash; 5V, RX, TX, GND &mdash; sans circuit de réinitialisation automatique, et GPIO0 n'est relié à aucun bouton. Reliez GPIO0 à GND sur le module, appuyez sur reset, lancez le téléversement, puis retirez le cavalier et refaites un reset. Une fois cela fait, utilisez l'<a href=\"#ota\">OTA</a> ensuite.",
+      h_board: "La carte",
+      board_norev_t: "<strong>&#9888; Ce robot n'a pas de marche arrière.</strong>",
+      board_norev_p1: "Chaque moteur est commuté par un unique MOSFET côté bas (Q1/Q2, 2N7002) dont la grille est reliée à une broche GPIO. Cela fait un seul degré de liberté par moteur &mdash; la force avec laquelle il est entraîné &mdash; et aucun pont en H, donc aucun moyen de faire tourner une roue en arrière.",
+      board_norev_p2: "Tout le reste en hérite. <strong>Avant</strong> et <strong>Stop</strong> fonctionnent comme avant. <strong>Gauche</strong> et <strong>Droite</strong> deviennent un pivot vers l'avant autour de la roue non entraînée plutôt qu'une rotation sur place : le robot décrit un arc bien plus large et a besoin de place devant lui. Le bouton <strong>Arrière</strong> a disparu du pavé directionnel, remplacé par <strong>Stop</strong>. La moitié arrière du joystick est ramenée à zéro. Follow-me et la poursuite de couleur ne peuvent plus reculer devant une cible qui s'approche trop : ils s'arrêtent et attendent. Rien de tout cela n'est un bogue à corriger dans le logiciel ; c'est un pont en H manquant.",
+      board_p1: "Tout ce qui suit a été lu dans <code>esp32_cam_plugin_robot.kicad_sch</code> et <code>.kicad_pcb</code>, et non supposé d'après le module.",
+      th_gpio: "GPIO",
+      th_goesto: "Va vers",
+      th_notes2: "Remarques",
+      th_camera: "Caméra",
+      th_sensor: "Capteur de mouvement",
+      pin13_to: "Bornier à vis J1, grille de Q1",
+      pin13_note: "Moteur <strong>M1 = roue droite</strong>. PWM, marche avant uniquement. Résistance de rappel R1 10k, diode de roue libre D1 1N4007.",
+      pin12_to: "Bornier à vis J2, grille de Q2",
+      pin12_note: "Moteur <strong>M2 = roue gauche</strong>. Idem. <strong>Également MTDI</strong>, la broche de sélection de tension de la flash &mdash; le rappel de R2 est la seule raison pour laquelle cette broche est utilisable en sortie.",
+      pin4_to: "D3, pixel RVB TX1812DB",
+      pin4_note: "Le curseur Lumières. Un seul pixel, DOUT non connecté. C'est aussi la grille de la LED flash intégrée du module.",
+      pin16_to: "Capteur de mouvement U2 / J6, via Q3",
+      pin16_note: "<strong>Inversé</strong> (le mouvement se lit à l'état bas) et <strong>sans rappel sur la carte</strong> (nécessite <code>INPUT_PULLUP</code>). C'est aussi la sélection de puce de la PSRAM &mdash; voir plus bas.",
+      pin13a_to: "Connecteur FTDI J3",
+      pin13a_note: "U0TXD / U0RXD. Pas de réinitialisation automatique.",
+      pinfree_to: "rien",
+      pinfree_note: "Routées du module vers des nets nommés, et pas plus loin. 14 et 15 sont l'emplacement d'un écran OLED optionnel.",
+      pin0_to: "rien",
+      pin0_note: "Non sortie, donc le mode flash se fait avec un cavalier posé à la main.",
+      board_power: "<strong>Alimentation.</strong> J7 est une prise USB-C câblée pour l'alimentation seule &mdash; CC1/CC2 ne sont pas montées, donc elle accepte du 5V depuis un câble A vers C ou une alimentation simple, mais pas depuis un chargeur qui attend une négociation. <code>+5V</code> alimente le module, le pixel et le capteur. <code>VCC</code> est le rail moteur séparé : J5 est l'entrée batterie, et J4 est un cavalier 2 broches qui relie <code>VCC</code> à <code>+5V</code> si vous voulez tout alimenter depuis une seule source. Un robot branché seulement en USB démarre, diffuse la vidéo, et ne peut pas bouger.",
+      board_sd: "<strong>La carte microSD est inutilisable.</strong> Les broches GPIO 2, 4, 12, 13, 14 et 15 sont celles du lecteur SD du module, et cette carte en consacre 12, 13 et 4 aux moteurs et au pixel. Il n'y a rien à corriger : il ne reste plus aucune broche pour le lecteur.",
+      board_h_psram: "Le seul choix imposé par cette carte : PSRAM ou capteur de mouvement",
+      board_psram1: "GPIO16 est la sélection de puce de la PSRAM sur un module AI-Thinker, et la carte porteuse y raccorde le capteur de mouvement. Les deux ne peuvent pas l'avoir, le choix se fait donc à la compilation.",
+      psram_a1: "PSRAM, deux tampons QVGA",
+      psram_a2: "non compilé ; <code>/status</code> renvoie <code>\"pir\":-1</code>",
+      psram_b1: "un seul tampon en DRAM, QVGA devient un plafond strict",
+      psram_b2: "fonctionne ; <code>/status</code> renvoie 0 ou 1",
+      board_psram2: "La vidéo est la raison d'être de ce robot, donc la PSRAM l'emporte par défaut. Les deux environnements se compilent, aucun des deux chemins ne pourrit :",
+      board_psram3: "<strong>Supprimer <code>-DBOARD_HAS_PSRAM</code> de <code>build_flags</code> ne suffit pas.</strong> La définition de carte <code>esp32cam</code> de PlatformIO le définit aussi, dans ses propres <code>extra_flags</code>, et <code>build_flags</code> ne peut pas retirer ce que <code>extra_flags</code> a ajouté &mdash; il faut l'annuler avec <code>-UBOARD_HAS_PSRAM</code>. <code>src/pir.h</code> contient un <code>#error</code> qui se déclenche si le changement n'est fait qu'à moitié, car une compilation qui garderait la PSRAM tout en lisant GPIO16 signalerait un mouvement à chaque défaut de cache.",
+      feat_camresilience: "<strong>Robustesse de l'initialisation caméra</strong> &mdash; réessaie à une fréquence XCLK plus basse avant d'abandonner, fait clignoter le pixel RVB en rouge selon un triple clignotement distinctif au lieu d'échouer en silence, et active le contournement du détecteur de brownout livré commenté dans le sketch d'origine.",
+      feat_lights: "<strong>Phare RVB</strong> &mdash; le curseur Lumières pilote D3, l'unique pixel TX1812DB sur GPIO4, sur la même plage 0&ndash;255 et avec le même réglage mémorisé que la LED blanche de la voiture. Il n'écrit que lorsque le niveau change réellement, car GPIO4 est aussi la grille de la LED flash intégrée, très lumineuse, qu'un rafraîchissement continu laisserait allumée.",
+      feat_pir: "<strong>Capteur de mouvement (optionnel, désactivé par défaut)</strong> &mdash; un HC-SR501 en U2 ou J6, rapporté par <code>/status</code> sous <code>\"pir\"</code>. Désactivé par défaut parce qu'il veut GPIO16, qui est aussi la sélection de puce de la PSRAM &mdash; voir <a href=\"#board\">La carte</a>.",
+      oled_p1b: "Ici les moteurs sont deux grilles de MOSFET pilotées par <code>ledcWrite()</code> et ne touchent jamais à l'I&sup2;C, donc l'écran possède le bus. Pas de verrou, pas de contention, et &mdash; contrairement aux robots à bus partagé de cette famille &mdash; un écran débranché ne peut pas bloquer les fils par lesquels partent les commandes de conduite. Le pire qu'un écran absent puisse faire, c'est laisser la vitre éteinte.",
+      oled_note_notrouted: "<strong>Aucune des deux broches n'est sortie sur la carte porteuse.</strong> Le schéma route GPIO 14 et GPIO 15 depuis le module vers des nets nommés puis vers rien du tout, donc un écran doit être soudé sur le connecteur du module ESP32-CAM lui-même. C'est pourquoi la plupart des exemplaires de ce robot n'ont pas d'écran, et pourquoi le firmware sonde au démarrage et continue en silence quand rien ne répond.",
+      oled_w9: "GPIO 14 et GPIO 15 sont aussi deux des six broches que le module câble à son lecteur microSD. Cette carte est de toute façon inutilisable ici &mdash; GPIO 12, 13 et 4 sont déjà pris par les moteurs et le pixel &mdash; donc y consacrer ces deux broches ne coûte rien qui ne soit déjà perdu.",
+      oled_s2b: "La version de cet écran sur la voiture avait une quatrième ligne indiquant si le contrôleur moteur répondait à <code>0x30</code>. Il ne reste plus de contrôleur à interroger : une grille de MOSFET reçoit un signal PWM ou n'en reçoit pas, et rien de ce côté-ci ne peut savoir si un moteur est seulement branché au bornier. Plutôt que d'afficher un <code>ok</code> rassurant qui ne teste rien, cette ligne est allée au capteur.",
+      oled_p5b: "Tout cela a disparu ici, parce que la prémisse a disparu. Ce qui a été gardé, c'est la règle selon laquelle le visage ne se redessine pas pendant que les roues tournent &mdash; non parce qu'un transfert de 90ms risquerait maintenant de tomber entre une commande de joystick et les moteurs (c'est impossible), mais parce que personne ne regarde les yeux d'un robot qui s'éloigne.",
+      app_camrobot: "Le projet principal &mdash; voir le tableau ci-dessous pour comprendre pourquoi son <code>platformio.ini</code> a des réglages supplémentaires dont les trois autres n'ont pas besoin.",
+      ini_defaultenvs: "Trois environnements sont définis &mdash; la compilation normale, <code>esp32cam-ota</code> pour les envois par le réseau, et <code>esp32cam-pir</code> pour la variante avec capteur de mouvement. Sans ce réglage, un simple <code>pio run -t upload</code> les parcourrait tous les trois et tenterait de flasher le robot par USB, puis par le réseau sans adresse, puis encore avec la version capteur. Les deux autres s'atteignent avec <code>-e</code>.",
+      ts_hA: "Les roues ne font rien",
+      ts_pA: "Vérifiez qu'une batterie est bien présente sur <code>VCC</code>. Le <code>+5V</code> de l'USB-C alimente l'ESP32, mais le rail moteur est séparé &mdash; un robot branché seulement en USB démarre, diffuse la vidéo, et ne peut pas bouger. J4 relie les deux si c'est ce que vous voulez. Si le rail est bien alimenté et que les roues ne bougent toujours pas, le failsafe fait peut-être simplement son travail : un seul <code>curl</code> produit une demi-seconde de mouvement, pas plus.",
+      ts_hB: "Il tourne du mauvais côté",
+      ts_pB: "M1 (J1) est la roue droite et M2 (J2) la gauche. Rien sur la sérigraphie ne le dit. Intervertissez les deux fiches plutôt que de modifier le firmware &mdash; la convention de mixage traverse <code>app_server.h</code> en plusieurs endroits, et la corriger dans le logiciel veut dire la corriger partout.",
+      ts_hC: "Il ne roule pas droit",
+      ts_pC: "Deux MOSFET nus pilotant deux moteurs mal appariés depuis un même rail, c'est à peu près aussi ouvert qu'une boucle puisse l'être. C'est à cela que sert le curseur <strong>Trim</strong>, et il est enregistré en NVS pour n'avoir à le régler qu'une fois.",
+      ts_hD: "Il ne démarre pas, ou démarre en mode flash",
+      ts_pD: "GPIO12 est MTDI, que l'ESP32 échantillonne au reset pour choisir la tension de sa flash, et il doit être à l'état bas à cet instant. Le rappel de R2 s'en charge &mdash; mais tout ce que vous branchez d'autre sur J2 et qui tire la grille vers le haut empêchera le module de démarrer. C'est aussi pourquoi rien ne doit piloter GPIO12 avant l'exécution de <code>motor_init()</code>.",
+      ts_hE: "Les couleurs du pixel RVB sont fausses",
+      ts_pE: "Remplacez <code>NEO_GRB</code> par <code>NEO_RGB</code> dans <code>src/lights.h</code>. Rien d'autre dans le firmware ne s'en soucie, puisque tout le reste ne demande jamais que du blanc ou le rouge de panne.",
+      ts_hF: "La LED flash intégrée scintille",
+      ts_pF: "Normal par brèves impulsions : GPIO4 est à la fois la ligne de données du pixel et la grille de cette LED, donc chaque mise à jour du pixel y dépose environ 30&nbsp;&micro;s de trafic. Une lueur continue plutôt qu'un clignotement signifie que quelque chose rafraîchit le pixel en boucle &mdash; <code>lightsSet()</code> existe précisément pour l'empêcher, vérifiez donc que rien ne contourne son garde-fou.",
+      ts_hG: "Le mouvement est signalé en permanence",
+      ts_pG: "Vous avez compilé avec la PSRAM et <code>USE_PIR</code> activés tous les deux, et GPIO16 rapporte du trafic de cache plutôt qu'une personne. Le <code>#error</code> de <code>pir.h</code> est censé rendre cela impossible ; si vous l'avez contourné, voir <a href=\"#board\">La carte</a>. Vérifiez aussi <code>/status</code> : <code>\"pir\":-1</code> signifie que le capteur n'est pas compilé du tout, ce qui est le réglage par défaut.",
+      ts_p7b: "Tous ces nombres ont été réglés sur un châssis capable de tourner sur place. Un pivot vers l'avant a un rayon de braquage bien plus grand : attendez-vous à devoir refaire les réglages plutôt qu'à leur faire confiance &mdash; et tracez un parcours aux virages d'autant plus larges.",
+      tagline: "Firmware et page de contrôle web pour le robot enfichable WDIY ESP32-CAM &mdash; un module AI-Thinker ESP32-CAM enfiché sur la carte porteuse <code>esp32_cam_plugin_robot</code> (WORKSHOP-DIY ID_04). Porté depuis VideoCar, qui fait le même travail sur le châssis keyestudio KS5017 : toute l'application web est reprise, et tout ce qui touche à une broche a dû changer.",
+      h_quickstart: "Démarrage rapide",
+      qs_p1: "<strong>Arduino IDE</strong> (base de référence fiable) : ouvrez <code>Codes/4_CamRobot/4_CamRobot.ino</code>, sélectionnez la carte AI-Thinker ESP32-CAM, réglez <code>Tools &gt; Partition Scheme</code> sur <strong>Minimal SPIFFS (1.9MB APP with OTA)</strong>, activez <code>Tools &gt; PSRAM: Enabled</code>, puis installez <strong>Adafruit NeoPixel</strong>, <strong>Adafruit SSD1306</strong> et <strong>Adafruit GFX</strong> depuis <code>Tools &gt; Manage Libraries</code>.",
+      qs_p2: "<strong>PlatformIO</strong> :",
+      qs_p3: "Vous guide dans la vérification/installation de PlatformIO, la compilation, le flashage et l'ouverture d'un moniteur série. Voir <a href=\"#build-systems\">Systèmes de build</a> ci-dessous pour le détail de chaque option du menu.",
+      qs_p4: "Une fois flashé, connectez-vous au réseau WiFi <code>wdiy1</code> (mot de passe <code>88888888</code>) et ouvrez <code>http://192.168.4.1</code> dans un navigateur.",
+      qs_note1: "<strong>&#128218; Nouveau ici, ou vous voulez piloter le robot depuis vos propres scripts ?</strong> <a href=\"ports.html\">ports.html</a> est un guide pas à pas des deux serveurs &mdash; ce que font les ports 80 et 81, pourquoi il y en a deux, chaque endpoint avec ses plages de valeurs, et le failsafe de 500ms qui surprend tout le monde la première fois qu'on essaie de piloter le robot avec <code>curl</code>.",
+      qs_note2_t: "<strong>&#9888; Les fonctions Vision ont besoin d'internet &mdash; le mode point d'accès par défaut n'en a pas.</strong>",
+      qs_note2_p1: "Par défaut (<code>ap = 1</code>) le robot héberge son propre réseau isolé <code>wdiy1</code>, qui n'est connecté à rien. <strong>Pose, suivi des mains, expression faciale, plaques, AI Vision, et le repli jsQR téléchargent tous leurs modèles depuis un CDN la première fois qu'on les active, donc sur le point d'accès du robot ils échoueront au démarrage.</strong> La conduite, le flux vidéo, les captures et l'enregistrement fonctionnent bien là-dessus &mdash; seules les superpositions basées sur des modèles ne fonctionnent pas.",
+      qs_note2_p2: "Pour les utiliser, réglez <code>ap = 0</code> en haut de <code>4_CamRobot.ino</code> avec le <code>ssid</code>/<code>password</code> de votre routeur, reflashez, et relevez l'IP du robot sur le moniteur série. Votre téléphone ou ordinateur a alors accès au robot et à internet en même temps.",
+      qs_note2_p3: "La seule exception est <strong>QR / Code-barres</strong> sur Chrome, Edge, ou Android Chrome, qui utilise le <code>BarcodeDetector</code> intégré au navigateur et n'a besoin d'aucun réseau &mdash; celui-là fonctionne sur le point d'accès propre au robot.",
+      h_features: "Ce que fait ce firmware",
+      feat_joystick: "<strong>Contrôle par joystick</strong> &mdash; joystick virtuel déplaçable à l'écran (<code>/joystick?x=&amp;y=</code>), mixé en mode arcade vers un PWM par roue, en plus des contrôles D-pad/clavier d'origine.",
+      feat_failsafe: "<strong>Sécurité de perte de connexion</strong> &mdash; le robot s'arrête automatiquement si aucune commande n'est reçue pendant 500ms (coupure WiFi, téléphone verrouillé, onglet fermé, etc.), au lieu de continuer sans surveillance. Reconnexion WiFi automatique en mode station, récupération automatique du flux MJPEG, et indicateur de connexion en direct.",
+      feat_settings: "<strong>Persistance des réglages</strong> &mdash; Vitesse, Trim, Lumières, Qualité, Résolution, Flip et Miroir sont tous mémorisés de deux façons : sur le robot lui-même (flash NVS, survit aux redémarrages/reflashages, identique pour tout appareil qui se connecte) et dans le <code>localStorage</code> du navigateur (restauration instantanée au rechargement). Au chargement de la page, les valeurs de l'appareil ont toujours priorité si elles diffèrent du cache local.",
+      feat_flip: "<strong>Bascules flip/miroir en direct</strong> &mdash; les boutons Flip et Mirror du panneau Systèmes appellent <code>set_vflip</code>/<code>set_hmirror</code> du capteur en direct, permettant de corriger l'orientation de la caméra pour votre châssis sans reflasher.",
+      feat_pose: "<strong>Détection de pose</strong> &mdash; suivi de squelette MoveNet (bleu clair), points + lignes de membres sur plusieurs personnes à la fois.",
+      feat_hands: "<strong>Suivi des mains</strong> &mdash; MediaPipe Hands via le runtime <code>tfjs</code> de TF.js (évite un bundle MediaPipe script/wasm séparé depuis un autre hôte), 21 points-clés par main plus la latéralité gauche/droite (orange).",
+      feat_expr: "<strong>Expression faciale</strong> &mdash; heureux/triste/en colère/surpris/etc. via <code>@vladmandic/face-api</code> (un fork activement maintenu du désormais dormant face-api.js), dont les poids du modèle sont publiés dans le même paquet npm que le script &mdash; contrairement au reste de Vision, cela ne dépend que d'un seul hôte (jsdelivr) au lieu de deux.",
+      feat_codes: "<strong>QR / Code-barres</strong> &mdash; utilise le <code>BarcodeDetector</code> intégré au navigateur quand disponible (Chrome/Edge/Android Chrome) &mdash; aucun réseau nécessaire, fonctionne même sur le point d'accès isolé du robot. Se replie sur la bibliothèque jsQR (codes QR uniquement, internet nécessaire une fois) sur les navigateurs sans support natif (Safari/iOS).",
+      feat_plates: "<strong>Plaques</strong> &mdash; un lecteur de plaques d'immatriculation expérimental. Il n'existe pas de modèle de détection de plaques prêt à l'emploi comme pour les objets/visages, donc ceci réutilise les boîtes voiture/camion/bus de COCO-SSD, recadre la zone probable de la plaque, et fait tourner une vraie OCR (Tesseract.js) dessus. Heuristique, pas un détecteur entraîné, et limité par la résolution 320&times;240 de la caméra &mdash; fonctionne mieux de près, bien de face, et bien éclairé. Tourne à sa propre cadence plus lente (~2,5s) car l'OCR est bien plus lourde que la détection d'objets/visages.",
+      feat_vision: "<strong>AI Vision</strong> &mdash; une superposition en direct activable détectant à la fois des objets (COCO-SSD) et des visages (BlazeFace) directement sur le viseur, tournant entièrement dans le navigateur puisque l'ESP32 ne peut pas exécuter un réseau de neurones en plus du reste. Nécessite un accès internet sur le réseau utilisé par l'appareil pour charger les modèles la première fois.",
+      feat_buildstamp: "<strong>Empreinte de build</strong> &mdash; le pied de page de la page de contrôle, <code>/status</code> et la console série au démarrage rapportent tous la version du firmware, l'horodatage de compilation, et la révision git dont elle provient (avec un suffixe <code>-dirty</code>, affiché en ambre, quand l'arbre avait des modifications non commitées). Auparavant, il n'y avait aucun moyen de savoir ce qui tournait réellement sur un robot sans le reflasher. La révision est estampillée par un hook de pré-build PlatformIO ; Arduino IDE n'a pas d'équivalent, donc les builds depuis là-bas rapportent <code>nogit</code> plutôt qu'un hash potentiellement obsolète. La page est aussi servie avec <code>Cache-Control: no-store</code>, pour qu'un navigateur ne puisse pas associer une page en cache à un firmware plus récent.",
+      feat_classiccv: "<strong>Vision classique (sans modèles, sans internet)</strong> &mdash; trois fonctions qui fonctionnent sur le point d'accès propre du robot sans rien télécharger, car ce sont de simples calculs de pixels plutôt qu'un réseau de neurones. Elles tournent aussi à la pleine cadence d'images au lieu des 0,4&ndash;2,5Hz que gère un modèle sur un téléphone, ce qui est ce qui rend les modes de conduite viables.",
+      h_repolayout: "Structure du dépôt",
+      repo_sync: "<code>Codes/4_CamRobot</code> et <code>firmware/4_camrobot/src</code> sont maintenus synchronisés &mdash; mêmes sources, deux systèmes de build. Modifiez sous <code>firmware/</code>, puis recopiez. Les trois autres sketches sont de simples démos incluses pour un ensemble d'atelier complet, mais contrairement à la voiture elles ne sont pas inchangées : les deux choses qu'elles démontrent ont changé de broche, donc <code>1_blink</code> et <code>2_breathing_light</code> pilotent le pixel RVB et <code>3_motor</code> pilote deux MOSFET au lieu d'un contrôleur I&sup2;C.",
+      h_buildsystems: "Systèmes de build",
+      h3_pio: "PlatformIO (firmware/)",
+      pio_p1: "Chaque sketch est son propre projet PlatformIO sous <code>firmware/&lt;nom&gt;/</code>, tous ciblant <code>env:esp32cam</code> (brochage AI-Thinker) puisque c'est la même carte physique pour les quatre :",
+      th_app: "App", th_notes: "Notes",
+      app_blink: "Fait clignoter le pixel RVB. Nécessite la bibliothèque NeoPixel bien qu'il soit par ailleurs trivial &mdash; cette carte n'a aucune LED simple à basculer.",
+      app_breathing: "Fait varier l'intensité du même pixel. Une LED adressable n'a pas d'entrée analogique à écrire, donc le fondu met à l'échelle la couleur elle-même.",
+      app_motor: "Exécute sa séquence de conduite dès le démarrage ou un reset &mdash; <strong>laissez de la place au robot</strong> avant de le flasher ou de le réinitialiser. Il n'avance que vers l'avant, donc cela veut dire de la place devant lui.",
+      th_setting: "Réglage", th_value: "Valeur", th_why: "Pourquoi",
+      ini_platform: "Figé, pas laissé sur \"latest\" &mdash; une plateforme non figée peut silencieusement tirer une version du pilote <code>esp32-camera</code> différente de celle installée par Arduino IDE, ce qui change le comportement de sondage du capteur caméra. <code>6.5.0</code> (arduino-esp32 2.0.14) est la version confirmée fonctionner pour ce projet. Les trois autres apps sont figées sur la même version aussi, par cohérence, même si elles sont trop simples pour y être sensibles.",
+      ini_partitions: "A besoin de deux emplacements d'app OTA pour les mises à jour de firmware (voir <a href=\"#ota\">OTA et configuration WiFi</a> ci-dessous), que <code>huge_app.csv</code> n'a pas du tout. <code>min_spiffs.csv</code> donne deux emplacements d'environ 1,9Mo au lieu d'un seul de 3Mo &mdash; le firmware fait actuellement environ 1,1Mo (60%), largement en dessous, mais c'est un plafond plus contraignant pour la croissance future qu'auparavant.",
+      ini_buildflags: "Le menu <code>Tools &gt; PSRAM: Enabled</code> d'Arduino IDE les pose en coulisses. Sous PlatformIO, la définition de carte <code>esp32cam</code> les porte <strong>déjà tous les deux</strong> dans ses propres <code>extra_flags</code> &mdash; ils sont répétés ici seulement pour rester visibles là où on les cherchera. <strong>C'est aussi pourquoi désactiver la PSRAM demande <code>-UBOARD_HAS_PSRAM</code> plutôt que de supprimer une ligne</strong> &mdash; voir <a href=\"#board\">La carte</a>. Se tromper là-dessus est la cause classique du « ça marche dans Arduino IDE, la caméra échoue sous PlatformIO » (<code>Camera init failed with error 0x106</code>).",
+      ini_libdeps: "<code>WiFiManager</code> assure le portail captif de configuration WiFi déclenché depuis le web (voir <a href=\"#ota\">OTA et configuration WiFi</a> plus bas). <code>Adafruit NeoPixel</code> pilote le pixel RVB et n'est pas optionnelle &mdash; c'est la seule lumière du robot, et le clignotement de démarrage comme le motif de panne caméra l'utilisent. <code>Adafruit SSD1306</code> et <code>Adafruit GFX</code> servent l'écran optionnel ; le sketch tourne sans écran branché mais ne compile pas sans les bibliothèques. Les utilisateurs d'Arduino IDE installent les quatre via le gestionnaire de bibliothèques.",
+      ini_uploadspeed: "Réglage plus sûr que 921600 pour une carte flashée via un simple adaptateur FTDI sans circuit de réinitialisation automatique &mdash; ce qui est toujours le cas ici, puisque J3 ne porte que 5V, RX, TX et GND.",
+      menu_label: "menu",
+      launch_p: "<span>Le script demande au démarrage sur quelle application travailler (il détecte automatiquement tout</span> <code>firmware/&lt;nom&gt;/platformio.ini</code>), et l'option 0 permet d'en changer à tout moment sans le relancer. L'option 4 (Flash) affiche la procédure de cette carte plutôt que celle de la voiture : il n'y a pas de bouton BOOT à maintenir, donc c'est relier GPIO0 à GND, appuyer sur RESET, téléverser, puis retirer le cavalier et refaire un reset &mdash; plus un avertissement supplémentaire pour <code>3_motor</code> sur la place à laisser au robot. Les options 9 et <code>e</code> sont nouvelles : l'OTA est la vraie façon de mettre à jour une carte sans réinitialisation automatique, et <code>e</code> atteint les environnements que <code>default_envs</code> masque volontairement.",
+      clean_note: "Si vous modifiez un <code>platformio.ini</code> (par exemple en re-figeant la version de plateforme ou en changeant les options PSRAM), lancez l'option 8 (Clean) avant de recompiler pour qu'un cache <code>.pio/</code> périmé ne masque pas le changement.",
+      h3_arduino: "Arduino IDE (Codes/4_CamRobot/)",
+      arduino_p: "Flux Arduino IDE standard. Vérifiez que <code>Tools &gt; PSRAM</code> est sur <code>Enabled</code>, que <code>Tools &gt; Partition Scheme</code> est sur <strong>« Minimal SPIFFS (1.9MB APP with OTA) »</strong> (nécessaire pour les mises à jour OTA &mdash; voir <a href=\"#ota\">OTA et configuration WiFi</a> plus bas), et que <strong>WiFiManager</strong> (tzapu), <strong>Adafruit NeoPixel</strong>, <strong>Adafruit SSD1306</strong> et <strong>Adafruit GFX</strong> sont installées via <code>Tools &gt; Manage Libraries</code>. Les compilations faites ici indiquent toujours <code>nogit</code> dans le tampon de build &mdash; Arduino IDE n'a aucun hook de pré-compilation pour y inscrire une révision.",
+      h_ota: "OTA et configuration WiFi",
+      ota_p1: "Deux façons indépendantes de mettre à jour le firmware par WiFi, plus un moyen optionnel de rejoindre un réseau domestique au lieu du point d'accès propre du robot &mdash; rien de tout cela ne change l'expérience par défaut (point d'accès <code>wdiy1</code>, flashage USB) à moins de l'utiliser.",
+      ota_h_browser: "Envoi depuis le navigateur",
+      ota_p2: "Le panneau rétractable <strong>Firmware / Réseau</strong> de la page de contrôle a un sélecteur de fichier : choisissez un <code>firmware.bin</code> compilé pour cette carte et appuyez sur <strong>Envoyer et flasher</strong>. Le robot redémarre automatiquement une fois l'envoi terminé. Fonctionne que le robot soit sur son propre point d'accès ou sur un routeur rejoint.",
+      ota_h_espota: "PlatformIO / espota",
+      ota_p3: "Pour quiconque a PlatformIO installé :",
+      ota_p4: "Sans chemin d'image, recompile depuis les sources et l'envoie ; avec un chemin (par ex. un <code>.pio/build/esp32cam/firmware.bin</code> déjà compilé), envoie ce binaire exact sans recompiler. L'IP par défaut sur le point d'accès propre du robot est <code>192.168.4.1</code> ; sur un routeur, relevez l'IP sur le moniteur série.",
+      ota_h_wifisetup: "Portail de configuration WiFi",
+      ota_p5: "Le même panneau Firmware / Réseau a un bouton <strong>Configuration WiFi&hellip;</strong>. Il redémarre le robot dans un portail captif WiFiManager sur un réseau séparé <code>CamRobot-Setup</code> &mdash; rejoignez-le dans les 3 minutes, choisissez votre WiFi domestique dans la liste affichée, et entrez son mot de passe. En cas de succès, le robot l'enregistre et redémarre sur ce réseau ; en cas d'échec ou de délai dépassé, elle redémarre dans le mode qu'elle utilisait avant, pour ne jamais rester injoignable.",
+      ota_note: "C'est un flux réellement perturbateur : le robot ne peut pas rouler tant que le portail est ouvert, et vous rejoindrez deux réseaux WiFi différents dans l'ordre (celui du robot, puis <code>CamRobot-Setup</code>, puis votre réseau domestique). Même mise en garde que pour le reste de cette surface de contrôle : les points de terminaison <code>/update</code> et <code>/wifi-setup</code> n'ont aucune authentification &mdash; voir <a href=\"report.html\">report.html</a>.",
+      h_troubleshooting: "Dépannage",
+      ts_intro: "<span>Les problèmes propres à cette carte viennent en premier. Tout ce qui suit est hérité de</span> <a href=\"https://github.com/abourdim/video-car\">VideoCar</a> <span>et se comporte de la même façon ici.</span>",
+      ts_h1: "Camera init failed avec l'erreur 0x106 (seulement sous PlatformIO, fonctionne bien dans Arduino IDE)",
+      ts_p1: "C'est <code>ESP_ERR_NOT_SUPPORTED</code> depuis le sondage du capteur caméra. Si la même carte fonctionne dans Arduino IDE, c'est une incompatibilité de toolchain/build-flags, pas matérielle &mdash; voir les notes sur la PSRAM/le figeage de plateforme ci-dessus. Le <code>platformio.ini</code> de ce projet est déjà configuré pour l'éviter ; si ça persiste, lancez l'option 8 (Clean) de <code>./launch.sh</code> pour vider tout cache de build obsolète, et vérifiez que la version du cœur <code>esp32</code> installée dans votre Arduino IDE (<code>Tools &gt; Board &gt; Boards Manager</code>) correspond à peu près à la version de plateforme PlatformIO figée &mdash; si elle est très différente, refigez <code>platform = espressif32@X.Y.Z</code> pour correspondre.",
+      ts_h2: "Redémarrages répétés juste après une erreur caméra",
+      ts_p2: "Généralement une alimentation marginale &mdash; l'initialisation caméra + WiFi provoque un pic de courant que beaucoup d'adaptateurs FTDI ne peuvent pas fournir proprement. Utilisez une source 5V/2A correcte. Le sketch active déjà le contournement du détecteur de sous-tension, qui fera apparaître ceci comme un message de réessai/erreur propre plutôt qu'une boucle de redémarrage silencieuse, mais ne corrige pas la sous-tension sous-jacente.",
+      ts_h3: "Le robot ne s'arrête pas quand on ferme l'onglet ou perd le WiFi",
+      ts_p3: "Ne devrait pas arriver &mdash; le failsafe du firmware arrête les moteurs après 500ms sans commande. Si vous constatez le contraire, vérifiez le tampon de build dans le pied de la page de contrôle. Notez qu'un PWM nul sur ce châssis est une roue libre et non un freinage : le MOSFET cesse de conduire et le moteur tourne librement, donc le robot roule toujours un peu au-delà du point où la commande s'est arrêtée.",
+      ts_h4: "Une fonction Vision dit qu'elle ne peut pas charger, sur le WiFi propre du robot",
+      ts_p4: "Normal la première fois. Les modèles viennent d'un CDN et le point d'accès du robot n'a pas internet. Rejoignez un routeur, activez la fonction une fois pour que ses fichiers atterrissent dans le cache hors-ligne (le panneau Offline affiche le nombre et la taille), puis retournez sur le point d'accès du robot &mdash; ça fonctionnera à partir de là. Plates est l'exception : Tesseract.js se charge depuis un Web Worker que le cache ne peut pas intercepter, donc ça reste dépendant d'internet.",
+      ts_h5: "Le flux vidéo meurt quand une fonction Vision ou d'autonomie démarre",
+      ts_p5: "Le flux est récupéré avec <code>crossorigin=\"anonymous\"</code> pour que la page puisse lire les images depuis celui-ci, ce qui nécessite l'en-tête CORS que le firmware règle sur le port 81. Si les deux ne sont pas d'accord, le navigateur refuse carrément l'image. La page détecte cela et se reconnecte sans CORS après deux échecs, se repliant sur le polling <code>/capture</code>, donc ça devrait s'auto-réparer en quelques secondes &mdash; sinon, comparez le commit dans l'empreinte de build du pied de page avec <code>git log --oneline</code> et reflashez s'ils ne correspondent pas.",
+      ts_h6: "Le suiveur de ligne ne bouge pas du tout",
+      ts_p6: "Mettez le curseur Vitesse au maximum. Il se multiplie avec le plafond propre du mode, et <code>LINE_SPEED</code> est délibérément bas (26), donc un curseur réduit peut laisser les moteurs sous leur seuil de décollage. Si ça ne bouge toujours pas, augmentez <code>LINE_SPEED</code> dans <code>app_server.h</code>.",
+      ts_h7: "Le suiveur de ligne zigzague ou perd la ligne",
+      ts_p7: "Baissez <code>LINE_KP</code>, ne l'augmentez pas. La boucle est limitée par la latence d'aller-retour plutôt que par le gain, et plus de gain aggrave une boucle dominée par le délai. Si ça rate les virages à la place, augmentez <code>LINE_TURN_CUT</code> pour ralentir davantage en tournant. Si ça signale &ldquo;looking for a line&rdquo; sur une vraie ligne, le contraste est trop faible &mdash; utilisez un ruban plus large et plus foncé avant de toucher à <code>LINE_MIN_CONTRAST</code>.",
+      ts_h8: "Un mode autonome ne reste pas armé",
+      ts_p8: "Toute entrée manuelle le désarme par conception, tout comme masquer l'onglet du navigateur, et perdre la cible arrête le robot après 0,7s et le désarme après 3s. Les trois sont intentionnels.",
+      ts_h9: "Aucune authentification sur les points de contrôle",
+      ts_p9: "<span>Limitation connue et non résolue héritée du sketch d'origine &mdash; voir</span> <a href=\"report.html\">report.html</a> pour les détails. Quiconque sur le réseau WiFi <code>wdiy1</code> (mot de passe par défaut <code>88888888</code>) peut piloter le robot.",
+      feat_oled: "<strong>Écran OLED (optionnel)</strong> &mdash; un SSD1306 128&times;64 à <code>0x3C</code> sur GPIO 14/15, qui sur cette carte est un bus à lui seul plutôt qu'un bus partagé avec les moteurs. Il démarre sur un auto-test &mdash; la caméra a-t-elle démarré, le capteur de mouvement voit-il quelque chose, sur quel réseau le robot a fini, et <strong>l'adresse à taper</strong>, qui en mode station est attribuée par DHCP et n'existait jusqu'ici que sur la console série. Dès qu'un navigateur se connecte, il devient un visage animé : il cligne des yeux, fait un clin d'œil, regarde dans la direction où il roule, s'inquiète quand le failsafe coupe les moteurs, et s'endort au bout de vingt secondes. Aucune des deux broches n'est sortie sur la carte porteuse, donc presque personne n'en monte un &mdash; le module est sondé au démarrage et tout devient inopérant s'il est absent. Voir <a href=\"#oled\">Écran OLED</a> plus bas.",
+      h_oled: "&Eacute;cran OLED (optionnel)",
+      oled_p1: "Un module SSD1306 128&times;64 à <code>0x3C</code> se branche sur <strong>GPIO 14 (SDA) et GPIO 15 (SCL)</strong>, qui sur cette carte n'appartiennent à rien d'autre. C'est toute la différence avec la voiture d'origine, où l'écran devait partager le bus du contrôleur moteur et le payait d'un mutex, d'images perdues, et d'une règle interdisant de dessiner en roulant.",
+      oled_p2: "<strong>La broche 3V3 du module est la seule source 3,3V de ce robot.</strong> La carte porteuse laisse cette broche non routée &mdash; pas de bloc d'extension, pas de régulateur à elle, rien. Donc contrairement à la voiture keyestudio, où le conseil était de prendre le 3,3V n'importe où <em>sauf</em> sur le module, ici il n'y a nulle part ailleurs. Ce rail porte déjà la caméra et la radio, ce qui est la raison pour laquelle le sketch désactive le détecteur de brownout, et 20mA de plus dessus revient à demander les redémarrages décrits dans le Dépannage. Si votre module d'écran a son propre régulateur &mdash; beaucoup de cartes SSD1306 acceptent 3,3 à 5V &mdash; alimentez-le en 5V depuis J6 ou J3 et laissez ce rail tranquille.",
+      oled_p3: "<strong>Rien d'autre n'est requis.</strong> L'écran est sondé au démarrage ; si rien ne répond à <code>0x3C</code>, le robot écrit une ligne sur le port série et fonctionne exactement comme il l'aurait fait de toute façon. <code>/status</code> renvoie <code>\"oled\": 0</code> ou <code>1</code>.",
+      oled_h_wire: "Quel fil va o&ugrave;",
+      oled_w8: "Certains modules impriment les quatre broches dans un autre ordre, et quelques-uns r&eacute;pondent &agrave; <code>0x3D</code>. Lisez les &eacute;tiquettes de <strong>votre</strong> carte, pas celles de l'image.",
+      oled_h_shows: "Ce qu'il affiche",
+      oled_s1: "<strong>Écran d'accueil</strong> &mdash; le logo Workshop-DIY sur toute la dalle, puis <code>CamRobot</code> et la version. Deux images plutôt qu'une : à 120&times;64 le logo reste tout juste lisible, et le rogner pour partager la vitre avec un numéro de version ne ressemblait ni à l'un ni à l'autre.",
+      oled_s2: "<strong>Auto-test</strong>, maintenu quatre secondes : la caméra et la présence ou non de PSRAM, si le capteur de mouvement est monté et s'il voit quelque chose, le réseau sur lequel il a fini, et l'adresse à taper &mdash; la ligne qui exigeait auparavant un câble série.",
+      oled_s3: "<strong>&Eacute;tat</strong>, tant que personne n'est connect&eacute; &mdash; l'adresse, le r&eacute;seau et sa qualit&eacute; de lien, Vitesse et Trim, temps de fonctionnement.",
+      oled_s4: "<strong>Le visage</strong>, d&egrave;s qu'un navigateur ouvre la page de contr&ocirc;le ou le flux vid&eacute;o.",
+      oled_s5: "<strong>Repos</strong> &mdash; l'&eacute;cran s'assombrit au bout de 30s, fait d&eacute;river l'adresse sur la dalle au bout de deux minutes, et au bout de vingt-cinq s'endort : une paire d'yeux ferm&eacute;s et un <code>z</code> qui monte, le tout en d&eacute;rive. <strong>La dalle n'est jamais &eacute;teinte.</strong> Un &eacute;cran noir est indiscernable d'une batterie &agrave; plat, donc chaque &eacute;tape affiche encore quelque chose &mdash; et tout ce qu'elle affiche d&eacute;rive, parce que le marquage vient des pixels qui ne changent jamais, pas des pixels allum&eacute;s.",
+      oled_p4: "Un échec de la caméra a son propre écran, nommant le code d'erreur et ce qu'il faut vérifier, au lieu du seul triple clignotement du pixel.",
+      oled_h_bus: "Ce que le portage a supprimé",
+      oled_p5: "Utile à savoir si vous portez ceci dans l'autre sens, ou si vous le comparez aux robots micro:bit qui portent le même visage. Sur la voiture keyestudio, les écritures moteur venaient de la tâche du serveur HTTP et l'écran était dessiné depuis <code>loop()</code>, tous deux sur un seul bus. Deux tâches FreeRTOS utilisant <code>Wire</code> sans verrouillage entrelacent leurs transactions &mdash; l'écran reçoit des octets moteur et la carte pilote reçoit des pixels, seulement en charge &mdash; donc ce code portait un mutex autour de chaque transaction, les moteurs attendant indéfiniment et l'écran pas du tout.",
+      oled_p6: "Le bus reste à 100kHz plutôt qu'aux 400kHz vers lesquels <code>Adafruit_SSD1306</code> basculerait normalement. Avec un bus privé ce serait désormais sans risque, mais sur un écran soudé à la main c'est le mauvais endroit où dépenser la marge : ce sont des fils volants vers les broches du module, avec pour seuls rappels ceux de la dalle. <code>OLED_I2C_HZ</code> dans <code>oled.h</code> est le réglage si votre câblage est court.",
+      ts_h10: "L'&eacute;cran OLED reste noir",
+      ts_p10: "D'abord : la plupart des robots n'en ont pas, et c'est normal &mdash; les deux broches ne sont pas sorties sur la carte porteuse. Si vous en avez bien monté un, regardez <code>/status</code>. <code>\"oled\": 0</code> signifie que rien n'a répondu à <code>0x3C</code> au démarrage du robot : c'est donc un problème de câblage ou d'adresse, pas de firmware. La plupart de ces modules sont en <code>0x3C</code> ; quelques-uns en <code>0x3D</code> (certains ont un pont à souder pour choisir). L'autre cause habituelle est une inversion SDA/SCL : <strong>SDA est GPIO 14, SCL est GPIO 15</strong> &mdash; notez que cela diffère de la voiture keyestudio, où SCL était GPIO 13, qui est un moteur ici. <code>\"oled\": 1</code> avec une dalle vraiment éteinte est une panne de câblage ou d'alimentation : vérifiez d'abord le 3,3V, et lisez l'avertissement d'alimentation de la section OLED avant de le prendre sur le rail du module.",
+      ts_h11: "L'écran marche mais plus rien d'autre",
+      ts_p11: "Sur la voiture keyestudio, ce symptôme signifiait que la bibliothèque OLED avait réinitialisé le bus sur ses propres broches par défaut et emmené les moteurs avec elle. Cela ne peut pas arriver ici &mdash; les moteurs ne sont pas sur un bus. Ce que <code>periphBegin = false</code> dans <code>oledInit()</code> protège encore, c'est l'écran lui-même : laissé à vrai, <code>begin()</code> rappelle <code>Wire.begin()</code> sur les broches par défaut et déplace le bus loin des deux fils que vous avez soudés.",
+      h_githistory: "Historique Git",
+      git_p: "L'historique de ce dépôt commence au portage ; ce n'est pas la suite de celui de VideoCar, donc aucun diff unique ne montre ce qui a changé. C'est à cela que sert <a href=\"report.html\">report.html</a>.",
+      footer_note: "Rendu depuis <code>README.md</code> à la racine du dépôt &mdash; ce fichier fait foi ; ceci en est une copie mise en forme, plus agréable à lire dans un navigateur. Les affirmations matérielles de cette page viennent du netlist KiCad, pas de la fiche technique du module."
+    },
+    ar: {
+      qs_flashnote: "<strong>&#9888; يتطلب فلاش هذه اللوحة يدين اثنتين.</strong> إن J3 مجرد رأس FTDI بأربعة أطراف &mdash; 5V وRX وTX وGND &mdash; بلا دارة إعادة تعيين تلقائية، كما أن GPIO0 غير موصول بأي زر. صِل GPIO0 بالأرضي على الوحدة، واضغط reset، وابدأ الرفع، ثم انزع الوصلة وأعد التعيين مرة أخرى. افعل ذلك مرة واحدة ثم استخدم <a href=\"#ota\">OTA</a> بعدها.",
+      h_board: "اللوحة",
+      board_norev_t: "<strong>&#9888; هذا الروبوت لا يملك حركة للخلف.</strong>",
+      board_norev_p1: "يُشغَّل كل محرك عبر ترانزستور MOSFET وحيد في الجانب السفلي (Q1/Q2 من نوع 2N7002) وبوابته موصولة مباشرة بطرف GPIO. هذه درجة حرية واحدة لكل محرك &mdash; مقدار قوة تشغيله &mdash; ولا يوجد جسر H، فلا سبيل إلى إدارة عجلة إلى الخلف.",
+      board_norev_p2: "وكل ما يأتي بعد ذلك يرث هذا القيد. <strong>الأمام</strong> و<strong>التوقف</strong> يعملان كما كانا. أما <strong>اليسار</strong> و<strong>اليمين</strong> فصارا دورانًا أماميًا حول العجلة غير المُدارة بدل الدوران في المكان، فيرسم الروبوت قوسًا أوسع بكثير ويحتاج مساحة أمامه. زر <strong>الخلف</strong> اختفى من لوحة الاتجاهات وحلّ محله <strong>التوقف</strong>. ونصف عصا التحكم الخلفي مثبّت عند الصفر. ولم يعد بوسع Follow-me ومطاردة اللون التراجع أمام هدف يقترب أكثر من اللازم، بل يتوقفان وينتظران. لا شيء من هذا خلل يُصلَح برمجيًا؛ إنه جسر H مفقود.",
+      board_p1: "كل ما يلي مقروء من <code>esp32_cam_plugin_robot.kicad_sch</code> و<code>.kicad_pcb</code>، لا مُفترَض من الوحدة.",
+      th_gpio: "GPIO",
+      th_goesto: "يذهب إلى",
+      th_notes2: "ملاحظات",
+      th_camera: "الكاميرا",
+      th_sensor: "مستشعر الحركة",
+      pin13_to: "طرف اللولب J1، بوابة Q1",
+      pin13_note: "المحرك <strong>M1 = العجلة اليمنى</strong>. تعديل عرض النبضة، إلى الأمام فقط. مقاومة سحب لأسفل R1 بقيمة 10k، وديود تفريغ D1 من نوع 1N4007.",
+      pin12_to: "طرف اللولب J2، بوابة Q2",
+      pin12_note: "المحرك <strong>M2 = العجلة اليسرى</strong>. المثل. <strong>وهو أيضًا MTDI</strong>، طرف اختيار جهد الذاكرة الوامضة &mdash; ومقاومة السحب R2 هي السبب الوحيد في صلاحية هذا الطرف كمخرج أصلًا.",
+      pin4_to: "D3، بكسل RGB من نوع TX1812DB",
+      pin4_note: "منزلق الإضاءة. بكسل واحد، وطرف DOUT غير موصول. وهو أيضًا بوابة مصباح الفلاش المدمج في الوحدة.",
+      pin16_to: "مستشعر الحركة U2 / J6، عبر Q3",
+      pin16_note: "<strong>معكوس</strong> (تُقرأ الحركة عند المستوى المنخفض) و<strong>بلا مقاومة سحب على اللوحة</strong> (يحتاج <code>INPUT_PULLUP</code>). وهو كذلك خط اختيار شريحة PSRAM &mdash; انظر أدناه.",
+      pin13a_to: "رأس FTDI المسمى J3",
+      pin13a_note: "U0TXD / U0RXD. بلا إعادة تعيين تلقائية.",
+      pinfree_to: "لا شيء",
+      pinfree_note: "موصولة من الوحدة إلى شبكات مسمّاة ثم لا شيء بعدها. والطرفان 14 و15 هما موضع شاشة OLED اختيارية.",
+      pin0_to: "لا شيء",
+      pin0_note: "غير مُخرَج، لذا يكون وضع الفلاش بوصلة توضع باليد.",
+      board_power: "<strong>التغذية.</strong> إن J7 مقبس USB-C موصول للتغذية فقط &mdash; فطرفا CC1/CC2 غير مركّبين، فهو يقبل 5 فولت من كابل A إلى C أو من مصدر بسيط، لا من شاحن ينتظر تفاوضًا. و<code>+5V</code> يغذّي الوحدة والبكسل والمستشعر، بينما <code>VCC</code> هو خط المحركات المنفصل: J5 هو مدخل البطارية، وJ4 رأس بطرفين يجسر <code>VCC</code> مع <code>+5V</code> إن أردت تشغيل كل شيء من مصدر واحد. والروبوت الموصول بـ USB وحده يقلع ويبثّ الفيديو ولا يستطيع الحركة.",
+      board_sd: "<strong>بطاقة microSD غير قابلة للاستعمال.</strong> فالأطراف GPIO 2 و4 و12 و13 و14 و15 هي أطراف قارئ SD في الوحدة، وهذه اللوحة تنفق منها 12 و13 و4 على المحركات والبكسل. لا شيء يُصلَح هنا؛ لم يبقَ للقارئ أي طرف.",
+      board_h_psram: "الخيار الوحيد الذي تفرضه هذه اللوحة: PSRAM أم مستشعر الحركة",
+      board_psram1: "الطرف GPIO16 هو خط اختيار شريحة PSRAM في وحدة AI-Thinker، واللوحة الحاملة توصله بمستشعر الحركة. لا يمكن أن يحوزه الاثنان، فالاختيار يقع وقت البناء.",
+      psram_a1: "PSRAM، ومخزنان مؤقتان بدقة QVGA",
+      psram_a2: "غير مُضمَّن في البناء؛ و<code>/status</code> يعيد <code>\"pir\":-1</code>",
+      psram_b1: "مخزن مؤقت واحد في DRAM، وتصبح QVGA سقفًا صارمًا",
+      psram_b2: "يعمل؛ و<code>/status</code> يعيد 0 أو 1",
+      board_psram2: "الفيديو هو غاية هذا الروبوت، فتغلب PSRAM افتراضيًا. والبيئتان كلتاهما تُبنيان، فلا يتعفّن أي من المسارين:",
+      board_psram3: "<strong>لا يكفي حذف <code>-DBOARD_HAS_PSRAM</code> من <code>build_flags</code>.</strong> فتعريف لوحة <code>esp32cam</code> في PlatformIO يعرّفه هو أيضًا ضمن <code>extra_flags</code> الخاصة به، و<code>build_flags</code> لا يستطيع إزالة ما أضافته <code>extra_flags</code>، بل يجب إلغاؤه بـ<code>-UBOARD_HAS_PSRAM</code>. ويتضمن <code>src/pir.h</code> توجيه <code>#error</code> ينطلق إن أُنجز التغيير على نصفه، لأن بناءً يبقي PSRAM ويقرأ GPIO16 في الوقت نفسه سيبلّغ عن حركة عند كل إخفاق في الذاكرة المخبأة.",
+      feat_camresilience: "<strong>مرونة تهيئة الكاميرا</strong> &mdash; تعيد المحاولة بتردد XCLK أدنى قبل أن تستسلم، وتومض البكسل الملوّن بالأحمر ثلاث ومضات مميزة بدل الفشل الصامت، وتفعّل معالجة كاشف هبوط الجهد التي شُحنت معطّلة في السكتش الأصلي.",
+      feat_lights: "<strong>مصباح أمامي ملوّن</strong> &mdash; يقود منزلق الإضاءة البكسل D3 من نوع TX1812DB على GPIO4، بالمدى نفسه من 0 إلى 255 وبالإعداد المحفوظ نفسه الذي كان لمصباح السيارة الأبيض. ولا يكتب إلا حين يتغير المستوى فعلًا، لأن GPIO4 هو أيضًا بوابة مصباح الفلاش المدمج شديد السطوع، والتحديث المستمر سيتركه متوهجًا.",
+      feat_pir: "<strong>مستشعر الحركة (اختياري ومعطّل افتراضيًا)</strong> &mdash; مستشعر HC-SR501 عند U2 أو J6، يبلّغ عنه <code>/status</code> تحت الاسم <code>\"pir\"</code>. وهو معطّل افتراضيًا لأنه يريد GPIO16 وهو أيضًا خط اختيار شريحة PSRAM &mdash; انظر <a href=\"#board\">اللوحة</a>.",
+      oled_p1b: "أما هنا فالمحركان بوابتا MOSFET تُقادان بـ<code>ledcWrite()</code> ولا تمسّان I&sup2;C أبدًا، فالشاشة تملك الناقل. لا قفل ولا تزاحم، وبخلاف روبوتات هذه العائلة ذات الناقل المشترك لا تستطيع شاشة منزوعة أن تعطّل الأسلاك التي تخرج منها أوامر القيادة. وأسوأ ما تفعله شاشة غائبة أن يبقى الزجاج مظلمًا.",
+      oled_note_notrouted: "<strong>لا أحد من الطرفين مُخرَج على اللوحة الحاملة.</strong> فالمخطط يوصل GPIO 14 وGPIO 15 من الوحدة إلى شبكات مسمّاة ثم إلى لا شيء البتة، فلا بد من لحام الشاشة على رأس وحدة ESP32-CAM نفسها. ولهذا لا تحمل أغلب نسخ هذا الروبوت شاشة، ولهذا يستشعر البرنامج الثابت عند الإقلاع ويمضي صامتًا إن لم يُجب أحد.",
+      oled_w9: "الطرفان GPIO 14 وGPIO 15 هما أيضًا اثنان من الأطراف الستة التي توصلها الوحدة بقارئ microSD. وتلك البطاقة غير صالحة هنا على كل حال &mdash; إذ إن GPIO 12 و13 و4 مشغولة أصلًا بالمحركات والبكسل &mdash; فإنفاق هذين الطرفين على شاشة لا يكلّف شيئًا لم يكن ضائعًا من قبل.",
+      oled_s2b: "كانت نسخة تلك الشاشة على السيارة تحمل سطرًا رابعًا يبيّن هل يجيب متحكم المحركات على <code>0x30</code>. ولم يعد ثمّ متحكم يُسأل: فبوابة MOSFET إما أن تصلها إشارة PWM أو لا تصلها، ولا شيء في هذا الجانب يعرف هل المحرك موصول بالطرف اللولبي أصلًا. وبدل طبع <code>ok</code> مطمئنة لا تختبر شيئًا، ذهب ذلك السطر إلى المستشعر.",
+      oled_p5b: "وكل ذلك زال هنا لأن مقدّمته زالت. أما الذي بقي فقاعدة أن الوجه لا يُعاد رسمه ما دامت العجلات تدور &mdash; لا لأن نقلًا يستغرق 90 ملي ثانية قد يقع الآن بين أمر عصا التحكم والمحركات (فهذا مستحيل)، بل لأن أحدًا لا ينظر إلى عيني روبوت يبتعد عنه.",
+      app_camrobot: "المشروع الرئيس &mdash; انظر الجدول أدناه لتعرف لماذا يحمل <code>platformio.ini</code> الخاص به إعدادات إضافية لا تحتاجها المشاريع الثلاثة الأخرى.",
+      ini_defaultenvs: "عُرِّفت ثلاث بيئات &mdash; البناء العادي، و<code>esp32cam-ota</code> للدفع عبر الشبكة، و<code>esp32cam-pir</code> لنسخة مستشعر الحركة. ولولا هذا الإعداد لسار أمر <code>pio run -t upload</code> المجرّد على الثلاث جميعًا وحاول فلاش الروبوت عبر USB، ثم عبر الشبكة بلا عنوان، ثم مرة أخرى بنسخة المستشعر. وتُبلَغ البيئتان الأخريان بـ<code>-e</code>.",
+      ts_hA: "العجلات لا تفعل شيئًا",
+      ts_pA: "تحقق أن على <code>VCC</code> بطارية فعلًا. فـ<code>+5V</code> من USB-C يغذّي ESP32، لكن خط المحركات منفصل &mdash; والروبوت الموصول بـ USB وحده يقلع ويبثّ الفيديو ولا يستطيع الحركة. وJ4 يجسر الخطين إن كان ذلك مرادك. وإن كان الخط مغذّى ولم تتحرك العجلات فلعل نظام الأمان يؤدي عمله فحسب: فأمر <code>curl</code> واحد ينتج نصف ثانية من الحركة لا غير.",
+      ts_hB: "يدور في الجهة الخطأ",
+      ts_pB: "إن M1 (أي J1) هو العجلة اليمنى وM2 (أي J2) هو اليسرى، ولا شيء على الطباعة الحريرية يقول ذلك. بدّل بين القابسين بدل تعديل البرنامج الثابت &mdash; فاصطلاح المزج يمرّ عبر <code>app_server.h</code> في مواضع عدة، وتصحيحه برمجيًا يعني تصحيحه فيها جميعًا.",
+      ts_hC: "لا يسير مستقيمًا",
+      ts_pC: "ترانزستوران مكشوفان يقودان محركين غير متطابقين من خط واحد &mdash; هذا أقرب ما تكون الحلقة إلى الانفتاح التام. ولهذا وُجد منزلق <strong>Trim</strong>، وهو محفوظ في NVS فلا تضبطه إلا مرة واحدة.",
+      ts_hD: "لا يقلع، أو يقلع في وضع الفلاش",
+      ts_pD: "الطرف GPIO12 هو MTDI الذي يعاينه ESP32 عند إعادة التعيين ليختار جهد ذاكرته الوامضة، ولا بد أن يكون منخفضًا في تلك اللحظة. ومقاومة السحب R2 تتكفّل بذلك &mdash; لكن أي شيء آخر توصله بـ J2 ويسحب البوابة إلى الأعلى سيمنع الوحدة من الإقلاع. ولهذا أيضًا لا ينبغي لشيء أن يقود GPIO12 قبل تنفيذ <code>motor_init()</code>.",
+      ts_hE: "ألوان البكسل الملوّن خاطئة",
+      ts_pE: "غيّر <code>NEO_GRB</code> إلى <code>NEO_RGB</code> في <code>src/lights.h</code>. ولا يعنى بذلك شيء آخر في البرنامج الثابت، لأن ما عداه لا يطلب إلا الأبيض أو أحمر العطل.",
+      ts_hF: "مصباح الفلاش المدمج يرتعش",
+      ts_pF: "هذا طبيعي في ومضات قصيرة: فـGPIO4 هو خط بيانات البكسل وبوابة ذلك المصباح معًا، فكل تحديث للبكسل يضع عليه نحو 30 ميكروثانية من الإشارات. أما التوهج المستمر بدل الومض فيعني أن شيئًا يحدّث البكسل بلا انقطاع &mdash; ووظيفة <code>lightsSet()</code> منع ذلك تحديدًا، فتحقق أن لا شيء يتجاوز حارسها.",
+      ts_hG: "يُبلَّغ عن الحركة باستمرار",
+      ts_pG: "بنيتَ والـPSRAM و<code>USE_PIR</code> مفعّلان معًا، فصار GPIO16 يبلّغ عن حركة الذاكرة المخبأة لا عن إنسان. وتوجيه <code>#error</code> في <code>pir.h</code> موضوع ليجعل ذلك مستحيلًا؛ فإن تجاوزته بطريقة ما فانظر <a href=\"#board\">اللوحة</a>. وافحص كذلك <code>/status</code>: فالقيمة <code>\"pir\":-1</code> تعني أن المستشعر غير مُضمَّن في البناء أصلًا، وهو الوضع الافتراضي.",
+      ts_p7b: "ضُبطت هذه الأرقام كلها على هيكل يستطيع الدوران في مكانه، والدوران الأمامي نصف قطره أكبر بكثير. فتوقّع أن تعيد الضبط لا أن تثق بها &mdash; وارسم مسارًا بمنعطفات أوسع بما يناسب ذلك.",
+      tagline: "برنامج ثابت وصفحة تحكم عبر الويب لروبوت WDIY ESP32-CAM القابل للتوصيل &mdash; وحدة AI-Thinker ESP32-CAM موصولة بلوحة حاملة <code>esp32_cam_plugin_robot</code> (WORKSHOP-DIY ID_04). منقول عن VideoCar الذي يؤدي المهمة نفسها على هيكل keyestudio KS5017: تطبيق الويب كله انتقل كما هو، وكل ما يمس طرفًا من أطراف المتحكم كان لا بد أن يتغير.",
+      h_quickstart: "البدء السريع",
+      qs_p1: "<strong>Arduino IDE</strong> (الأساس المعروف بصلاحه): افتح <code>Codes/4_CamRobot/4_CamRobot.ino</code>، واختر لوحة AI-Thinker ESP32-CAM، واضبط <code>Tools &gt; Partition Scheme</code> على <strong>Minimal SPIFFS (1.9MB APP with OTA)</strong>، وفعّل <code>Tools &gt; PSRAM: Enabled</code>، ثم ثبّت <strong>Adafruit NeoPixel</strong> و<strong>Adafruit SSD1306</strong> و<strong>Adafruit GFX</strong> من <code>Tools &gt; Manage Libraries</code>.",
+      qs_p2: "<strong>PlatformIO</strong>:",
+      qs_p3: "يرشدك خلال التحقق من/تثبيت PlatformIO، البناء، الفلاش، وفتح شاشة المراقبة التسلسلية. راجع <a href=\"#build-systems\">أنظمة البناء</a> أدناه لمعرفة ما يفعله كل خيار في القائمة.",
+      qs_p4: "بعد الفلاش، اتصل بشبكة WiFi باسم <code>wdiy1</code> (كلمة المرور <code>88888888</code>) وافتح <code>http://192.168.4.1</code> في المتصفح.",
+      qs_note1: "<strong>&#128218; جديد على هذا، أو تريد التحكم في الروبوت من نصوصك البرمجية الخاصة؟</strong> <a href=\"ports.html\">ports.html</a> دليل خطوة بخطوة للخادمَين &mdash; ما يفعله المنفذان 80 و81، لماذا يوجد اثنان منهما، كل نقطة نهاية بنطاقات قيمها، وآلية الأمان بـ500 مللي ثانية التي تفاجئ الجميع أول مرة يحاولون فيها التحكم بالروبوت عبر <code>curl</code>.",
+      qs_note2_t: "<strong>&#9888; ميزات الرؤية تحتاج إلى إنترنت &mdash; وضع نقطة الوصول الافتراضي لا يوفره.</strong>",
+      qs_note2_p1: "افتراضيًا (<code>ap = 1</code>) يستضيف الروبوت شبكتها المعزولة الخاصة <code>wdiy1</code>، غير المتصلة بأي شيء. <strong>تتبع الوضعية، تتبع اليدين، تعابير الوجه، اللوحات، AI Vision، وبديل jsQR جميعها تُنزّل نماذجها من CDN أول مرة يتم تفعيلها، لذا ستفشل عند بدء التشغيل على نقطة وصول الروبوت الخاصة.</strong> القيادة، بث الفيديو، اللقطات، والتسجيل كلها تعمل بشكل جيد هناك &mdash; فقط التراكبات المعتمدة على النماذج لا تعمل.",
+      qs_note2_p2: "لاستخدامها، اضبط <code>ap = 0</code> في أعلى <code>4_CamRobot.ino</code> مع <code>ssid</code>/<code>password</code> جهاز التوجيه الخاص بك، أعد الفلاش، واقرأ عنوان IP الخاص بالروبوت من شاشة المراقبة التسلسلية. سيصبح لهاتفك أو حاسوبك المحمول اتصال بالروبوت والإنترنت في آن واحد.",
+      qs_note2_p3: "الاستثناء الوحيد هو <strong>QR / الباركود</strong> على Chrome أو Edge أو Android Chrome، والذي يستخدم <code>BarcodeDetector</code> المدمج في المتصفح ولا يحتاج إلى أي شبكة على الإطلاق &mdash; هذا يعمل على نقطة وصول الروبوت الخاصة.",
+      h_features: "ما يفعله هذا البرنامج الثابت",
+      feat_joystick: "<strong>التحكم بعصا التحكم</strong> &mdash; عصا تحكم افتراضية قابلة للسحب على الشاشة (<code>/joystick?x=&amp;y=</code>)، تُمزج بأسلوب الأركيد إلى إشارة PWM لكل عجلة، إلى جانب أدوات التحكم الأصلية D-pad/لوحة المفاتيح.",
+      feat_failsafe: "<strong>آلية أمان عند انقطاع الاتصال</strong> &mdash; يتوقف الروبوت تلقائيًا إذا لم تُستقبل أي أمر خلال 500 مللي ثانية (انقطاع WiFi، قفل الهاتف، إغلاق التبويب، إلخ)، بدلًا من الاستمرار دون مراقبة. إعادة اتصال WiFi تلقائية في وضع المحطة، استعادة تلقائية لبث MJPEG، ومؤشر اتصال حي.",
+      feat_settings: "<strong>حفظ الإعدادات</strong> &mdash; السرعة والانحراف والأضواء والجودة والدقة والقلب والمرآة تُحفظ جميعها بطريقتين: على الروبوت نفسها (ذاكرة NVS، تبقى بعد إعادة التشغيل/الفلاش، نفس القيم لأي جهاز يتصل) وفي <code>localStorage</code> الخاص بالمتصفح (استعادة فورية عند إعادة التحميل). عند تحميل الصفحة، قيم الجهاز نفسها لها الأولوية دائمًا إن اختلفت عن الذاكرة المحلية.",
+      feat_flip: "<strong>تبديل القلب/المرآة الحي</strong> &mdash; أزرار Flip وMirror في لوحة الأنظمة تستدعي <code>set_vflip</code>/<code>set_hmirror</code> الخاصة بالحساس مباشرة، مما يتيح تصحيح اتجاه الكاميرا لهيكل سيارتك دون إعادة الفلاش.",
+      feat_pose: "<strong>كشف الوضعية</strong> &mdash; تتبع الهيكل العظمي MoveNet (أزرق فاتح)، نقاط وخطوط الأطراف لعدة أشخاص في آن واحد.",
+      feat_hands: "<strong>تتبع اليدين</strong> &mdash; MediaPipe Hands عبر بيئة تشغيل <code>tfjs</code> الخاصة بـTF.js (يتجنب حزمة MediaPipe script/wasm منفصلة من مضيف آخر)، 21 نقطة رئيسية لكل يد بالإضافة إلى تحديد اليد اليمنى/اليسرى (برتقالي).",
+      feat_expr: "<strong>تعابير الوجه</strong> &mdash; سعيد/حزين/غاضب/متفاجئ/إلخ عبر <code>@vladmandic/face-api</code> (نسخة مُطوَّرة بنشاط من face-api.js الذي توقف تطويره)، حيث تُنشر أوزان النموذج في نفس حزمة npm للسكربت &mdash; خلافًا لبقية Vision، هذا يعتمد على مضيف واحد فقط (jsdelivr) بدلًا من اثنين.",
+      feat_codes: "<strong>QR / الباركود</strong> &mdash; يستخدم <code>BarcodeDetector</code> المدمج في المتصفح عند توفره (Chrome/Edge/Android Chrome) &mdash; لا حاجة لأي شبكة، يعمل حتى على نقطة وصول الروبوت المعزولة. يتراجع إلى مكتبة jsQR (رموز QR فقط، يحتاج إنترنت مرة واحدة) على المتصفحات بدون دعم أصلي (Safari/iOS).",
+      feat_plates: "<strong>اللوحات</strong> &mdash; قارئ لوحات ترخيص تجريبي. لا يوجد نموذج جاهز لكشف اللوحات كما هو الحال للأجسام/الوجوه، لذا يُعيد هذا استخدام مربعات السيارة/الشاحنة/الحافلة من COCO-SSD، يقتصّ منطقة اللوحة المحتملة، ويُشغّل OCR حقيقيًا (Tesseract.js) عليها. استدلالي، وليس كاشفًا مُدرَّبًا، ومحدود بدقة الكاميرا 320×240 &mdash; يعمل بشكل أفضل من قرب، بشكل مباشر، وبإضاءة جيدة. يعمل بمعدله البطيء الخاص (~2.5 ثانية) لأن OCR أثقل بكثير من كشف الأجسام/الوجوه.",
+      feat_vision: "<strong>AI Vision</strong> &mdash; تراكب حي قابل للتفعيل يكشف الأجسام (COCO-SSD) والوجوه (BlazeFace) مباشرة فوق منظار الرؤية، يعمل بالكامل داخل المتصفح لأن ESP32 لا يمكنه تشغيل شبكة عصبية إلى جانب كل شيء آخر. يحتاج إلى إنترنت على الشبكة التي يستخدمها الجهاز لتحميل النماذج أول مرة.",
+      feat_buildstamp: "<strong>بصمة البناء</strong> &mdash; تذييل صفحة التحكم، و<code>/status</code>، ووحدة التحكم التسلسلية عند الإقلاع، جميعها تُبلّغ عن إصدار الفيرموير، وطابع زمني للبناء من المُصرّف، ومراجعة git التي أتى منها (مع لاحقة <code>-dirty</code>، تظهر بالكهرماني، عندما كانت الشجرة تحتوي تغييرات غير محفوظة). سابقًا لم تكن هناك طريقة لمعرفة ما يعمل فعليًا على الروبوت دون إعادة فلاشها. تُختم المراجعة بواسطة خطاف ما قبل البناء في PlatformIO؛ Arduino IDE ليس له مكافئ، لذا تُبلّغ البُنى من هناك عن <code>nogit</code> بدلًا من تجزئة قد تكون قديمة. تُقدَّم الصفحة أيضًا مع <code>Cache-Control: no-store</code>، حتى لا يقرن المتصفح صفحة مخبأة بفيرموير أحدث.",
+      feat_classiccv: "<strong>رؤية حاسوبية كلاسيكية (بدون نماذج، بدون إنترنت)</strong> &mdash; ثلاث ميزات تعمل على نقطة وصول الروبوت الخاصة دون تنزيل أي شيء، لأنها حسابات بكسل بسيطة وليست شبكة عصبية. كما تعمل بمعدل الإطارات الكامل بدلًا من 0.4–2.5 هرتز التي يديرها نموذج على الهاتف، وهذا ما يجعل أوضاع القيادة قابلة للتطبيق.",
+      h_repolayout: "هيكل المستودع",
+      repo_sync: "يُبقى <code>Codes/4_CamRobot</code> و<code>firmware/4_camrobot/src</code> متطابقين &mdash; المصدر نفسه ونظاما بناء. حرّر تحت <code>firmware/</code> ثم انسخ. أما السكتشات الثلاثة الأخرى فعروض بسيطة مضمومة لتكتمل حزمة الورشة، لكنها بخلاف ما كان على السيارة ليست بلا تعديل: فكلا الأمرين اللذين تعرضهما انتقل إلى أطراف أخرى، فصار <code>1_blink</code> و<code>2_breathing_light</code> يقودان البكسل الملوّن، وصار <code>3_motor</code> يقود ترانزستورين بدل متحكم I&sup2;C.",
+      h_buildsystems: "أنظمة البناء",
+      h3_pio: "PlatformIO (firmware/)",
+      pio_p1: "كل كود هو مشروع PlatformIO خاص به تحت <code>firmware/&lt;name&gt;/</code>، جميعها تستهدف <code>env:esp32cam</code> (توزيع دبابيس AI-Thinker) لأنها نفس اللوحة الفعلية للأربعة جميعًا:",
+      th_app: "التطبيق", th_notes: "ملاحظات",
+      app_blink: "يومض البكسل الملوّن. يحتاج مكتبة NeoPixel رغم بساطته الشديدة &mdash; فليس على هذه اللوحة مصباح عادي يُقلَّب.",
+      app_breathing: "يدرّج سطوع البكسل نفسه. فليس لمصباح قابل للعنونة مدخل تناظري يُكتب فيه، لذا يتدرّج اللون نفسه.",
+      app_motor: "يشغّل تسلسل القيادة فور الإقلاع أو إعادة التعيين &mdash; <strong>اترك للروبوت مساحة للحركة</strong> قبل أن تفلشه أو تعيد تعيينه. وهو لا يسير إلا إلى الأمام، فالمقصود مساحة أمامه.",
+      th_setting: "الإعداد", th_value: "القيمة", th_why: "السبب",
+      ini_platform: "مثبّت، وليس متروكًا على \"latest\" &mdash; منصة غير مثبّتة قد تسحب بصمت إصدار برنامج تشغيل <code>esp32-camera</code> مختلفًا عمّا ثبّته Arduino IDE، مما يغيّر سلوك فحص حساس الكاميرا. <code>6.5.0</code> (arduino-esp32 2.0.14) هو الإصدار المؤكد عمله مع هذا المشروع. التطبيقات الثلاثة الأخرى مثبّتة على نفس الإصدار أيضًا، للاتساق، رغم أنها بسيطة جدًا لتكون حساسة له.",
+      ini_partitions: "يحتاج إلى مسارَي تطبيق OTA لتحديثات الفيرموير (انظر <a href=\"#ota\">OTA وإعداد WiFi</a> أدناه)، وهو ما لا يوفره <code>huge_app.csv</code> إطلاقًا. يوفر <code>min_spiffs.csv</code> مسارين بحجم ~1.9 ميجابايت بدلًا من مسار واحد بحجم 3 ميجابايت &mdash; الفيرموير حاليًا حوالي 1.1 ميجابايت (60%)، وهو أقل بكثير من ذلك، لكنه سقف أكثر صرامة للنمو المستقبلي مما كان عليه سابقًا.",
+      ini_buildflags: "قائمة <code>Tools &gt; PSRAM: Enabled</code> في Arduino IDE تضع هذين الخيارين من وراء ستار. أما تحت PlatformIO فتعريف لوحة <code>esp32cam</code> يحمل <strong>كليهما أصلًا</strong> في <code>extra_flags</code> الخاصة به &mdash; وإنما كُرّرا هنا ليبقيا ظاهرين حيث سيبحث عنهما الناظر. <strong>ولهذا أيضًا يحتاج تعطيل PSRAM إلى <code>-UBOARD_HAS_PSRAM</code> لا إلى حذف سطر</strong> &mdash; انظر <a href=\"#board\">اللوحة</a>. والخطأ في هذا هو السبب المعتاد لعبارة «يعمل في Arduino IDE وتفشل الكاميرا في PlatformIO» (<code>Camera init failed with error 0x106</code>).",
+      ini_libdeps: "تدعم <code>WiFiManager</code> بوابة إعداد الواي فاي الأسيرة التي تُطلَق من الويب (انظر <a href=\"#ota\">OTA وإعداد الواي فاي</a> أدناه). وتقود <code>Adafruit NeoPixel</code> البكسل الملوّن وليست اختيارية &mdash; فهي الضوء الوحيد على الروبوت، ويستعملها كلٌّ من ومضة الجاهزية ونمط عطل الكاميرا. وتدعم <code>Adafruit SSD1306</code> و<code>Adafruit GFX</code> الشاشة الاختيارية؛ والسكتش يعمل بلا شاشة موصولة لكنه لا يُبنى بلا المكتبات. ويثبّت مستخدمو Arduino IDE الأربع من مدير المكتبات.",
+      ini_uploadspeed: "أسلم من 921600 للوحة تُفلَش عبر مهايئ FTDI بسيط بلا دارة إعادة تعيين تلقائية &mdash; وهي حال هذه اللوحة دائمًا، إذ لا يحمل J3 إلا 5V وRX وTX والأرضي.",
+      menu_label: "القائمة",
+      launch_p: "<span>يسأل السكربت عند بدئه عن التطبيق الذي تعمل عليه (ويكتشف تلقائيًا أي</span> <code>firmware/&lt;name&gt;/platformio.ini</code>)، والخيار 0 يبدّل التطبيقات في أي وقت بلا إعادة تشغيله. والخيار 4 (الفلاش) يطبع إجراء هذه اللوحة لا إجراء السيارة: فليس ثمّ زر BOOT يُضغط، بل تصل GPIO0 بالأرضي وتضغط RESET وترفع، ثم تنزع الوصلة وتعيد التعيين &mdash; مع تحذير إضافي في حال <code>3_motor</code> عن ترك مساحة للروبوت. والخياران 9 و<code>e</code> جديدان هنا: فـOTA هي الطريقة الفعلية لتحديث لوحة بلا إعادة تعيين تلقائية، و<code>e</code> يبلغ البيئات التي يخفيها <code>default_envs</code> عمدًا.",
+      clean_note: "إن غيّرت <code>platformio.ini</code> (كأن تثبّت نسخة المنصة من جديد أو تبدّل خيارات PSRAM) فشغّل الخيار 8 (التنظيف) قبل إعادة البناء كي لا تحجب ذاكرة <code>.pio/</code> القديمة التغيير.",
+      h3_arduino: "Arduino IDE (Codes/4_CamRobot/)",
+      arduino_p: "سير عمل Arduino IDE المعتاد. تأكد أن <code>Tools &gt; PSRAM</code> مضبوط على <code>Enabled</code>، وأن <code>Tools &gt; Partition Scheme</code> مضبوط على <strong>«Minimal SPIFFS (1.9MB APP with OTA)»</strong> (وهو لازم لتحديثات OTA &mdash; انظر <a href=\"#ota\">OTA وإعداد الواي فاي</a> أدناه)، وأن <strong>WiFiManager</strong> (من tzapu) و<strong>Adafruit NeoPixel</strong> و<strong>Adafruit SSD1306</strong> و<strong>Adafruit GFX</strong> مثبتة من <code>Tools &gt; Manage Libraries</code>. والبناء من هنا يعلن دائمًا <code>nogit</code> في ختم البناء &mdash; إذ لا يملك Arduino IDE خطّافًا قبل البناء يختم به رقم المراجعة.",
+      h_ota: "OTA وإعداد WiFi",
+      ota_p1: "طريقتان مستقلتان لتحديث الفيرموير عبر WiFi، بالإضافة إلى طريقة اختيارية للانضمام إلى شبكة منزلية بدلًا من نقطة وصول الروبوت الخاصة &mdash; لا شيء من هذا يغيّر التجربة الافتراضية الجاهزة للاستخدام (نقطة وصول <code>wdiy1</code>، الفلاش عبر USB) ما لم تستخدمه.",
+      ota_h_browser: "الرفع من المتصفح",
+      ota_p2: "لوحة <strong>الفيرموير / الشبكة</strong> القابلة للطي في صفحة التحكم بها منتقي ملفات: اختر <code>firmware.bin</code> مبنيًا لهذه اللوحة واضغط <strong>رفع وفلاش</strong>. يعيد الروبوت التشغيل تلقائيًا بمجرد انتهاء الرفع. يعمل سواء كان الروبوت على نقطة وصولها الخاصة أو على جهاز توجيه منضم إليه.",
+      ota_h_espota: "PlatformIO / espota",
+      ota_p3: "لمن لديه PlatformIO مثبّتًا:",
+      ota_p4: "بدون تحديد مسار صورة، يعيد البناء من المصدر ويرفعه؛ مع تحديد مسار (مثل <code>.pio/build/esp32cam/firmware.bin</code> مبني مسبقًا)، يرفع ذلك الملف الثنائي بالضبط دون إعادة بناء. عنوان IP الافتراضي على نقطة وصول الروبوت الخاصة هو <code>192.168.4.1</code>؛ على جهاز توجيه، اقرأ العنوان من شاشة المراقبة التسلسلية.",
+      ota_h_wifisetup: "بوابة إعداد WiFi",
+      ota_p5: "نفس لوحة الفيرموير / الشبكة بها زر <strong>إعداد WiFi&hellip;</strong>. يعيد تشغيل الروبوت في بوابة أسيرة WiFiManager على شبكة منفصلة باسم <code>CamRobot-Setup</code> &mdash; انضم إليها خلال 3 دقائق، اختر شبكة WiFi المنزلية من القائمة المعروضة، وأدخل كلمة المرور الخاصة بها. عند النجاح، يحفظها الروبوت ويعيد التشغيل على تلك الشبكة؛ عند الفشل أو انتهاء المهلة، تعيد التشغيل إلى الوضع الذي كانت تستخدمه من قبل، حتى لا تبقى الروبوت غير متاحة أبدًا.",
+      ota_note: "هذا تدفق معطِّل فعليًا: لا يمكن للروبوت القيادة أثناء فتح البوابة، وستنضم إلى شبكتَي WiFi مختلفتين بالتتابع (شبكة الروبوت، ثم <code>CamRobot-Setup</code>، ثم شبكتك المنزلية). نفس التحذير بالنسبة لبقية سطح التحكم هذا: نقطتا النهاية <code>/update</code> و<code>/wifi-setup</code> ليس لديهما أي مصادقة &mdash; انظر <a href=\"report.html\">report.html</a>.",
+      h_troubleshooting: "استكشاف الأخطاء",
+      ts_intro: "<span>تأتي المشكلات الخاصة بهذه اللوحة أولًا، وكل ما بعدها موروث عن</span> <a href=\"https://github.com/abourdim/video-car\">VideoCar</a> <span>ويسلك هنا المسلك نفسه.</span>",
+      ts_h1: "فشل تهيئة الكاميرا بخطأ 0x106 (فقط تحت PlatformIO، يعمل بشكل جيد في Arduino IDE)",
+      ts_p1: "هذا هو <code>ESP_ERR_NOT_SUPPORTED</code> من فحص حساس الكاميرا. إذا كانت نفس اللوحة تعمل في Arduino IDE، فهذا عدم توافق في سلسلة الأدوات/أعلام البناء، وليس مشكلة عتاد &mdash; راجع ملاحظات PSRAM/تثبيت المنصة أعلاه. <code>platformio.ini</code> الخاص بهذا المشروع مُهيَّأ بالفعل لتجنب ذلك؛ إذا استمرت المشكلة، شغّل الخيار 8 (Clean) من <code>./launch.sh</code> لمسح أي ذاكرة بناء قديمة، وتأكد من أن إصدار نواة <code>esp32</code> المثبّت في Arduino IDE (<code>Tools &gt; Board &gt; Boards Manager</code>) يقارب إصدار منصة PlatformIO المثبّت &mdash; إذا كان مختلفًا جدًا، أعد تثبيت <code>platform = espressif32@X.Y.Z</code> ليطابقه.",
+      ts_h2: "إعادة تشغيل متكررة مباشرة بعد خطأ كاميرا",
+      ts_p2: "عادة مصدر طاقة هامشي &mdash; تهيئة الكاميرا + WiFi تسبب ارتفاعًا مفاجئًا في التيار لا يستطيع الكثير من محولات FTDI توفيره بشكل نظيف. استخدم مصدرًا مناسبًا 5V/2A. السكربت يفعّل بالفعل حل التفاف كاشف انخفاض الجهد، الذي سيُظهر هذا كرسالة إعادة محاولة/خطأ نظيفة بدلًا من حلقة إعادة تشغيل صامتة، لكنه لا يصلح انخفاض الجهد الأساسي.",
+      ts_h3: "الروبوت لا يتوقف عند إغلاق التبويب أو فقد الواي فاي",
+      ts_p3: "لا ينبغي أن يقع &mdash; فنظام أمان البرنامج الثابت يوقف المحركات بعد 500 ملي ثانية بلا أمر. فإن رأيت خلاف ذلك فافحص ختم البناء في تذييل صفحة التحكم. ولاحظ أن انعدام نبضة التشغيل على هذا الهيكل انسياب لا كبح: إذ يكفّ الترانزستور عن التوصيل ويدور المحرك حرًّا، فيتجاوز الروبوت دائمًا قليلًا النقطة التي توقف عندها الأمر.",
+      ts_h4: "ميزة رؤية تقول إنها لا يمكنها التحميل، على WiFi الروبوت الخاص",
+      ts_p4: "متوقع أول مرة. النماذج تأتي من CDN ونقطة وصول الروبوت ليس لديها إنترنت. اتصل بجهاز توجيه، فعّل الميزة مرة واحدة حتى تستقر ملفاتها في الذاكرة المؤقتة دون اتصال (لوحة Offline تُظهر العدد والحجم)، ثم عد إلى نقطة وصول الروبوت &mdash; ستعمل من حينها. اللوحات هي الاستثناء: يُحمَّل Tesseract.js من داخل Web Worker لا تستطيع الذاكرة المؤقتة اعتراضه، لذا يبقى معتمدًا على الإنترنت فقط.",
+      ts_h5: "يموت بث الفيديو عند بدء ميزة رؤية أو استقلالية",
+      ts_p5: "يُجلب البث بـ<code>crossorigin=\"anonymous\"</code> حتى تستطيع الصفحة قراءة الإطارات منه، وهذا يتطلب رأس CORS الذي يضبطه الفيرموير على المنفذ 81. إذا اختلفا يرفض المتصفح الصورة تمامًا. تكتشف الصفحة هذا وتعيد الاتصال بدون CORS بعد فشلين، متراجعة إلى استقصاء <code>/capture</code>، لذا يجب أن تُصلح نفسها خلال ثوانٍ &mdash; إن لم تفعل، قارن الالتزام في بصمة بناء التذييل مع <code>git log --oneline</code> وأعد الفلاش إن اختلفا.",
+      ts_h6: "متتبع الخط لا يتحرك على الإطلاق",
+      ts_p6: "ضع منزلق السرعة على الحد الأقصى. يُضرب في سقف الوضع الخاص به، و<code>LINE_SPEED</code> منخفض عمدًا (26)، لذا قد يترك منزلق مخفَّض المحركات تحت عتبة الحركة الأولى. إذا استمر عدم الحركة، ارفع <code>LINE_SPEED</code> في <code>app_server.h</code>.",
+      ts_h7: "متتبع الخط يتمايل أو يفقد الخط",
+      ts_p7: "اخفض <code>LINE_KP</code>، لا ترفعه. الحلقة محدودة بزمن الرحلة ذهابًا وإيابًا وليس بالكسب، والمزيد من الكسب يزيد حلقة تهيمن عليها التأخيرات سوءًا. إذا كانت تفوّت المنعطفات بدلًا من ذلك، ارفع <code>LINE_TURN_CUT</code> لتبطئ أكثر أثناء الانعطاف. إذا أبلغت &ldquo;looking for a line&rdquo; فوق خط حقيقي، فالتباين منخفض جدًا &mdash; استخدم شريطًا أعرض وأغمق قبل لمس <code>LINE_MIN_CONTRAST</code>.",
+      ts_h8: "وضع مستقل لا يبقى مسلّحًا",
+      ts_p8: "أي إدخال يدوي ينزع تسليحه بالتصميم، وكذلك إخفاء تبويب المتصفح، وفقدان الهدف يوقف الروبوت بعد 0.7 ثانية وينزع التسليح بعد 3 ثوانٍ. الثلاثة مقصودة.",
+      ts_h9: "لا مصادقة على نقاط التحكم",
+      ts_p9: "<span>قيد معروف وغير معالج موروث من الكود الأصلي &mdash; راجع</span> <a href=\"report.html\">report.html</a> للتفاصيل. أي شخص على شبكة WiFi باسم <code>wdiy1</code> (كلمة المرور الافتراضية <code>88888888</code>) يمكنه قيادة الروبوت.",
+      feat_oled: "<strong>شاشة OLED (اختيارية)</strong> &mdash; شاشة SSD1306 بقياس 128&times;64 على العنوان <code>0x3C</code> عبر GPIO 14/15، وهو على هذه اللوحة ناقل مستقل لا ناقل مشترك مع المحركات. تبدأ باختبار ذاتي: هل أقلعت الكاميرا، وهل يرى مستشعر الحركة شيئًا، وعلى أي شبكة استقر الروبوت، و<strong>العنوان الذي تكتبه</strong> &mdash; وهو في وضع المحطة يوزَّع عبر DHCP ولم يكن يوجد قبل ذلك إلا على منفذ التسلسل. وما إن يتصل متصفح حتى تصير وجهًا متحركًا: يرمش ويغمز وينظر في اتجاه سيره ويقلق حين يقطع نظام الأمان المحركات، ثم ينام بعد عشرين ثانية. ولا أحد من الطرفين مُخرَج على اللوحة الحاملة، فلا يكاد أحد يركّب واحدة &mdash; تُستشعَر الوحدة عند الإقلاع ويصير كل شيء بلا أثر إن غابت. انظر <a href=\"#oled\">شاشة OLED</a> أدناه.",
+      h_oled: "&#1588;&#1575;&#1588;&#1577; OLED (&#1575;&#1582;&#1578;&#1610;&#1575;&#1585;&#1610;&#1577;)",
+      oled_p1: "توضع وحدة SSD1306 بقياس 128&times;64 على العنوان <code>0x3C</code> على الطرفين <strong>GPIO 14 (SDA) وGPIO 15 (SCL)</strong>، وهما على هذه اللوحة لا ينتميان إلى شيء آخر. وهذا هو الفارق كله عن السيارة التي نُقل عنها هذا العمل، حيث كان على الشاشة أن تتشارك ناقل متحكم المحركات، فدفعت ثمن ذلك قفلًا متبادلًا وإطارات ضائعة وقاعدة تمنع الرسم أثناء السير.",
+      oled_p2: "<strong>طرف 3V3 في الوحدة هو مصدر 3.3 فولت الوحيد في هذا الروبوت.</strong> فاللوحة الحاملة تترك ذلك الطرف بلا توصيل &mdash; لا كتلة توسعة ولا منظّم خاص بها ولا شيء. فبخلاف سيارة keyestudio حيث كانت النصيحة أن تأخذ 3.3 فولت من أي مكان <em>إلا</em> الوحدة، لا يوجد هنا مكان آخر. وهذا الخط يحمل الكاميرا والراديو أصلًا، ولهذا يعطّل السكتش كاشف هبوط الجهد، وإضافة 20 ملي أمبير عليه استدعاء لعمليات إعادة التشغيل الموصوفة في قسم استكشاف الأخطاء. وإن كانت وحدة شاشتك تحمل منظّمًا خاصًا بها &mdash; وكثير من لوحات SSD1306 يقبل من 3.3 إلى 5 فولت &mdash; فغذّها بـ5 فولت من J6 أو J3 ودع ذلك الخط وشأنه.",
+      oled_p3: "<strong>لا يلزم شيء آخر.</strong> تُستشعَر الشاشة عند الإقلاع؛ فإن لم يُجب أحد على <code>0x3C</code> كتب الروبوت سطرًا واحدًا على المنفذ التسلسلي وعمل تمامًا كما كان سيعمل على أي حال. ويعيد <code>/status</code> القيمة <code>\"oled\": 0</code> أو <code>1</code>.",
+      oled_h_wire: "&#1571;&#1610; &#1587;&#1604;&#1603; &#1610;&#1584;&#1607;&#1576; &#1573;&#1604;&#1609; &#1571;&#1610;&#1606;",
+      oled_w8: "&#1576;&#1593;&#1590; &#1575;&#1604;&#1608;&#1581;&#1583;&#1575;&#1578; &#1578;&#1591;&#1576;&#1593; &#1575;&#1604;&#1571;&#1591;&#1585;&#1575;&#1601; &#1575;&#1604;&#1571;&#1585;&#1576;&#1593;&#1577; &#1576;&#1578;&#1585;&#1578;&#1610;&#1576; &#1605;&#1582;&#1578;&#1604;&#1601;&#1548; &#1608;&#1602;&#1604;&#1610;&#1604; &#1605;&#1606;&#1607;&#1575; &#1610;&#1587;&#1578;&#1580;&#1610;&#1576; &#1593;&#1604;&#1609; <code>0x3D</code>. &#1575;&#1602;&#1585;&#1571; &#1575;&#1604;&#1605;&#1604;&#1589;&#1602;&#1575;&#1578; &#1593;&#1604;&#1609; <strong>&#1604;&#1608;&#1581;&#1578;&#1603; &#1571;&#1606;&#1578;</strong>&#1548; &#1604;&#1575; &#1593;&#1604;&#1609; &#1575;&#1604;&#1589;&#1608;&#1585;&#1577;.",
+      oled_h_shows: "&#1605;&#1575; &#1575;&#1604;&#1584;&#1610; &#1578;&#1593;&#1585;&#1590;&#1607;",
+      oled_s1: "<strong>شاشة الافتتاح</strong> &mdash; شعار Workshop-DIY على عرض اللوح كله، ثم <code>CamRobot</code> ورقم النسخة. إطاران لا إطار واحد: فعند 120&times;64 يبقى الشعار مقروءًا بالكاد، وقصّه ليتقاسم الزجاج مع سطر النسخة لم يكن يشبه هذا ولا ذاك.",
+      oled_s2: "<strong>الاختبار الذاتي</strong>، يبقى أربع ثوانٍ: الكاميرا وهل وُجدت PSRAM، وهل مستشعر الحركة مركّب وهل يرى شيئًا، والشبكة التي استقر عليها، والعنوان الذي تكتبه &mdash; وهو السطر الذي كان يستلزم كابلًا تسلسليًا من قبل.",
+      oled_s3: "<strong>&#1575;&#1604;&#1581;&#1575;&#1604;&#1577;</strong>&#1548; &#1591;&#1575;&#1604;&#1605;&#1575; &#1604;&#1575; &#1571;&#1581;&#1583; &#1605;&#1578;&#1589;&#1604;&#1611;&#1575; &mdash; &#1575;&#1604;&#1593;&#1606;&#1608;&#1575;&#1606;&#1548; &#1575;&#1604;&#1588;&#1576;&#1603;&#1577; &#1608;&#1580;&#1608;&#1583;&#1577; &#1575;&#1604;&#1575;&#1578;&#1589;&#1575;&#1604;&#1548; &#1575;&#1604;&#1587;&#1585;&#1593;&#1577; &#1608;&#1575;&#1604;&#1605;&#1608;&#1575;&#1586;&#1606;&#1577;&#1548; &#1608;&#1605;&#1583;&#1577; &#1575;&#1604;&#1578;&#1588;&#1594;&#1610;&#1604;.",
+      oled_s4: "<strong>&#1575;&#1604;&#1608;&#1580;&#1607;</strong>&#1548; &#1576;&#1605;&#1580;&#1585;&#1583; &#1571;&#1606; &#1610;&#1601;&#1578;&#1581; &#1605;&#1578;&#1589;&#1601;&#1581; &#1589;&#1601;&#1581;&#1577; &#1575;&#1604;&#1578;&#1581;&#1603;&#1605; &#1571;&#1608; &#1576;&#1579; &#1575;&#1604;&#1601;&#1610;&#1583;&#1610;&#1608;.",
+      oled_s5: "<strong>&#1575;&#1604;&#1582;&#1605;&#1608;&#1604;</strong> &mdash; &#1578;&#1582;&#1601;&#1578; &#1575;&#1604;&#1573;&#1590;&#1575;&#1569;&#1577; &#1576;&#1593;&#1583; 30 &#1579;&#1575;&#1606;&#1610;&#1577;&#1548; &#1578;&#1615;&#1586;&#1581;&#1617;&#1604; &#1575;&#1604;&#1593;&#1606;&#1608;&#1575;&#1606; &#1593;&#1604;&#1609; &#1575;&#1604;&#1588;&#1575;&#1588;&#1577; &#1576;&#1593;&#1583; &#1583;&#1602;&#1610;&#1602;&#1578;&#1610;&#1606;&#1548; &#1608;&#1576;&#1593;&#1583; &#1582;&#1605;&#1587; &#1608;&#1593;&#1588;&#1585;&#1610;&#1606; &#1583;&#1602;&#1610;&#1602;&#1577; &#1578;&#1594;&#1601;&#1608;: &#1593;&#1610;&#1606;&#1575;&#1606; &#1605;&#1594;&#1605;&#1590;&#1578;&#1575;&#1606; &#1608;&#1581;&#1585;&#1601; <code>z</code> &#1610;&#1589;&#1593;&#1583;&#1548; &#1608;&#1575;&#1604;&#1580;&#1605;&#1610;&#1593; &#1610;&#1578;&#1586;&#1581;&#1586;&#1581; &#1576;&#1576;&#1591;&#1569;. <strong>&#1575;&#1604;&#1588;&#1575;&#1588;&#1577; &#1604;&#1575; &#1578;&#1615;&#1591;&#1601;&#1571; &#1571;&#1576;&#1583;&#1611;&#1575;.</strong> &#1575;&#1604;&#1588;&#1575;&#1588;&#1577; &#1575;&#1604;&#1587;&#1608;&#1583;&#1575;&#1569; &#1604;&#1575; &#1578;&#1615;&#1605;&#1610;&#1617;&#1586; &#1593;&#1606; &#1576;&#1591;&#1575;&#1585;&#1610;&#1577; &#1601;&#1575;&#1585;&#1594;&#1577;&#1548; &#1604;&#1584;&#1604;&#1603; &#1578;&#1592;&#1604; &#1603;&#1604; &#1605;&#1585;&#1581;&#1604;&#1577; &#1578;&#1593;&#1585;&#1590; &#1588;&#1610;&#1574;&#1611;&#1575; &mdash; &#1608;&#1603;&#1604; &#1605;&#1575; &#1578;&#1593;&#1585;&#1590;&#1607; &#1610;&#1578;&#1586;&#1581;&#1586;&#1581;&#1548; &#1604;&#1571;&#1606; &#1575;&#1604;&#1575;&#1581;&#1578;&#1585;&#1575;&#1602; &#1610;&#1571;&#1578;&#1610; &#1605;&#1606; &#1575;&#1604;&#1576;&#1603;&#1587;&#1604;&#1575;&#1578; &#1575;&#1604;&#1578;&#1610; &#1604;&#1575; &#1578;&#1578;&#1594;&#1610;&#1585; &#1571;&#1576;&#1583;&#1611;&#1575;&#1548; &#1604;&#1575; &#1605;&#1606; &#1575;&#1604;&#1605;&#1590;&#1575;&#1569;&#1577;.",
+      oled_p4: "لعطل الكاميرا شاشته الخاصة تسمّي رمز الخطأ وما ينبغي فحصه، بدل الاكتفاء بالومضات الثلاث على البكسل.",
+      oled_h_bus: "ما أزاله النقل",
+      oled_p5: "يفيد أن تعرف هذا إن نقلت العمل في الاتجاه المعاكس، أو قارنته بروبوتات micro:bit التي تلبس الوجه نفسه. على سيارة keyestudio كانت كتابات المحركات تأتي من مهمة خادم HTTP وتُرسم الشاشة من <code>loop()</code>، وكلاهما على ناقل واحد. ومهمتان في FreeRTOS تستعملان <code>Wire</code> بلا تشابك تتداخل معاملاتهما &mdash; فتتلقى الشاشة بايتات المحركات وتتلقى لوحة القيادة بيانات البكسلات، ولا يحدث ذلك إلا تحت الحمل &mdash; ولهذا حمل ذلك الكود قفلًا متبادلًا حول كل معاملة، تنتظره المحركات بلا حد ولا تنتظره الشاشة أصلًا.",
+      oled_p6: "يبقى الناقل عند 100 كيلوهرتز بدل 400 التي كانت <code>Adafruit_SSD1306</code> تنتقل إليها عادة. ومع ناقل خاص صار ذلك آمنًا، غير أن شاشة ملحومة باليد ليست الموضع الصحيح لإنفاق الهامش: فهذه أسلاك طائرة إلى أطراف رأس الوحدة، وليس معها من مقاومات السحب إلا ما في لوحة الشاشة نفسها. و<code>OLED_I2C_HZ</code> في <code>oled.h</code> هو المقبض إن كان توصيلك قصيرًا.",
+      ts_h10: "&#1588;&#1575;&#1588;&#1577; OLED &#1578;&#1576;&#1602;&#1609; &#1587;&#1608;&#1583;&#1575;&#1569;",
+      ts_p10: "أولًا: أغلب الروبوتات لا تحمل شاشة، وهذا طبيعي &mdash; فالطرفان غير مُخرَجين على اللوحة الحاملة. فإن ركّبت واحدة فانظر <code>/status</code>. فالقيمة <code>\"oled\": 0</code> تعني أن لا أحد أجاب على <code>0x3C</code> حين أقلع الروبوت، فهي إذًا مشكلة توصيل أو عنوان لا مشكلة برنامج. وأغلب هذه الوحدات على <code>0x3C</code>، وقليل منها على <code>0x3D</code> (وبعضها فيه وصلة لحام للاختيار). والسبب المعتاد الآخر تبديل SDA بـSCL: <strong>فـSDA هو GPIO 14 وSCL هو GPIO 15</strong> &mdash; ولاحظ أن هذا يخالف سيارة keyestudio حيث كان SCL هو GPIO 13، وهو محرك هنا. أما <code>\"oled\": 1</code> مع لوح مظلم حقًا فعطل توصيل أو تغذية: افحص خط 3.3 فولت أولًا، واقرأ تحذير التغذية في قسم OLED قبل أن تأخذه من خط الوحدة نفسها.",
+      ts_h11: "الشاشة تعمل ولا شيء غيرها يعمل",
+      ts_p11: "على سيارة keyestudio كان هذا العرض يعني أن مكتبة OLED أعادت تهيئة الناقل على أطرافها الافتراضية وأخذت المحركات معها. وهذا لا يمكن أن يقع هنا &mdash; فالمحركات ليست على ناقل. أما الذي ما زال <code>periphBegin = false</code> في <code>oledInit()</code> يحميه فالشاشة نفسها: فلو تُرك على صحيح لاستدعت <code>begin()</code> الدالة <code>Wire.begin()</code> مرة ثانية على الأطراف الافتراضية ونقلت الناقل بعيدًا عن السلكين اللذين لحمتهما.",
+      h_githistory: "سجل Git",
+      git_p: "يبدأ تاريخ هذا المستودع عند النقل، وليس امتدادًا لتاريخ VideoCar، فلا يوجد فرق واحد يُظهر ما تغيّر. ولهذا وُجد <a href=\"report.html\">report.html</a>.",
+      footer_note: "مُصاغ من <code>README.md</code> في جذر المستودع &mdash; وذلك الملف هو المرجع، وهذه نسخة منسّقة أيسر قراءة في المتصفح. وما في هذه الصفحة من كلام عن العتاد مأخوذ من قائمة وصلات KiCad لا من كرّاسة بيانات الوحدة."
+    }
+  };
+  var RTL_LANGS = { ar: true };
+  var ORIG = {};
+  var els = document.querySelectorAll('[data-i18n]');
+  els.forEach(function(el){ ORIG[el.getAttribute('data-i18n')] = el.innerHTML; });
+
+  function applyLang(lang){
+    if (lang !== 'fr' && lang !== 'ar') lang = 'en';
+    document.documentElement.lang = lang;
+    document.documentElement.dir = RTL_LANGS[lang] ? 'rtl' : 'ltr';
+    els.forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      var dict = I18N[lang];
+      el.innerHTML = (dict && dict[key] != null) ? dict[key] : ORIG[key];
+    });
+    document.querySelectorAll('.lang-btn').forEach(function(btn){
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+    try { localStorage.setItem('videocar-readme-lang', lang); } catch(e){}
+  }
+
+  window.setLang = applyLang;
+
+  var saved = 'en';
+  try { saved = localStorage.getItem('videocar-readme-lang') || 'en'; } catch(e){}
+  applyLang(saved);
+})();
+</script>
+
+</body>
+</html>

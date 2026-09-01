@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CamRobot — Port Report</title>
+<style>
+  :root{
+    --bg:#0B0F14; --panel:#121822; --panel-2:#0E141C; --border:#1F2B38;
+    --cyan:#4CE0D2; --amber:#FFB454; --danger:#FF5C5C;
+    --text:#E7F1F2; --muted:#7C93A0;
+    --mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);
+    line-height:1.6;padding:0 0 60px;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+  header{padding:36px 0 24px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+  header h1{margin:0 0 6px;font-size:22px;letter-spacing:.08em;text-transform:uppercase;}
+  header h1 span{color:var(--amber);}
+  header .meta{font-size:12px;color:var(--muted);letter-spacing:.04em;}
+  header .meta code{color:var(--cyan);background:var(--panel-2);padding:1px 6px;border-radius:4px;}
+  h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    margin:40px 0 14px;display:flex;align-items:center;gap:8px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--border);}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:18px 20px;margin-bottom:14px;}
+  .panel h3{margin:0 0 8px;font-size:14px;color:var(--cyan);letter-spacing:.02em;}
+  .panel p{margin:0;color:var(--text);font-size:13.5px;}
+  .panel p + p{margin-top:8px;}
+  .tag{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bg);background:var(--amber);border-radius:4px;padding:2px 7px;margin-left:8px;
+    vertical-align:middle;}
+  .tag.danger{background:var(--danger);}
+  .tag.ok{background:var(--cyan);}
+  ul{margin:8px 0 0;padding-left:20px;font-size:13.5px;}
+  li{margin:4px 0;}
+  code, .mono{font-family:var(--mono);color:var(--cyan);font-size:.92em;}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+  th{color:var(--muted);font-weight:400;letter-spacing:.06em;text-transform:uppercase;font-size:11px;}
+  .commit{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);}
+  .commit:last-child{border-bottom:0;}
+  .commit .hash{color:var(--amber);font-size:12px;white-space:nowrap;}
+  .commit .msg{font-size:13.5px;}
+  .commit .msg .subject{color:var(--text);display:block;margin-bottom:2px;}
+  .commit .msg .body{color:var(--muted);font-size:12.5px;white-space:pre-wrap;}
+  .shot{width:100%;border-radius:8px;border:1px solid var(--border);display:block;margin-top:10px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:560px){.grid2{grid-template-columns:1fr;}}
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--border);
+    font-size:11.5px;color:var(--muted);}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);
+    box-shadow:0 0 6px var(--cyan);margin-right:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>&#129302; CAM<span>ROBOT</span> &mdash; PORT REPORT</h1>
+    <div class="meta">
+      Repo: <a href="https://github.com/abourdim/wdiy_esp32_cam_robot" style="color:var(--amber);">github.com/abourdim/wdiy_esp32_cam_robot</a> &nbsp;|&nbsp;
+      Package: <code>Codes/4_CamRobot</code> &nbsp;|&nbsp;
+      Ported from <a href="https://github.com/abourdim/video-car" style="color:var(--cyan);">abourdim/video-car</a> v1.6.1 &nbsp;|&nbsp;
+      2026-08-27 &nbsp;|&nbsp;
+      See also <a href="README.html" style="color:var(--cyan);">README</a> &middot;
+      <a href="ports.html" style="color:var(--cyan);">ports guide</a>
+    </div>
+  </header>
+
+  <h2><span class="dot"></span>Summary</h2>
+  <div class="panel">
+    <p>This is not a feature report. Every feature in this firmware already existed in
+    <a href="https://github.com/abourdim/video-car">VideoCar</a>, which does the same job on
+    the keyestudio KS5017 chassis. What this documents is a <strong>port</strong>: the same
+    web app moved onto the <code>esp32_cam_plugin_robot</code> carrier board
+    (WORKSHOP-DIY ID_04, 16/10/2023), and the specific places where that board would not
+    accept it unchanged.</p>
+    <p>The pin map below was read out of <code>esp32_cam_plugin_robot.kicad_pcb</code>'s
+    netlist rather than assumed from the module. That matters, because two of the three
+    breaking differences are pins that the AI-Thinker module and the carrier both have
+    opinions about, and neither opinion is visible from the other end.</p>
+    <p><strong>Testing status.</strong> Both firmware environments compile clean, and the
+    control page's script block parses and was exercised in a browser against a stubbed
+    <code>fetch</code> &mdash; see <em>Verification</em> below for exactly what that covered
+    and what it did not. <strong>None of it has been flashed to the real board.</strong>
+    Put the robot on blocks the first time.</p>
+  </div>
+
+  <h2><span class="dot"></span>What the hardware forced</h2>
+
+  <div class="panel">
+    <h3>No reverse <span class="tag danger">breaking</span></h3>
+    <p>The keyestudio car drove an I2C motor controller at 0x30 that took a PWM byte and a
+    direction byte per side. This board has neither the chip nor the direction bit: each
+    motor is one low-side N-MOSFET (Q1/Q2, 2N7002) with its gate on a GPIO, the motor
+    between the screw terminal and the battery rail, and a 1N4007 across it for flyback.
+    One switch per motor is one degree of freedom per motor, and no H-bridge means no way
+    to run a wheel backwards.</p>
+    <p>That single fact reaches further than anything else in this port:</p>
+    <ul>
+      <li><code>Car_backwards()</code> is kept, so the file still presents the same five
+        verbs, but it can only stop &mdash; and says so on serial rather than silently
+        doing nothing.</li>
+      <li><code>/control?var=car&amp;val=2</code> answers <code>200</code> and stops. Not an
+        error, because a browser holding a cached older control page can still send it, and
+        a robot that sits still beats one logging failures at 10&nbsp;Hz.</li>
+      <li>Turns became a <strong>forward pivot</strong> around the undriven wheel instead of
+        a spin on the spot, so the robot swings through a far wider arc. This is why
+        <code>TURN_SPEED_PERCENT</code> matters more here than it did there.</li>
+      <li><code>/joystick</code>'s <code>y</code> is clamped to <code>0</code>. The arcade
+        mixing is otherwise untouched: the lower clamp on the mixed wheel values moved from
+        <code>-100</code> to <code>0</code>, and forward-only steering falls out of that one
+        edit rather than needing a special case.</li>
+      <li>The D-pad's <strong>Back</strong> button became <strong>Stop</strong>, which the
+        page could not previously ask for outright. The Down arrow key was repurposed the
+        same way rather than left dead.</li>
+      <li><code>FOLLOW_MAX_REV</code> and <code>CHASE_MAX_REV</code> became named zeros, so
+        Follow-me and Colour chase stop and wait when a target closes in rather than backing
+        off. They are named rather than deleted so a chassis that grows an H-bridge later
+        has one number to change.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h3>The headlight moved off GPIO12, because GPIO12 is a wheel <span class="tag danger">breaking</span></h3>
+    <p>VideoCar's lamp was a plain white LED driven with <code>analogWrite(12, level)</code>.
+    On this board GPIO12 is motor 2's gate, so that call spins a wheel. The light is now D3,
+    a single TX1812DB addressable pixel on GPIO4, behind <code>src/lights.h</code>. The
+    Lights slider keeps its 0&ndash;255 range and its NVS key, so a saved setting carries
+    across unchanged and still means the same thing.</p>
+    <p>GPIO4 is shared: on an AI-Thinker module it is also the gate of the onboard flash LED.
+    That is harmless only because <code>lightsSet()</code> refuses to resend a level that has
+    not changed &mdash; one pixel frame is about 30&nbsp;µs and invisible, but a continuous
+    refresh would leave that very bright LED glowing at the average duty, which reads as a
+    hardware fault.</p>
+    <p>GPIO12 is also MTDI, the flash-voltage strapping pin. R2's 10k pulldown is the only
+    reason it is usable as an output here at all; without it the module boots expecting 1.8V
+    flash and does not boot.</p>
+  </div>
+
+  <div class="panel">
+    <h3>PSRAM and the motion sensor want the same pin <span class="tag">build-time choice</span></h3>
+    <p>The carrier provides for an HC-SR501 (soldered at U2, or plugged into J6) whose output
+    reaches the ESP32 through Q3 as a common-emitter inverter into GPIO16 &mdash; so motion
+    reads <em>low</em>, and since R3 is in series rather than to a rail, the pin needs
+    <code>INPUT_PULLUP</code> or it reads noise.</p>
+    <p>GPIO16 is also the PSRAM chip-select on this module. They cannot both have it, so it
+    is decided at build time: the default keeps PSRAM (two QVGA buffers, no sensor,
+    <code>/status</code> reports <code>"pir":-1</code>), and <code>env:esp32cam-pir</code>
+    takes the sensor instead and falls back to a single DRAM frame buffer with QVGA as a hard
+    ceiling. Both environments are built, so neither path rots.</p>
+    <p><code>src/pir.h</code> carries an <code>#error</code> for the half-made version of that
+    change, because a build that kept PSRAM and read GPIO16 anyway would report "motion"
+    every time the cache missed &mdash; a robot that works, streams, and lies.</p>
+  </div>
+
+  <div class="panel">
+    <h3>The OLED got its bus to itself <span class="tag ok">improvement</span></h3>
+    <p>This is the one place the port came out better than its source. On the keyestudio car
+    the screen shares GPIO14/13 with the motor controller, which costs a mutex, dropped
+    frames, a rule against drawing while driving, and &mdash; on the micro:bit robots in the
+    same family &mdash; the risk that an unplugged screen takes the motors down with it.</p>
+    <p>Here the motors are two PWM pins and the screen has GPIO14/15 entirely to itself. The
+    mutex is gone, <code>oledPush()</code> no longer drops frames, and a missing screen costs
+    nothing but the screen. The "don't draw while driving" rule was kept, but only for the
+    second of its two reasons: nobody watches the eyes of a robot that is driving away from
+    them.</p>
+    <p>Neither pin is broken out on the carrier, so a screen has to be soldered to the
+    module's own header. Most builds will not have one, which is why the firmware probes at
+    boot and carries on silently. The boot self-test lost its "Driver 0x30" line &mdash;
+    there is no chip left to ask &mdash; and spends it on the motion sensor instead, rather
+    than printing a reassuring "ok" that tests nothing.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Things the board simply does not have <span class="tag ok">documented</span></h3>
+    <ul>
+      <li><strong>No microSD.</strong> GPIO 2, 4, 12, 13, 14 and 15 are the module's SD pins;
+        this board spends 12, 13 and 4 on the motors and the pixel. Nothing to fix.</li>
+      <li><strong>No auto-reset, no boot button.</strong> J3 is a bare 5V/RX/TX/GND header and
+        GPIO0 goes to the module and nowhere else, so the first flash means jumpering GPIO0
+        to GND by hand. This is why OTA got its own menu entry in <code>launch.sh</code>.</li>
+      <li><strong>USB-C is power only.</strong> J7's CC1/CC2 are unpopulated, so it takes 5V
+        from an A-to-C cable or a dumb supply, not from a charger expecting to negotiate.</li>
+      <li><strong>Two supplies.</strong> <code>+5V</code> (USB-C) runs the logic;
+        <code>VCC</code> (J5) is the motor rail. A robot on USB alone boots and streams and
+        cannot move. J4 bridges them if that is what you want.</li>
+    </ul>
+  </div>
+
+  <h2><span class="dot"></span>What carried over untouched</h2>
+  <div class="panel">
+    <p>Everything not listed above, which is most of it: the MJPEG stream on port 81 and the
+    two-server split, <code>/capture</code>, the 500&nbsp;ms connection-loss failsafe, the
+    sticky viewfinder and collapsible panels, the whole browser-side vision suite, the
+    IndexedDB offline model cache, the autonomy arbiter, snapshot and recording, the build
+    stamp and its PlatformIO pre-build hook, <code>POST /update</code>, ArduinoOTA, the
+    WiFiManager captive portal, and the English/French/Arabic translations.</p>
+    <p>The three lesson sketches carried over in shape rather than in code, because both
+    things they demonstrate moved: <code>1_Blink</code> and <code>2_breathing_light</code>
+    now drive the RGB pixel (an addressable LED has no analog input to write, so the fade is
+    done by scaling the colour), and <code>3_motor</code> drives two MOSFETs instead of an
+    I2C controller.</p>
+  </div>
+
+  <h2><span class="dot"></span>Corrections made during the port</h2>
+  <div class="panel">
+    <h3>VideoCar's PSRAM comment was wrong <span class="tag ok">fixed</span></h3>
+    <p><code>firmware/4_videocar/platformio.ini</code> states that PlatformIO's generic
+    <code>esp32cam</code> board definition does not set the PSRAM flags for you. It does:
+    <code>esp32cam.json</code> carries <code>-DBOARD_HAS_PSRAM
+    -mfix-esp32-psram-cache-issue</code> in its own <code>extra_flags</code>. Deleting the
+    <code>-D</code> from <code>build_flags</code> therefore changes nothing, because
+    <code>build_flags</code> cannot remove what <code>extra_flags</code> added &mdash; it has
+    to be undefined with <code>-UBOARD_HAS_PSRAM</code>.</p>
+    <p>Found the hard way: the motion-sensor build hit the <code>#error</code> in
+    <code>pir.h</code> despite the flag having been removed. The guard did its job on its
+    first outing.</p>
+  </div>
+  <div class="panel">
+    <h3>The boot flash left the headlight at full brightness <span class="tag ok">fixed</span></h3>
+    <p>VideoCar's ready-indicator loop ends on <code>analogWrite(LED, 255)</code>, discarding
+    the Lights level it restored from NVS moments earlier. Easy to miss on a dim white LED
+    and impossible to miss on a 5V RGB pixel. The saved level is now put back after the
+    flash. The ready blink is also green rather than white, so it cannot be mistaken for the
+    headlight coming on.</p>
+  </div>
+  <div class="panel">
+    <h3><code>pio run -t upload</code> tried every environment <span class="tag ok">fixed</span></h3>
+    <p>With <code>esp32cam</code>, <code>esp32cam-ota</code> and <code>esp32cam-pir</code> all
+    defined and no <code>default_envs</code>, a bare <code>pio run -t upload</code> walks all
+    three and tries to flash the robot over USB, then over the network with no address, then
+    again with the sensor build. <code>[platformio] default_envs = esp32cam</code> pins the
+    default; the other two are reached with <code>-e</code>, which is what
+    <code>launch.sh</code>'s OTA and "build a specific environment" options pass.</p>
+  </div>
+
+  <h2><span class="dot"></span>Verification</h2>
+  <div class="panel">
+    <p><strong>Compiled.</strong> All four PlatformIO projects build clean against
+    <code>espressif32@6.5.0</code>. <code>4_camrobot</code> at 62.3% of the 1.9MB OTA
+    partition (1,224,865 bytes) with PSRAM, 61.7% in the sensor build.</p>
+    <p><strong>Parsed.</strong> The control page's single 114&nbsp;KB inline script block was
+    extracted and checked with <code>node --check</code>.</p>
+    <p><strong>Exercised.</strong> The page was served locally and driven with
+    <code>window.fetch</code> stubbed, recording what the firmware would have received:
+    idle &rarr; <code>val=5</code>, ArrowUp &rarr; <code>val=1</code>, ArrowLeft &rarr;
+    <code>val=3</code>, ArrowDown &rarr; <code>val=5</code> (cancelling a held Forward), Stop
+    button &rarr; <code>val=5</code>. The <code>#backward</code> element is gone and
+    <code>#stopbtn</code> is in its grid slot.</p>
+    <p><strong>Not done.</strong> Nothing has been flashed. Nothing has driven a real motor,
+    lit a real pixel, or read a real sensor. In particular the TX1812's byte order is assumed
+    to be GRB (switch <code>NEO_GRB</code> to <code>NEO_RGB</code> in
+    <code>lights.h</code> if red and green swap), 20&nbsp;kHz motor PWM through a 3.3V gate
+    drive on a 2N7002 has not been checked against real motors and real stiction, and the
+    inverted PIR path has never seen a person walk past it.</p>
+  </div>
+
+  <h2><span class="dot"></span>Files</h2>
+  <div class="panel">
+    <table>
+      <tr><th>File</th><th>Status</th></tr>
+      <tr><td class="mono">firmware/4_camrobot/src/SetMotor.h</td>
+          <td><strong>Rewritten.</strong> Two LEDC channels on GPIO13/12 replace the I2C
+              controller. Documents the missing H-bridge and the MTDI strapping trap</td></tr>
+      <tr><td class="mono">firmware/4_camrobot/src/lights.h</td>
+          <td><strong>New.</strong> The TX1812 pixel on GPIO4 that replaced the white LED</td></tr>
+      <tr><td class="mono">firmware/4_camrobot/src/pir.h</td>
+          <td><strong>New.</strong> Inverted motion input on GPIO16, off by default, with the
+              PSRAM guard</td></tr>
+      <tr><td class="mono">firmware/4_camrobot/src/app_server.h</td>
+          <td>Drive handlers rewritten for forward-only; Lights routed to the pixel;
+              <code>/status</code> gained <code>pir</code> and <code>reverse</code>; D-pad
+              Back &rarr; Stop; autonomy reverse caps zeroed; naming and i18n</td></tr>
+      <tr><td class="mono">firmware/4_camrobot/src/oled.h</td>
+          <td>Moved to a private bus on GPIO14/15; mutex removed; boot self-test now reports
+              the sensor instead of the motor driver</td></tr>
+      <tr><td class="mono">firmware/4_camrobot/src/4_CamRobot.ino</td>
+          <td><code>motor_init()</code>/<code>lightsInit()</code>/<code>pirInit()</code> at
+              the top of setup; camera-fault pattern moved to the pixel in red; NVS namespace
+              and OTA hostname renamed</td></tr>
+      <tr><td class="mono">firmware/4_camrobot/platformio.ini</td>
+          <td>NeoPixel dependency, <code>default_envs</code>, the
+              <code>esp32cam-pir</code> environment, and the corrected PSRAM note</td></tr>
+      <tr><td class="mono">firmware/{1_blink,2_breathing_light,3_motor}</td>
+          <td>Rewritten for this board's LED and motors</td></tr>
+      <tr><td class="mono">Codes/</td>
+          <td>Arduino IDE mirror of <code>firmware/*/src/</code></td></tr>
+      <tr><td class="mono">launch.sh</td>
+          <td>Ported; flashing instructions rewritten for a board with no boot button, plus
+              OTA and per-environment build options</td></tr>
+      <tr><td class="mono">README.md / README.html / ports.html</td>
+          <td>Ported, with the pin map read from the KiCad netlist</td></tr>
+      <tr><td class="mono">report.html</td>
+          <td>This document</td></tr>
+    </table>
+  </div>
+
+  <h2><span class="dot"></span>Known limitations / open items</h2>
+  <div class="panel">
+    <ul>
+      <li><strong>Untested on hardware.</strong> The largest item on this list by some
+        distance.</li>
+      <li><strong>No reverse, and no way to add one in software.</strong> A robot that
+        overshoots has to drive round rather than back up. Autonomous modes inherit this and
+        are meaningfully worse for it &mdash; Follow-me in particular can only stop when a
+        target closes in.</li>
+      <li><strong>No braking either.</strong> Zero duty is a coast: the MOSFET stops
+        conducting and the motor freewheels. There is no way to short the windings, so the
+        robot always rolls slightly past where you let go.</li>
+      <li><strong>Turn radius.</strong> A forward pivot needs roughly twice the floor space
+        of the spin the keyestudio car did. Anything tuned on that chassis &mdash; the line
+        follower especially &mdash; may need retuning here.</li>
+      <li><strong>PSRAM or motion, never both.</strong> Not fixable without cutting a trace.</li>
+      <li><strong>No authentication on any endpoint.</strong> Inherited, and unchanged:
+        anyone on the same WiFi can drive the robot and watch the camera. Fine on an isolated
+        AP, worth thinking about on a home router.</li>
+      <li><strong>The vision features still need internet on first use</strong>, which the
+        default AP does not have. The IndexedDB cache means once is enough.</li>
+    </ul>
+  </div>
+
+  <h2><span class="dot"></span>Provenance</h2>
+  <div class="panel">
+    <p>This repository's git history starts at the port; it is not a continuation of
+    VideoCar's. Where a piece came from:</p>
+    <table>
+      <tr><th>Piece</th><th>Origin</th></tr>
+      <tr><td>Web app, endpoints, camera server</td>
+          <td><a href="https://github.com/abourdim/video-car">abourdim/video-car</a> v1.6.1,
+              itself built on keyestudio's stock KS5017 sketch</td></tr>
+      <tr><td>The OLED face</td>
+          <td><code>dfrobot-rover</code>'s MakeCode original, by way of
+              <code>esp32c3_super_mini_robot-bit-rxy</code></td></tr>
+      <tr><td>Pin map and every hardware claim here</td>
+          <td><code>01_kicad/4_esp32_cam_plugin_robot</code> &mdash; netlist, not
+              assumption</td></tr>
+      <tr><td>Version numbering</td>
+          <td>Restarted at 1.0.0. Carrying on from VideoCar's 1.6.1 would have meant a
+              version going forwards while the capability went backwards</td></tr>
+    </table>
+  </div>
+
+  <footer>
+    CamRobot &mdash; port report. Hardware claims are from the KiCad netlist; firmware claims
+    are from the sources at the commit shown in the control page footer. If you change the
+    handlers, re-check this page and
+    <a href="ports.html">ports.html</a>.
+    <a href="README.html">README</a> &middot;
+    <a href="https://github.com/abourdim/wdiy_esp32_cam_robot">GitHub</a>
+  </footer>
+</div>
+</body>
+</html>

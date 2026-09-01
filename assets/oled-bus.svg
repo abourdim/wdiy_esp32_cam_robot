@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="960" height="500" role="img" aria-label="On this board the screen does not share anything. The two motors hang off GPIO 12 and GPIO 13 as plain PWM outputs, one wire each, going nowhere else. The screen has GPIO 14 and GPIO 15 to itself as an I2C bus. Because the two never touch, an unplugged screen cannot disturb the motors and no mutex is needed.">
+  <title>The screen has its own wires</title>
+
+  <rect width="960" height="500" rx="18" fill="#F5F8F6"/>
+
+  <g font-family="Verdana,sans-serif">
+    <text x="46" y="46" font-size="21" font-weight="bold" fill="#16241D">The screen does not share anything</text>
+    <text x="46" y="70" font-size="13" fill="#5B6E64">On the keyestudio car the OLED had to sit on the motor bus. Here the motors are not a bus at all.</text>
+  </g>
+
+  <!-- ── the MCU ─────────────────────────────────────────────── -->
+  <rect x="46" y="150" width="200" height="180" rx="12" fill="#FFFFFF" stroke="#C6D3CC" stroke-width="2"/>
+  <g font-family="Verdana,sans-serif" text-anchor="middle">
+    <text x="146" y="185" font-size="15" font-weight="bold" fill="#16241D">ESP32-CAM</text>
+    <text x="146" y="205" font-size="11" fill="#5B6E64">AI-Thinker</text>
+  </g>
+  <g font-family="Verdana,sans-serif" font-size="11" font-weight="bold" fill="#2F6FA8" text-anchor="end">
+    <text x="238" y="235">IO13</text>
+    <text x="238" y="262">IO12</text>
+  </g>
+  <g font-family="Verdana,sans-serif" font-size="11" font-weight="bold" fill="#2F6FA8" text-anchor="end">
+    <text x="238" y="300">IO14</text>
+    <text x="238" y="322">IO15</text>
+  </g>
+
+  <!-- ── motors: one wire each, PWM, no bus ──────────────────── -->
+  <g stroke-width="5" stroke-linecap="round" stroke="#C96A3E">
+    <line x1="248" y1="231" x2="620" y2="231"/>
+    <line x1="248" y1="258" x2="620" y2="258"/>
+  </g>
+
+  <rect x="620" y="196" width="250" height="42" rx="9" fill="#FFF3EA" stroke="#C96A3E" stroke-width="2"/>
+  <rect x="620" y="248" width="250" height="42" rx="9" fill="#FFF3EA" stroke="#C96A3E" stroke-width="2"/>
+  <g font-family="Verdana,sans-serif" font-size="12" fill="#7A3F1C">
+    <text x="636" y="222">Q1 &#8594; J1 &#8594; right motor</text>
+    <text x="636" y="274">Q2 &#8594; J2 &#8594; left motor</text>
+  </g>
+  <g font-family="Verdana,sans-serif" font-size="11" fill="#8A5A3A">
+    <text x="330" y="222">PWM, one wire, one motor</text>
+    <text x="330" y="285">no address, no protocol, nothing else listening</text>
+  </g>
+
+  <!-- ── the I2C pair, entirely separate ─────────────────────── -->
+  <g stroke-width="6" stroke-linecap="round">
+    <line x1="248" y1="380" x2="700" y2="380" stroke="#3E8FE0"/>
+    <line x1="248" y1="406" x2="700" y2="406" stroke="#F2C744"/>
+  </g>
+  <g font-family="Verdana,sans-serif" font-size="11" font-weight="bold">
+    <text x="300" y="370" fill="#2F6FA8">SDA &#183; GPIO 14</text>
+    <text x="300" y="428" fill="#B08A12">SCL &#183; GPIO 15</text>
+  </g>
+
+  <rect x="700" y="356" width="170" height="74" rx="9" fill="#EAF3FC" stroke="#3E8FE0" stroke-width="2"/>
+  <g font-family="Verdana,sans-serif" text-anchor="middle">
+    <text x="785" y="384" font-size="13" font-weight="bold" fill="#123C63">SSD1306</text>
+    <text x="785" y="404" font-size="12" fill="#2F6FA8">0x3C</text>
+    <text x="785" y="422" font-size="10" fill="#5B6E64">optional, rarely fitted</text>
+  </g>
+
+  <!-- ── the point ───────────────────────────────────────────── -->
+  <rect x="46" y="452" width="824" height="30" rx="8" fill="#E8F1EC"/>
+  <text x="60" y="472" font-family="Verdana,sans-serif" font-size="12" fill="#2C4D3E">
+    Nothing crosses between the two groups &#8212; so an unplugged screen cannot stall the motors, and no mutex is needed.
+  </text>
+</svg>

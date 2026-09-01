@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" role="img" aria-label="Which wire goes where. All four OLED wires go to the ESP32-CAM module itself, because the carrier board does not route GPIO 14, GPIO 15 or 3.3 volts anywhere. SDA goes to the pin marked IO14, SCL to IO15, ground to any GND pin, and power to the module's 3V3 pin, or better, to 5 volts from the sensor header if the screen module has its own regulator.">
+  <title>Which wire goes where</title>
+
+  <rect width="960" height="520" rx="18" fill="#F5F8F6"/>
+
+  <g font-family="Verdana,sans-serif">
+    <text x="46" y="46" font-size="21" font-weight="bold" fill="#16241D">All four wires go to the module, not the carrier</text>
+    <text x="46" y="70" font-size="13" fill="#5B6E64">The carrier routes GPIO 14 and GPIO 15 to named nets and then to nothing, and never routes 3.3V at all.</text>
+  </g>
+
+  <!-- ── the module header, as you look at it ────────────────── -->
+  <rect x="46" y="106" width="330" height="336" rx="12" fill="#FFFFFF" stroke="#C6D3CC" stroke-width="2"/>
+  <text x="211" y="132" font-family="Verdana,sans-serif" font-size="13" font-weight="bold" fill="#16241D" text-anchor="middle">ESP32-CAM module pins</text>
+
+  <!-- left column -->
+  <g font-family="Verdana,sans-serif" font-size="12" fill="#5B6E64">
+    <text x="72" y="164">3V3</text>
+    <text x="72" y="192">GND</text>
+    <text x="72" y="220">IO12</text>
+    <text x="72" y="248">IO13</text>
+    <text x="72" y="276">IO15</text>
+    <text x="72" y="304">IO14</text>
+    <text x="72" y="332">IO2</text>
+    <text x="72" y="360">IO4</text>
+  </g>
+  <!-- right column, for orientation only -->
+  <g font-family="Verdana,sans-serif" font-size="12" fill="#A8B6AE" text-anchor="end">
+    <text x="350" y="164">GND</text>
+    <text x="350" y="192">5V</text>
+    <text x="350" y="220">U0R</text>
+    <text x="350" y="248">U0T</text>
+    <text x="350" y="276">IO16</text>
+    <text x="350" y="304">IO0</text>
+    <text x="350" y="332">GND</text>
+    <text x="350" y="360">3V3</text>
+  </g>
+
+  <!-- highlight rings on the four pins that matter -->
+  <g fill="none" stroke-width="2.5">
+    <rect x="60" y="150" width="66" height="20" rx="6" stroke="#5FA463"/>
+    <rect x="60" y="178" width="66" height="20" rx="6" stroke="#6B6B6B"/>
+    <rect x="60" y="262" width="66" height="20" rx="6" stroke="#F2C744"/>
+    <rect x="60" y="290" width="66" height="20" rx="6" stroke="#3E8FE0"/>
+  </g>
+
+  <text x="211" y="400" font-family="Verdana,sans-serif" font-size="11" fill="#8A9B92" text-anchor="middle">Greyed pins are shown for orientation only.</text>
+  <text x="211" y="420" font-family="Verdana,sans-serif" font-size="11" fill="#8A9B92" text-anchor="middle">IO12 / IO13 are the motors. Do not touch them.</text>
+
+  <!-- ── the four wires ──────────────────────────────────────── -->
+  <g stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M126 160 H470" stroke="#5FA463"/>
+    <path d="M126 188 H470" stroke="#6B6B6B"/>
+    <path d="M126 272 H470" stroke="#F2C744"/>
+    <path d="M126 300 H470" stroke="#3E8FE0"/>
+  </g>
+
+  <!-- ── the screen ──────────────────────────────────────────── -->
+  <rect x="470" y="132" width="220" height="196" rx="10" fill="#EAF3FC" stroke="#3E8FE0" stroke-width="2"/>
+  <text x="580" y="120" font-family="Verdana,sans-serif" font-size="13" font-weight="bold" fill="#123C63" text-anchor="middle">SSD1306 128&#215;64</text>
+  <g font-family="Verdana,sans-serif" font-size="13" fill="#123C63">
+    <text x="492" y="166">VCC</text>
+    <text x="492" y="194">GND</text>
+    <text x="492" y="278">SCL</text>
+    <text x="492" y="306">SDA</text>
+  </g>
+  <g font-family="Verdana,sans-serif" font-size="11" fill="#5B6E64">
+    <text x="560" y="166">3.3V &#8212; see the warning below</text>
+    <text x="560" y="194">any GND pin</text>
+    <text x="560" y="278">GPIO 15</text>
+    <text x="560" y="306">GPIO 14</text>
+  </g>
+  <text x="580" y="352" font-family="Verdana,sans-serif" font-size="11" fill="#8A9B92" text-anchor="middle">Some modules order these differently,</text>
+  <text x="580" y="368" font-family="Verdana,sans-serif" font-size="11" fill="#8A9B92" text-anchor="middle">and a few answer at 0x3D. Read your board.</text>
+
+  <!-- ── the power warning, which is the opposite of the car's ─ -->
+  <rect x="46" y="458" width="868" height="44" rx="8" fill="#FFF3EA" stroke="#C96A3E" stroke-width="1.5"/>
+  <text x="62" y="480" font-family="Verdana,sans-serif" font-size="12" font-weight="bold" fill="#7A3F1C">The module's 3V3 pin is the only 3.3V on this robot &#8212; and it is already carrying the camera and the radio.</text>
+  <text x="62" y="496" font-family="Verdana,sans-serif" font-size="12" fill="#7A3F1C">If your screen module has its own regulator, feed it 5V from J6 or J3 instead and leave that rail alone.</text>
+</svg>

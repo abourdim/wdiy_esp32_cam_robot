@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CamRobot — Ports 80 &amp; 81, Step by Step</title>
+<style>
+  :root{
+    --bg:#0B0F14; --panel:#121822; --panel-2:#0E141C; --border:#1F2B38;
+    --cyan:#4CE0D2; --amber:#FFB454; --danger:#FF5C5C; --green:#4ADE80;
+    --text:#E7F1F2; --muted:#7C93A0;
+    --mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);
+    line-height:1.6;padding:0 0 60px;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px;}
+  header{padding:36px 0 24px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+  header h1{margin:0 0 6px;font-size:22px;letter-spacing:.08em;text-transform:uppercase;}
+  header h1 span{color:var(--amber);}
+  header .meta{font-size:12px;color:var(--muted);letter-spacing:.04em;}
+  header .meta code{color:var(--cyan);background:var(--panel-2);padding:1px 6px;border-radius:4px;}
+  h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    margin:44px 0 14px;display:flex;align-items:center;gap:8px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--border);}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:18px 20px;margin-bottom:14px;}
+  .panel h3{margin:0 0 8px;font-size:14px;color:var(--cyan);letter-spacing:.02em;}
+  .panel p{margin:0;color:var(--text);font-size:13.5px;}
+  .panel p + p{margin-top:9px;}
+  .step{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:18px 20px 18px 62px;margin-bottom:14px;position:relative;}
+  .step .n{position:absolute;left:18px;top:16px;width:30px;height:30px;border-radius:50%;
+    background:var(--cyan);color:var(--bg);display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:700;}
+  .step h3{margin:2px 0 8px;font-size:15px;color:var(--cyan);letter-spacing:.02em;}
+  .step p{margin:0;font-size:13.5px;} .step p + p{margin-top:9px;}
+  .expect{margin-top:10px;padding:9px 12px;border-left:2px solid var(--green);
+    background:rgba(74,222,128,.06);font-size:12.5px;color:var(--muted);border-radius:0 6px 6px 0;}
+  .expect b{color:var(--green);font-weight:400;}
+  .warn{margin-top:10px;padding:9px 12px;border-left:2px solid var(--amber);
+    background:rgba(255,180,84,.06);font-size:12.5px;border-radius:0 6px 6px 0;}
+  .warn b{color:var(--amber);font-weight:400;}
+  .danger{margin-top:10px;padding:9px 12px;border-left:2px solid var(--danger);
+    background:rgba(255,92,92,.07);font-size:12.5px;border-radius:0 6px 6px 0;}
+  .danger b{color:var(--danger);font-weight:400;}
+  pre{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;
+    padding:12px 14px;overflow-x:auto;font-size:12.5px;line-height:1.55;margin:10px 0 0;
+    color:var(--text);}
+  pre .c{color:var(--muted);}
+  pre .k{color:var(--amber);}
+  code{font-family:var(--mono);color:var(--cyan);font-size:.92em;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+  th{color:var(--muted);font-weight:400;letter-spacing:.06em;text-transform:uppercase;font-size:11px;}
+  td code{white-space:nowrap;}
+  ul{margin:8px 0 0;padding-left:20px;font-size:13.5px;} li{margin:5px 0;}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);
+    box-shadow:0 0 6px var(--cyan);margin-right:6px;}
+  .diagram{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;
+    padding:16px;overflow-x:auto;font-size:12px;line-height:1.45;color:var(--muted);margin-top:10px;}
+  .diagram b{color:var(--cyan);font-weight:400;}
+  .diagram i{color:var(--amber);font-style:normal;}
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--border);
+    font-size:11.5px;color:var(--muted);}
+  footer a{color:var(--muted);}
+  a{color:var(--cyan);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>&#129302; CAM<span>ROBOT</span> &mdash; PORTS 80 &amp; 81, STEP BY STEP</h1>
+    <div class="meta">
+      A beginner's guide to talking to the robot directly &nbsp;|&nbsp;
+      Repo: <a href="https://github.com/abourdim/wdiy_esp32_cam_robot">github.com/abourdim/wdiy_esp32_cam_robot</a> &nbsp;|&nbsp;
+      See also <a href="README.html">README</a> &middot; <a href="report.html">change report</a>
+    </div>
+  </header>
+
+  <p style="font-size:13.5px;color:var(--muted);margin:0 0 8px;">
+    The robot runs <b style="color:var(--text);font-weight:400;">two separate web servers</b> at
+    the same time. This guide explains what each one is for, then walks you through using
+    both &mdash; first in a browser, then from the command line. No prior knowledge of HTTP
+    assumed. Nothing here requires editing or recompiling the firmware.
+  </p>
+
+  <div class="danger" style="margin:14px 0 0;"><b>This robot has no reverse.</b> Each
+  motor has a single low-side MOSFET and no H-bridge, so a wheel can be driven or not driven
+  and nothing else. Two things below follow from that, and they are the only places this
+  guide differs from the same document on the car this was ported from:
+  <code>/control?var=robot&amp;val=2</code> stops instead of reversing, and
+  <code>/joystick</code>'s <code>y</code> is clamped to <code>0</code>&ndash;<code>100</code>
+  rather than <code>&minus;100</code>&ndash;<code>100</code>.</div>
+
+  <h2><span class="dot"></span>The 30-second version</h2>
+  <div class="panel">
+    <table>
+      <tr><th>Port</th><th>What lives there</th><th>Open it with</th></tr>
+      <tr>
+        <td><code>80</code></td>
+        <td><b>Control server.</b> The web page you drive from, plus every command and
+            setting, plus single still photos.</td>
+        <td><code>http://192.168.4.1/</code></td>
+      </tr>
+      <tr>
+        <td><code>81</code></td>
+        <td><b>Stream server.</b> One job only: the continuous live video feed.</td>
+        <td><code>http://192.168.4.1:81/stream</code></td>
+      </tr>
+    </table>
+    <p style="margin-top:12px;">When you leave the port off a URL, your browser assumes
+    <code>80</code>. That is why the control page needs no port and the stream always
+    does.</p>
+  </div>
+
+  <h2><span class="dot"></span>Why two servers instead of one?</h2>
+  <div class="panel">
+    <p>This looks like over-engineering until you know how the video works. The stream is
+    <b>MJPEG</b> &mdash; motion JPEG. The robot does not send a video file. It opens one HTTP
+    response and then never closes it, pushing out an endless run of JPEG stills separated
+    by a marker line, and the browser paints each one as it arrives.</p>
+    <p>That means <b>a streaming connection stays open forever</b>. The tiny web server on
+    the ESP32 handles a limited number of connections, and a request that never finishes
+    occupies its slot indefinitely. If the stream and the controls shared one server, the
+    stream could starve the controls &mdash; and a robot that will not accept a stop command
+    because it is busy sending video is a genuinely dangerous robot.</p>
+    <p>So video gets its own server, on its own port, with its own connection pool. Steering
+    commands never queue behind picture data.</p>
+    <div class="diagram"><pre style="margin:0;border:0;padding:0;background:none;">   Your phone or laptop
+            │
+            ├──────────────▶  <b>port 80</b>   control server
+            │                 ├─ <i>/</i>          the drive page
+            │                 ├─ <i>/status</i>    what the robot is doing
+            │                 ├─ <i>/control</i>   drive + settings
+            │                 ├─ <i>/joystick</i>  proportional drive
+            │                 └─ <i>/capture</i>   one still photo
+            │
+            └──────────────▶  <b>port 81</b>   stream server
+                              └─ <i>/stream</i>    live video, never ends</pre></div>
+  </div>
+
+  <h2><span class="dot"></span>Before you start</h2>
+  <div class="panel">
+    <ul>
+      <li>A robot with this firmware flashed. Check the footer of the control page: it shows
+        the version, build time and git commit. If it says <code>nogit</code> and you built
+        with PlatformIO, something is off.</li>
+      <li>A phone or laptop on the same network as the robot.</li>
+      <li><b>Optional</b>, for the command-line steps: <code>curl</code>. It ships with
+        macOS and most Linux systems, and with Windows 10 and later. Everything can also be
+        done from a browser address bar if you prefer.</li>
+    </ul>
+    <div class="danger"><b>Put the robot on blocks before any of the driving steps.</b> A book
+    under each side, wheels clear of the desk. You are about to send it commands by hand,
+    and it is very easy to send &ldquo;forward&rdquo; and then go looking for the stop
+    command while it drives off the table.</div>
+  </div>
+
+  <h2><span class="dot"></span>Walkthrough</h2>
+
+  <div class="step">
+    <div class="n">1</div>
+    <h3>Get on the same network as the robot</h3>
+    <p><b>Default (access point mode).</b> The robot makes its own WiFi network. On your phone
+    or laptop, join:</p>
+    <pre>network:  <span class="k">wdiy1</span>
+password: <span class="k">88888888</span></pre>
+    <p>The robot is then always at <code>192.168.4.1</code>. It has no internet connection
+    &mdash; it is a network of exactly two devices, you and the robot.</p>
+    <p><b>If you changed the firmware to station mode</b> (<code>ap = 0</code>), the robot
+    joins your home router instead and the router decides its address. Plug it into USB,
+    open a serial monitor at 115200 baud, and watch the boot messages:</p>
+    <pre>CamRobot v1.0.0  |  built Aug 27 2026 09:14:22  |  a1b2c3d
+Starting web server on port: '80'
+Starting stream server on port: '81'
+Camera Ready! Use 'http://192.168.1.42' to connect</pre>
+    <p>Use whatever address it prints, in place of <code>192.168.4.1</code> everywhere
+    below.</p>
+    <div class="expect"><b>You should see:</b> your device connected to the network. On a
+    phone, expect a warning that the network has no internet. That is correct in AP
+    mode &mdash; do not let the phone "helpfully" switch back to mobile data.</div>
+  </div>
+
+  <div class="step">
+    <div class="n">2</div>
+    <h3>Open the control page &mdash; this is port 80</h3>
+    <p>In a browser, go to:</p>
+    <pre>http://192.168.4.1/</pre>
+    <p>No port number. The browser fills in <code>80</code> silently. This single page is
+    what the whole project is for: live video, a D-pad, a joystick, sliders and the vision
+    features.</p>
+    <div class="expect"><b>You should see:</b> the dark control page, live video within a
+    second or two, and a build stamp in the footer.</div>
+    <div class="warn"><b>Blank page or a spinner forever?</b> Check you typed
+    <code>http://</code> and not <code>https://</code>. The robot speaks plain HTTP only, and
+    some browsers now try HTTPS first and give up quietly.</div>
+  </div>
+
+  <div class="step">
+    <div class="n">3</div>
+    <h3>Watch the raw video &mdash; this is port 81</h3>
+    <p>Open a <b>new browser tab</b> and go to:</p>
+    <pre>http://192.168.4.1:81/stream</pre>
+    <p>The <code>:81</code> is the whole point of this step. You get the video on its own,
+    filling the window, with no page around it. This is exactly the same data the control
+    page shows &mdash; the page simply wraps it in an
+    <code>&lt;img&gt;</code> tag.</p>
+    <p>Seeing it bare is the fastest way to answer "is the camera working, or is the page
+    broken?" If this tab shows video, the camera and both servers are fine and any problem
+    is in the page.</p>
+    <div class="expect"><b>You should see:</b> live video and a tab spinner that
+    <i>never stops</i>. That is correct. The response genuinely never finishes.</div>
+    <div class="warn"><b>Close this tab before going back to driving.</b> The camera has a
+    limited number of frame buffers, and every open stream is another consumer. Two viewers
+    at once will make both stutter.</div>
+  </div>
+
+  <div class="step">
+    <div class="n">4</div>
+    <h3>Take a single photo</h3>
+    <p>Still port 80. In a browser:</p>
+    <pre>http://192.168.4.1/capture</pre>
+    <p>One JPEG, taken the moment you asked, then the connection closes normally. This is
+    the opposite of the stream: one picture, one request, done.</p>
+    <p>From a terminal, save it to a file:</p>
+    <pre><span class="c"># save one frame as shot.jpg</span>
+curl http://192.168.4.1/capture -o shot.jpg</pre>
+    <div class="expect"><b>You should see:</b> a single still image in the browser, or a
+    <code>shot.jpg</code> you can open.</div>
+  </div>
+
+  <div class="step">
+    <div class="n">5</div>
+    <h3>Ask the robot what it is doing</h3>
+    <p>Every setting the robot holds is readable in one request:</p>
+    <pre>http://192.168.4.1/status</pre>
+    <p>You get JSON &mdash; a machine-readable summary:</p>
+    <pre>{"framesize":5,"quality":16,"vflip":1,"hmirror":1,
+ "speed":8,"trim":0,"flash":10,
+ "version":"1.0.0","build":"Aug 27 2026 09:14:22","gitrev":"a1b2c3d",
+ "oled":0,"pir":-1,"reverse":0}</pre>
+    <p>The last three are this board's. <code>oled</code> says whether a screen answered at
+    0x3C during boot. <code>pir</code> is <code>1</code> for motion, <code>0</code> for
+    quiet, and <code>-1</code> when the motion sensor is not compiled into this build
+    &mdash; which is the default, because the sensor and the camera's PSRAM want the same
+    pin. <code>reverse</code> is <code>0</code> and always will be; it is there so a page or
+    a script can find out without having to be told.</p>
+    <p>This is the endpoint the control page itself calls on load, to restore your sliders,
+    and every two seconds after that as a connection check. It is also the polite way for
+    your own scripts to find out what the robot is set to before changing anything.</p>
+    <div class="expect"><b>You should see:</b> a line of JSON. Browsers usually pretty-print
+    it or offer to download it &mdash; either is fine.</div>
+  </div>
+
+  <div class="step">
+    <div class="n">6</div>
+    <h3>Change a setting by hand</h3>
+    <p>Settings use one endpoint with two parameters: <code>var</code> (what to change) and
+    <code>val</code> (the new value). Try the headlight, which is harmless and obvious:</p>
+    <pre><span class="c"># half brightness</span>
+http://192.168.4.1/control?var=flash&amp;val=128
+
+<span class="c"># off again</span>
+http://192.168.4.1/control?var=flash&amp;val=0</pre>
+    <p>Paste those into the address bar. The page will go blank &mdash; that is normal, the
+    robot replies with an empty "OK". Look at the robot, not the screen.</p>
+    <p>The same from a terminal. Note the quotes: <code>&amp;</code> means something special
+    to most shells, so the URL must be quoted.</p>
+    <pre>curl <span class="k">"</span>http://192.168.4.1/control?var=flash&amp;val=128<span class="k">"</span></pre>
+    <div class="expect"><b>You should see:</b> the RGB pixel on the front of the robot
+    light up white, then go off. Settings are saved to the robot's flash, so they survive a
+    reboot.</div>
+    <div class="warn">Full brightness (<code>255</code>) on a 5V pixel is genuinely bright.
+    Fine in bursts, not for long periods.</div>
+    <div class="warn"><b>The onboard flash LED may blink once as you do this.</b> Not a
+    fault: the pixel's data line is GPIO4, which on an AI-Thinker module is also the gate of
+    that very bright white LED next to the lens. One pixel update is about 30 microseconds
+    of traffic on it.</div>
+  </div>
+
+  <div class="step">
+    <div class="n">7</div>
+    <h3>Drive it &mdash; and meet the failsafe</h3>
+    <p>Driving uses the same endpoint with <code>var=car</code>:</p>
+    <pre>val=1  forward     val=4  turn right
+val=2  <span class="c">(no reverse -- stops)</span>
+val=3  turn left     val=5  stop</pre>
+    <p><code>val=2</code> answers <code>200 OK</code> and stops the wheels. It is not an
+    error because a browser holding a cached copy of an older control page can still send
+    it, and a robot that sits still is a better answer than one logging failures ten times a
+    second. The current control page has no Back button to send it with.</p>
+    <p>Turns are a <b>forward pivot</b>, not a spin on the spot: one wheel is driven and the
+    other coasts, so the robot swings round the stationary wheel and needs roughly twice the
+    floor space the keyestudio car it was ported from needed.</p>
+    <p>Wheels off the ground? Try it:</p>
+    <pre>curl "http://192.168.4.1/control?var=car&amp;val=1"</pre>
+    <p><b>The wheels will turn for about half a second and stop.</b> Nothing is broken. This
+    is the safety failsafe, and it is the single most important thing to understand about
+    driving this robot over HTTP.</p>
+    <p>The firmware stops the motors if <b>500&nbsp;ms</b> pass with no new command. Without
+    that, a robot told "forward" would keep going forever if your WiFi dropped, your battery
+    died, or you simply closed the laptop. There is no other way for it to know you are
+    still there.</p>
+    <p>So <b>one command is not an instruction, it is a lease</b>. To keep moving, keep
+    renewing it. That is exactly what the control page does &mdash; it re-sends the current
+    command every 100&nbsp;ms, well inside the 500&nbsp;ms window.</p>
+    <p>To drive forward for three seconds from a terminal:</p>
+    <pre><span class="c"># macOS / Linux</span>
+end=$((SECONDS+3))
+while [ $SECONDS -lt $end ]; do
+  curl -s "http://192.168.4.1/control?var=car&amp;val=1" &gt; /dev/null
+  sleep 0.1
+done
+curl -s "http://192.168.4.1/control?var=car&amp;val=5" &gt; /dev/null   <span class="c"># stop</span></pre>
+    <p>The explicit stop at the end is good manners rather than strictly required &mdash;
+    the failsafe would stop it half a second later anyway. Send it regardless. Relying on a
+    safety net for ordinary operation is how you end up surprised the one time it does not
+    fire.</p>
+    <div class="expect"><b>You should see:</b> wheels turning for three seconds, then
+    stopping.</div>
+    <div class="danger"><b>If a script gets away from you, close the terminal.</b> The
+    moment commands stop arriving, the robot stops within half a second on its own.</div>
+  </div>
+
+  <div class="step">
+    <div class="n">8</div>
+    <h3>Steer smoothly instead of in four directions</h3>
+    <p><code>/control?var=car</code> only knows four directions and stop. For proportional
+    control &mdash; any direction, any speed &mdash; use the joystick endpoint:</p>
+    <pre>http://192.168.4.1/joystick?x=0&amp;y=100      <span class="c">full speed ahead</span>
+http://192.168.4.1/joystick?x=100&amp;y=0      <span class="c">pivot right</span>
+http://192.168.4.1/joystick?x=-50&amp;y=60     <span class="c">forward, curving left</span>
+http://192.168.4.1/joystick?x=0&amp;y=-100     <span class="c">clamped to y=0, so: stop</span>
+http://192.168.4.1/joystick?x=0&amp;y=0        <span class="c">stop</span></pre>
+    <p><code>x</code> is steering and runs <code>-100</code> to <code>100</code> (positive is
+    right). <code>y</code> is throttle and runs <code>0</code> to <code>100</code> &mdash;
+    negative values are clamped to zero rather than rejected, so pulling back does nothing
+    rather than erroring.</p>
+    <p>The firmware mixes them into left and right wheel speeds the way an arcade cabinet
+    does, and forward-only steering falls out of that mixing rather than being a special
+    case: a wheel whose mixed value would go negative simply stops. That is why
+    <code>x=100&amp;y=0</code> above is a pivot &mdash; one wheel gets 100, the other is
+    clamped to 0.</p>
+    <p>The same 500&nbsp;ms failsafe applies, so the same rule holds: repeat it, roughly ten
+    times a second, for as long as you want to move.</p>
+    <div class="expect"><b>You should see:</b> a brief twitch per request &mdash; and smooth
+    motion once you send them in a loop.</div>
+  </div>
+
+  <h2><span class="dot"></span>Full reference &mdash; port 80</h2>
+  <div class="panel">
+    <table>
+      <tr><th>Request</th><th>Returns</th><th>Notes</th></tr>
+      <tr><td><code>GET /</code></td><td>HTML</td>
+        <td>The control page. Sent with <code>Cache-Control: no-store</code>, so you always
+            get the page belonging to the firmware that is actually running.</td></tr>
+      <tr><td><code>GET /status</code></td><td>JSON</td>
+        <td>All current settings plus firmware version, build time and git revision.</td></tr>
+      <tr><td><code>GET /capture</code></td><td>JPEG</td>
+        <td>One still frame at the current resolution and quality.</td></tr>
+      <tr><td><code>GET /control?var=&hellip;&amp;val=&hellip;</code></td><td>empty</td>
+        <td>Settings and basic driving. See the table below.</td></tr>
+      <tr><td><code>GET /joystick?x=&hellip;&amp;y=&hellip;</code></td><td>empty</td>
+        <td>Proportional driving. <code>x</code> is &minus;100 to 100, <code>y</code> is
+            <b>0 to 100</b>; out-of-range values are clamped, not rejected.</td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h3>Values for <code>/control</code></h3>
+    <table>
+      <tr><th>var</th><th>val</th><th>Effect</th></tr>
+      <tr><td><code>robot</code></td><td>1&ndash;5</td>
+        <td>1 forward, <b>2 stops (no reverse)</b>, 3 left, 4 right, 5 stop. <b>Subject to
+            the 500&nbsp;ms failsafe</b> &mdash; repeat to keep moving.</td></tr>
+      <tr><td><code>speed</code></td><td>0&ndash;8</td>
+        <td>Overall speed cap. Multiplied by 31 internally, so 8 means a PWM ceiling of
+            248 out of 255.</td></tr>
+      <tr><td><code>trim</code></td><td>&minus;32&ndash;32</td>
+        <td>Corrects a robot that drifts when it should go straight. Negative favours one
+            motor, positive the other. It earns its keep here: two bare MOSFETs driving two
+            unmatched motors off one rail is as open-loop as a robot gets.</td></tr>
+      <tr><td><code>flash</code></td><td>0&ndash;255</td>
+        <td>Front RGB pixel brightness, as white.</td></tr>
+      <tr><td><code>framesize</code></td><td>0&ndash;6</td>
+        <td>Resolution. 0 = 96&times;96, 1 = QQVGA, 2 = QCIF, 3 = HQVGA, 4 = 240&times;240,
+            <b>5 = QVGA 320&times;240 (default)</b>, 6 = CIF. Bigger is slower.</td></tr>
+      <tr><td><code>quality</code></td><td>10&ndash;63</td>
+        <td>JPEG quality, and it runs <b>backwards</b>: <i>lower numbers look better</i> and
+            produce bigger frames.</td></tr>
+      <tr><td><code>vflip</code></td><td>0 or 1</td><td>Flip the picture vertically.</td></tr>
+      <tr><td><code>hmirror</code></td><td>0 or 1</td><td>Mirror the picture horizontally.</td></tr>
+      <tr><td><code>wifichannel</code></td><td>1&ndash;11</td>
+        <td>WiFi channel for the robot's own AP (default 11). <b>Reboots the robot</b> &mdash;
+            a channel is fixed when the access point starts, so there is no way to move it
+            while it is up. A crowded channel shows up as laggy controls and stuttering
+            video rather than as a dropped connection, so if the robot feels slow, compare
+            1, 6 and 11 &mdash; the three that don't overlap.</td></tr>
+    </table>
+    <p style="margin-top:10px;">Everything except <code>robot</code> is saved to the robot's
+    flash memory and survives a power cycle &mdash; <b>including a reflash</b>. If you change
+    a setting and later wonder why a new firmware's default didn't take, this is why: the
+    saved value wins. Check <code>/status</code> for what the robot is actually using.
+    Only <code>robot</code> and
+    <code>/joystick</code> reset the failsafe timer &mdash; changing a setting does not count
+    as "I am still here".</p>
+  </div>
+
+  <h2><span class="dot"></span>Full reference &mdash; port 81</h2>
+  <div class="panel">
+    <table>
+      <tr><th>Request</th><th>Returns</th><th>Notes</th></tr>
+      <tr><td><code>GET :81/stream</code></td>
+        <td><code>multipart/x-mixed-replace</code></td>
+        <td>Endless JPEG frames. The only endpoint on this port.</td></tr>
+    </table>
+    <p style="margin-top:12px;">If you fetch it with a tool rather than a browser, expect a
+    response that never completes. That is the design, not a hang. The frames are separated
+    by a fixed boundary marker, each with its own <code>Content-Type: image/jpeg</code> and
+    length, and the server sends
+    <code>Access-Control-Allow-Origin: *</code> so a web page on port 80 is allowed to read
+    the pixels &mdash; which is how the vision features work.</p>
+  </div>
+
+  <h2><span class="dot"></span>Putting the video in your own page</h2>
+  <div class="panel">
+    <p>The stream is a plain image source. Any browser that can show a JPEG can show it,
+    with no JavaScript at all:</p>
+    <pre>&lt;img src="http://192.168.4.1:81/stream" width="320"&gt;</pre>
+    <p>That is the entire trick. The control page does exactly this and then draws boxes on
+    a transparent canvas laid over the top.</p>
+    <p>If you want to <b>read the pixels</b> &mdash; to run your own detection, or grab
+    frames into a canvas &mdash; add <code>crossorigin</code>:</p>
+    <pre>&lt;img id="v" src="http://192.168.4.1:81/stream" <span class="k">crossorigin="anonymous"</span>&gt;
+&lt;script&gt;
+  const c = document.createElement('canvas');
+  const ctx = c.getContext('2d');
+  const img = document.getElementById('v');
+  setInterval(() =&gt; {
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    ctx.drawImage(img, 0, 0);            <span class="c">// current frame, as pixels</span>
+  }, 100);
+&lt;/script&gt;</pre>
+    <p>Without <code>crossorigin</code>, the browser still shows the video but marks the
+    canvas as "tainted" and refuses to let you read it back &mdash; because port 81 counts as
+    a different origin from port 80, even on the same device. The robot sends the header that
+    makes this work.</p>
+  </div>
+
+  <h2><span class="dot"></span>Things that will trip you up</h2>
+  <div class="panel">
+    <ul>
+      <li><b>Only one device can join the robot's WiFi.</b> The access point is configured for
+        a single client. If your laptop is connected, your phone cannot be. Worse, an
+        ungraceful disconnect can hold the slot for a minute or two &mdash; if you cannot
+        reconnect, wait, or power-cycle the robot.</li>
+      <li><b>One stream viewer at a time, in practice.</b> Nothing stops you opening two, but
+        they compete for camera buffers and both suffer.</li>
+      <li><b>There is no password on any of this.</b> Anyone on the network can drive the
+        robot, and every command is a plain URL &mdash; so an
+        <code>&lt;img src="&hellip;/control?var=car&amp;val=1"&gt;</code> hidden on any web page
+        you happen to open while connected is enough to make it move. Treat the robot's
+        network as untrusted and do not leave it running unattended.</li>
+      <li><b><code>&amp;</code> needs quoting in a shell.</b> An unquoted
+        <code>&amp;</code> tells most shells to run the command in the background, so only
+        the first parameter arrives. Always quote the whole URL.</li>
+      <li><b>Do not write <code>:80</code> explicitly.</b> Some of the page's JavaScript
+        builds the stream URL from the current address, and an explicit <code>:80</code>
+        turns into a broken <code>:80:81</code>. Just omit it.</li>
+      <li><b>Higher resolution is not free.</b> <code>framesize=6</code> quadruples the data
+        over the same WiFi. If the stream turns into a slideshow, go back to 5.</li>
+      <li><b>Settings persist, so surprises persist too.</b> If the robot boots with the light
+        on or the picture upside down, that is a saved setting from last time, not a
+        fault.</li>
+    </ul>
+  </div>
+
+  <h2><span class="dot"></span>Quick test script</h2>
+  <div class="panel">
+    <p>Checks both servers and reports what it finds. Wheels on blocks &mdash; it drives
+    briefly.</p>
+    <pre><span class="c">#!/bin/bash</span>
+CAR=http://192.168.4.1
+
+echo "--- port 80: status ---"
+curl -s $CAR/status || echo "NO RESPONSE on port 80"
+echo
+
+echo "--- port 80: still photo ---"
+curl -s $CAR/capture -o /tmp/shot.jpg &amp;&amp; ls -l /tmp/shot.jpg
+
+echo "--- port 81: stream (first 2 seconds) ---"
+curl -s --max-time 2 $CAR:81/stream -o /tmp/stream.bin
+echo "received $(wc -c &lt; /tmp/stream.bin) bytes of video"
+
+echo "--- drive forward 1s, then stop ---"
+end=$((SECONDS+1))
+while [ $SECONDS -lt $end ]; do
+  curl -s "$CAR/control?var=car&amp;val=1" &gt; /dev/null; sleep 0.1
+done
+curl -s "$CAR/control?var=car&amp;val=5" &gt; /dev/null
+echo "done"</pre>
+    <div class="expect"><b>A healthy robot gives you:</b> a line of JSON, a <code>shot.jpg</code>
+    of a few kilobytes, tens of kilobytes of video, and one second of wheel movement. If the
+    JSON arrives but the video does not, the stream server failed to start &mdash; check the
+    serial console at boot for both <code>port: '80'</code> and <code>port: '81'</code>
+    lines.</div>
+  </div>
+
+  <footer>
+    CamRobot &mdash; ports guide. Endpoint details taken from
+    <code>app_server.h</code> at the commit shown in the control page footer; if you change
+    the handlers, re-check this page.
+    <a href="README.html">README</a> &middot;
+    <a href="report.html">Change report</a> &middot;
+    <a href="https://github.com/abourdim/wdiy_esp32_cam_robot">GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
